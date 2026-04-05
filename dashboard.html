@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoligDirekte — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amber:        #E8920A; --amber-light: #F5B93A; --white: #FFFFFF;
+      --page-bg:      #F9F8F5;
+      --nav-bg:       rgba(255,255,255,0.93);
+      --nav-border:   rgba(15,30,60,0.09);
+      --nav-shadow:   rgba(15,30,60,0.08);
+      --grid-color:   rgba(15,30,60,0.05);
+      --radial-1:     rgba(245,158,11,0.08);
+      --radial-2:     rgba(20,55,210,0.04);
+      --blob-a:       rgba(245,158,11,0.07);
+      --blob-b:       rgba(20,55,200,0.05);
+      --vignette:     rgba(220,215,205,0.25);
+      --text-main:    #0F1E3D; --text-muted: #64748B;
+      --border:       rgba(15,30,60,0.09);
+      --logo-color:   #0F1E3D; --h1-color: #0F1E3D;
+      --input-bg:     #FFFFFF; --input-border: rgba(15,30,60,0.12); --input-color: #0F1E3D;
+      --btn-bg:       #0F1E3D; --btn-color: #FFFFFF; --btn-hover: #1a3160;
+      --card-bg:      #FFFFFF; --card-shadow: 0 2px 16px rgba(15,30,60,0.06);
+      --label-color:  rgba(15,30,60,0.55); --divider: rgba(15,30,60,0.08);
+      --stat-bg:      #FFFFFF;
+    }
+    [data-theme="dark"] {
+      --page-bg:      #070f28;
+      --nav-bg:       rgba(7,15,40,0.92); --nav-border: rgba(255,255,255,0.06); --nav-shadow: rgba(0,0,0,0.45);
+      --grid-color:   rgba(255,255,255,0.04);
+      --radial-1:     rgba(245,158,11,0.09); --radial-2: rgba(20,55,210,0.15);
+      --blob-a:       rgba(245,158,11,0.10); --blob-b: rgba(25,70,220,0.13);
+      --vignette:     rgba(5,8,18,0.55);
+      --text-main:    #FFFFFF; --text-muted: #8899bb;
+      --border:       rgba(255,255,255,0.08);
+      --logo-color:   #FFFFFF; --h1-color: #FFFFFF;
+      --input-bg:     rgba(255,255,255,0.06); --input-border: rgba(255,255,255,0.12); --input-color: #FFFFFF;
+      --btn-bg:       #F59E0B; --btn-color: #050a18; --btn-hover: #FCD34D;
+      --card-bg:      rgba(255,255,255,0.03); --card-shadow: 0 2px 16px rgba(0,0,0,0.25);
+      --label-color:  rgba(255,255,255,0.45); --divider: rgba(255,255,255,0.08);
+      --stat-bg:      rgba(255,255,255,0.03);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--page-bg); color: var(--text-main); overflow-x: hidden; min-height: 100vh; transition: background 0.4s, color 0.4s; }
+
+    /* BG */
+    .page-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: var(--page-bg); transition: background 0.4s; }
+    .page-grid { position: absolute; inset: 0; background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px); background-size: 55px 55px; mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 100%); }
+    .page-radial { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 45% at 12% 12%, var(--radial-1) 0%, transparent 62%), radial-gradient(ellipse 40% 40% at 90% 80%, var(--radial-2) 0%, transparent 60%); }
+    .blob-amber { position: absolute; top: -8%; left: 2%; width: 500px; height: 400px; background: var(--blob-a); border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; filter: blur(100px); animation: morph-a 14s ease-in-out infinite; }
+    .blob-blue  { position: absolute; bottom: -10%; right: 0; width: 520px; height: 420px; background: var(--blob-b); border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; filter: blur(120px); animation: morph-b 18s ease-in-out infinite; }
+    .page-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 85% 70% at 50% 35%, transparent 50%, var(--vignette) 100%); }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--nav-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--nav-border); transition: box-shadow 0.3s, background 0.4s; }
+    nav.scrolled { box-shadow: 0 2px 28px var(--nav-shadow); }
+    .logo { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 700; color: var(--logo-color); letter-spacing: -0.02em; text-decoration: none; flex-shrink: 0; transition: color 0.4s; }
+    .logo span { color: var(--amber); }
+
+    .nav-links { display: flex; align-items: center; gap: 0.25rem; flex: 1; justify-content: center; }
+    .nav-link { display: flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 8px; font-size: 0.88rem; font-weight: 500; color: var(--text-muted); background: transparent; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s, color 0.2s; white-space: nowrap; }
+    .nav-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .nav-link:hover { background: rgba(232,146,10,0.08); color: var(--text-main); }
+    .nav-link.active { background: rgba(232,146,10,0.10); color: var(--amber); }
+
+    .nav-right { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .theme-toggle { display: flex; align-items: center; gap: 0.4rem; background: var(--input-bg); border: 1px solid var(--nav-border); border-radius: 100px; padding: 0.3rem 0.75rem; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); transition: all 0.3s; white-space: nowrap; }
+    .theme-toggle:hover { border-color: var(--amber); color: var(--text-main); }
+    .theme-toggle svg { width: 14px; height: 14px; flex-shrink: 0; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+    .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem; color: #fff; flex-shrink: 0; }
+    .nav-name { font-size: 0.88rem; font-weight: 500; color: var(--text-main); }
+    .logout-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.4rem 0.9rem; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+    .logout-btn:hover { border-color: #DC2626; color: #DC2626; }
+
+    /* ROLE SWITCHER */
+    .role-bar { display: flex; align-items: center; justify-content: center; padding: 1rem 0 0; }
+    .role-switcher { display: flex; background: var(--stat-bg); border: 1px solid var(--border); border-radius: 12px; padding: 4px; gap: 2px; }
+    .role-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 1.5rem; border-radius: 9px; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; color: var(--text-muted); background: transparent; transition: all 0.2s; }
+    .role-btn svg { width: 16px; height: 16px; }
+    .role-btn.active { background: var(--btn-bg); color: var(--btn-color); }
+    .role-btn.add { color: var(--amber); border: 1px dashed rgba(232,146,10,0.4); background: rgba(232,146,10,0.05); padding: 0.55rem 1.2rem; }
+    .role-btn.add:hover { background: rgba(232,146,10,0.12); }
+
+    /* MAIN */
+    .dashboard { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 4.5rem 2rem 4rem; }
+
+    /* PROFILE BAR */
+    .profile-bar { display: flex; align-items: center; gap: 1.25rem; padding: 1.25rem 1.75rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 1.75rem; }
+    .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: #fff; flex-shrink: 0; }
+    .profile-name { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; color: var(--h1-color); }
+    .profile-role { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); background: rgba(232,146,10,0.1); border: 1px solid rgba(232,146,10,0.2); padding: 0.15rem 0.6rem; border-radius: 100px; margin-top: 0.2rem; }
+    .profile-email { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+    /* PAGE HEADER */
+    .page-header { margin-bottom: 1.5rem; }
+    .page-header h1 { font-family: 'Fraunces', serif; font-size: 1.75rem; font-weight: 700; color: var(--h1-color); letter-spacing: -0.02em; margin-bottom: 0.2rem; }
+    .page-header p { font-size: 0.9rem; color: var(--text-muted); }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--stat-bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; box-shadow: var(--card-shadow); }
+    .stat-label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+    .stat-value { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: var(--h1-color); line-height: 1; }
+    .stat-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
+
+    /* CARDS */
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; box-shadow: var(--card-shadow); margin-bottom: 1.5rem; }
+    .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .card-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--h1-color); }
+    .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 100px; }
+    .status-badge.pending { background: rgba(232,146,10,0.1); color: var(--amber); border: 1px solid rgba(232,146,10,0.2); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.25rem; }
+    .detail-label { font-size: 0.73rem; font-weight: 500; color: var(--label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+    .detail-value { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
+    .card-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--divider); flex-wrap: wrap; }
+    .btn-primary { background: var(--btn-bg); color: var(--btn-color); border: none; padding: 0.7rem 1.4rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+    .btn-primary:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--border); padding: 0.7rem 1.4rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* BOLIGER GRID */
+    .boliger-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .bolig-listing { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.2s, box-shadow 0.2s; }
+    .bolig-listing:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(232,146,10,0.10); }
+    .bolig-img { width: 100%; height: 160px; background: linear-gradient(135deg, rgba(232,146,10,0.15), rgba(20,55,210,0.08)); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .bolig-body { padding: 1.25rem; }
+    .bolig-type { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--amber); margin-bottom: 0.4rem; }
+    .bolig-adresse { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600; color: var(--h1-color); margin-bottom: 0.4rem; line-height: 1.3; }
+    .bolig-pris { font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.75rem; }
+    .bolig-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--divider); }
+    .bolig-fee { font-size: 0.75rem; color: var(--text-muted); }
+    .contact-btn { background: var(--btn-bg); color: var(--btn-color); border: none; padding: 0.45rem 1rem; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .contact-btn:hover { background: var(--btn-hover); }
+
+    /* SECTION TITLE */
+    .section-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--h1-color); margin-bottom: 1rem; }
+
+    /* EMPTY STATE */
+    .empty-state { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; box-shadow: var(--card-shadow); }
+    .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .empty-state h3 { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; color: var(--h1-color); margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
+    /* ADD ROLE CARD */
+    .add-role-card { background: var(--card-bg); border: 2px dashed rgba(232,146,10,0.3); border-radius: 16px; padding: 2.5rem; text-align: center; box-shadow: var(--card-shadow); margin-bottom: 1.5rem; }
+    .add-role-card h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600; color: var(--h1-color); margin-bottom: 0.5rem; }
+    .add-role-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+
+    /* PANELS */
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .role-view { display: none; }
+    .role-view.active { display: block; }
+
+    /* LOADING */
+    .loading { display: flex; align-items: center; justify-content: center; min-height: 80vh; position: relative; z-index: 1; }
+    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+    /* ADD ROLE FORM */
+    .add-role-form { display: none; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; box-shadow: var(--card-shadow); margin-bottom: 1.5rem; }
+    .add-role-form.open { display: block; }
+    .field { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
+    .field label { font-size: 0.82rem; font-weight: 500; color: var(--label-color); }
+    .field input, .field select { padding: 0.85rem 1.1rem; border-radius: 10px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--input-color); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; }
+    .field input::placeholder { color: rgba(15,30,60,0.35); }
+    [data-theme="dark"] .field input::placeholder { color: rgba(255,255,255,0.35); }
+    .field input:focus, .field select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(232,146,10,0.12); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ADDRESS AUTOCOMPLETE */
+    .address-wrap { position: relative; }
+    .address-suggestions { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 24px rgba(15,30,60,0.12); z-index: 200; overflow: hidden; display: none; backdrop-filter: blur(12px); }
+    .address-suggestions.open { display: block; }
+    .suggestion-item { padding: 0.75rem 1.1rem; font-size: 0.9rem; color: var(--input-color); cursor: pointer; border-bottom: 1px solid var(--divider); transition: background 0.15s; display: flex; align-items: center; gap: 0.6rem; }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover { background: rgba(232,146,10,0.07); }
+    .suggestion-item svg { width: 14px; height: 14px; color: var(--amber); flex-shrink: 0; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { gap: 0; }
+      .nav-link span { display: none; }
+      .nav-link { padding: 0.45rem 0.6rem; }
+      .toggle-label { display: none; }
+      .theme-toggle { padding: 0.3rem 0.5rem; }
+      .nav-name { display: none; }
+      .nav-right { gap: 0.4rem; }
+      .dashboard { padding: 5rem 1.25rem 3rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .role-btn span { display: none; }
+      .role-btn { padding: 0.55rem 0.8rem; }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(7,15,40,0.55); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; box-shadow: 0 24px 80px rgba(0,0,0,0.25); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; animation: fadeDown 0.25s ease both; }
+    .modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; }
+    .modal-title { font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 700; color: var(--h1-color); line-height: 1.2; }
+    .modal-title em { font-style: italic; color: var(--amber); }
+    .modal-close { background: transparent; border: 1px solid var(--border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+    .modal-close:hover { border-color: #DC2626; color: #DC2626; }
+    .modal-divider { height: 1px; background: var(--divider); margin: 1.25rem 0; }
+    .modal-error { background: rgba(220,38,38,0.08); border: 1px solid rgba(220,38,38,0.25); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.88rem; color: #DC2626; margin-bottom: 1rem; display: none; }
+
+    /* HEART / FAVORITTER */
+    .heart-btn { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); cursor: pointer; padding: 0.4rem; display: flex; align-items: center; justify-content: center; border-radius: 7px; transition: all 0.2s; flex-shrink: 0; }
+    .heart-btn:hover { background: rgba(239,68,68,0.16); border-color: #ef4444; transform: scale(1.08); }
+    .heart-btn svg { width: 18px; height: 18px; transition: fill 0.2s, stroke 0.2s; }
+    .heart-btn.active { background: #ef4444; border-color: #ef4444; }
+    .heart-btn.active svg { fill: #fff; stroke: #fff; }
+    .heart-btn:not(.active) svg { fill: rgba(239,68,68,0.1); stroke: #ef4444; }
+    .listing-heart-btn { background: rgba(239,68,68,0.07); border: 1.5px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 0.65rem 1.2rem; display: flex; align-items: center; gap: 0.55rem; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: #ef4444; transition: all 0.2s; }
+    .listing-heart-btn:hover { background: rgba(239,68,68,0.13); border-color: #ef4444; transform: translateY(-1px); }
+    .listing-heart-btn.active { background: #ef4444; border-color: #ef4444; color: #fff; }
+    .listing-heart-btn.active:hover { background: #dc2626; border-color: #dc2626; }
+    .listing-heart-btn svg { width: 18px; height: 18px; transition: fill 0.2s; flex-shrink: 0; }
+    .listing-heart-btn.active svg { fill: #fff; stroke: #fff; }
+    .listing-heart-btn:not(.active) svg { fill: rgba(239,68,68,0.15); stroke: #ef4444; }
+
+    /* INTERESSEREDE KORT */
+    .int-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: 1rem; box-shadow: var(--card-shadow); margin-bottom: 0.75rem; }
+    .int-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.88rem; color: #fff; flex-shrink: 0; }
+    .int-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .int-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .int-badge { margin-left: auto; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 600; color: #ef4444; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); padding: 0.25rem 0.65rem; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+    .int-badge svg { width: 11px; height: 11px; fill: #ef4444; stroke: #ef4444; }
+
+    /* LISTING VIEW */
+    .listing-overlay { position: fixed; inset: 0; z-index: 550; display: none; background: var(--page-bg); overflow-y: auto; animation: fadeIn 0.2s ease both; }
+    .listing-overlay.open { display: block; }
+    .listing-nav { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 60px; background: var(--nav-bg); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .listing-back { display: flex; align-items: center; gap: 0.5rem; background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.4rem 0.9rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .listing-back:hover { border-color: var(--amber); color: var(--amber); }
+    .listing-back svg { width: 14px; height: 14px; }
+    .listing-body { max-width: 760px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+    .listing-hero { width: 100%; height: 280px; border-radius: 16px; background: linear-gradient(135deg, rgba(232,146,10,0.12), rgba(20,55,210,0.07)); display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; overflow: hidden; }
+    .listing-hero svg { width: 72px; height: 72px; color: var(--amber); opacity: 0.45; }
+    .listing-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .listing-address { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--h1-color); line-height: 1.2; letter-spacing: -0.02em; }
+    .listing-type-tag { display: inline-flex; align-items: center; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); background: rgba(232,146,10,0.1); border: 1px solid rgba(232,146,10,0.2); padding: 0.3rem 0.8rem; border-radius: 100px; margin-top: 0.5rem; white-space: nowrap; }
+    .listing-price-block { text-align: right; flex-shrink: 0; }
+    .listing-price { font-family: 'Fraunces', serif; font-size: 1.85rem; font-weight: 700; color: var(--h1-color); line-height: 1; }
+    .listing-price-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .listing-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.75rem; margin-bottom: 2rem; }
+    .listing-stat { background: var(--stat-bg); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; text-align: center; }
+    .listing-stat-val { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; color: var(--h1-color); line-height: 1; margin-bottom: 0.25rem; }
+    .listing-stat-lbl { font-size: 0.7rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .listing-section-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--h1-color); margin-bottom: 0.85rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--divider); }
+    .listing-details-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.85rem; margin-bottom: 2rem; }
+    .listing-detail { background: var(--stat-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; }
+    .listing-detail-lbl { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--label-color); margin-bottom: 0.3rem; }
+    .listing-detail-val { font-size: 0.92rem; font-weight: 600; color: var(--text-main); }
+    .listing-description { font-size: 0.92rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 2rem; white-space: pre-wrap; }
+    .listing-contact-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .listing-seller-info { display: flex; align-items: center; gap: 1rem; }
+    .listing-seller-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; color: #fff; flex-shrink: 0; }
+    .listing-seller-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .listing-seller-role { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .listing-contact-btn { background: var(--btn-bg); color: var(--btn-color); border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+    .listing-contact-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .energy-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; font-weight: 800; font-size: 0.88rem; }
+    .energy-A { background: #dcfce7; color: #15803d; } .energy-B { background: #d9f99d; color: #3f6212; }
+    .energy-C { background: #fef9c3; color: #854d0e; } .energy-D { background: #ffedd5; color: #9a3412; }
+    .energy-E { background: #fee2e2; color: #b91c1c; } .energy-F { background: #fecaca; color: #991b1b; }
+    .energy-G { background: #fca5a5; color: #7f1d1d; }
+    [data-theme="dark"] .energy-A { background: rgba(22,163,74,0.2); color: #4ade80; } [data-theme="dark"] .energy-B { background: rgba(101,163,13,0.2); color: #a3e635; }
+    [data-theme="dark"] .energy-C { background: rgba(202,138,4,0.2); color: #fbbf24; } [data-theme="dark"] .energy-D { background: rgba(217,119,6,0.2); color: #fb923c; }
+    [data-theme="dark"] .energy-E { background: rgba(234,88,12,0.2); color: #f97316; } [data-theme="dark"] .energy-F { background: rgba(220,38,38,0.2); color: #f87171; }
+    [data-theme="dark"] .energy-G { background: rgba(185,28,28,0.2); color: #fca5a5; }
+    @media (max-width: 600px) { .listing-body { padding: 1.5rem 1.25rem 4rem; } .listing-hero { height: 200px; } .listing-address { font-size: 1.3rem; } .listing-price { font-size: 1.4rem; } .listing-top { flex-direction: column; } .listing-price-block { text-align: left; } }
+
+    /* EDIT PANEL */
+    .edit-overlay { position: fixed; inset: 0; z-index: 600; display: none; }
+    .edit-overlay.open { display: block; }
+    .edit-backdrop { position: absolute; inset: 0; background: rgba(7,15,40,0.5); backdrop-filter: blur(5px); animation: fadeIn 0.2s ease both; }
+    .edit-panel { position: absolute; top: 0; right: 0; bottom: 0; width: 100%; max-width: 560px; background: var(--page-bg); border-left: 1px solid var(--border); box-shadow: -24px 0 80px rgba(0,0,0,0.2); display: flex; flex-direction: column; animation: slideInRight 0.28s cubic-bezier(0.22,1,0.36,1) both; overflow: hidden; }
+    .edit-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .edit-panel-title { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: var(--h1-color); }
+    .edit-panel-title em { font-style: italic; color: var(--amber); }
+    .edit-panel-close { background: transparent; border: 1px solid var(--border); color: var(--text-muted); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+    .edit-panel-close:hover { border-color: #DC2626; color: #DC2626; }
+    .edit-panel-body { flex: 1; overflow-y: auto; padding: 1.75rem 2rem; }
+    .edit-panel-footer { padding: 1.25rem 2rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; flex-shrink: 0; background: var(--page-bg); }
+    .edit-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); margin: 1.5rem 0 0.85rem; }
+    .edit-section-label:first-child { margin-top: 0; }
+    .edit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    .edit-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.85rem; }
+    .edit-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .edit-field label { font-size: 0.8rem; font-weight: 500; color: var(--label-color); }
+    .edit-field input, .edit-field select, .edit-field textarea { padding: 0.75rem 1rem; border-radius: 9px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--input-color); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
+    .edit-field input::placeholder, .edit-field textarea::placeholder { color: rgba(15,30,60,0.35); }
+    [data-theme="dark"] .edit-field input::placeholder, [data-theme="dark"] .edit-field textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .edit-field input:focus, .edit-field select:focus, .edit-field textarea:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(232,146,10,0.12); }
+    .edit-field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+    .edit-field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.85rem center; background-size: 16px; padding-right: 2.5rem; }
+    .edit-save-btn { flex: 1; background: var(--btn-bg); color: var(--btn-color); border: none; padding: 0.8rem 1.4rem; border-radius: 9px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+    .edit-save-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .edit-save-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .edit-cancel-btn { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 0.8rem 1.2rem; border-radius: 9px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .edit-cancel-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .edit-success-banner { display: none; align-items: center; gap: 0.6rem; background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.25); border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.85rem; color: #16A34A; margin-bottom: 1rem; }
+    .edit-success-banner svg { width: 16px; height: 16px; flex-shrink: 0; }
+    .edit-success-banner.show { display: flex; }
+    .energy-btns { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .energy-btn { padding: 0.45rem 0.8rem; border-radius: 7px; border: 1px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.15s; color: var(--text-muted); }
+    .energy-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .energy-btn.selected { background: var(--btn-bg); color: var(--btn-color); border-color: transparent; }
+    [data-theme="dark"] .energy-btn.selected { background: var(--amber); color: #050a18; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @media (max-width: 600px) { .edit-panel { max-width: 100%; border-left: none; } .edit-grid-2, .edit-grid-3 { grid-template-columns: 1fr; } }
+
+    /* CONTACT MODAL */
+    .cm-img { width: 100%; height: 180px; border-radius: 12px; background: linear-gradient(135deg, rgba(232,146,10,0.13), rgba(20,55,210,0.08)); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; }
+    .cm-img svg { width: 56px; height: 56px; color: var(--amber); opacity: 0.6; }
+    .cm-info-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.85rem; flex-wrap: wrap; }
+    .cm-info-item { flex: 1; min-width: 120px; }
+    .cm-info-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--label-color); margin-bottom: 0.25rem; }
+    .cm-info-value { font-size: 0.95rem; font-weight: 600; color: var(--text-main); }
+    .cm-price { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; color: var(--h1-color); margin-bottom: 0.2rem; line-height: 1.1; }
+    .cm-price-label { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1.25rem; }
+    .cm-seller-card { display: flex; align-items: center; gap: 1rem; background: rgba(232,146,10,0.06); border: 1px solid rgba(232,146,10,0.15); border-radius: 12px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+    .cm-seller-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-light)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: #fff; flex-shrink: 0; }
+    .cm-seller-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); }
+    .cm-verified { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 600; color: #16A34A; background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2); border-radius: 100px; padding: 0.15rem 0.55rem; margin-top: 0.25rem; }
+    .cm-verified svg { width: 11px; height: 11px; }
+    .cm-contact-list { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem; }
+    .cm-contact-item { display: flex; align-items: center; gap: 0.75rem; }
+    .cm-contact-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--stat-bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cm-contact-icon svg { width: 14px; height: 14px; color: var(--amber); }
+    .cm-contact-text { font-size: 0.9rem; color: var(--text-main); font-weight: 500; }
+    .cm-actions { display: flex; gap: 0.75rem; }
+    .cm-actions a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .cm-btn-call { background: var(--btn-bg); color: var(--btn-color); }
+    .cm-btn-call:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .cm-btn-mail { background: transparent; color: var(--text-main); border: 1px solid var(--border) !important; }
+    .cm-btn-mail:hover { border-color: var(--amber) !important; color: var(--amber); }
+    .cm-actions a svg { width: 15px; height: 15px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
+    @keyframes morph-a { 0% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); } 50% { border-radius: 38% 62% 60% 40% / 42% 58% 42% 58%; transform: translate(-15px, 15px) scale(0.97); } 100% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); } }
+    @keyframes morph-b { 0% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); } 50% { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; transform: translate(20px, 15px) scale(0.96); } 100% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); } }
+  </style>
+</head>
+<body>
+
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-radial"></div><div class="blob-amber"></div><div class="blob-blue"></div>
+    <div class="page-grid"></div><div class="page-vignette"></div>
+  </div>
+
+  <nav id="nav">
+    <a class="logo" href="boligdirekte.html">Bolig<span>Direkte</span></a>
+
+    <!-- SÆLGER LINKS -->
+    <div class="nav-links" id="nav-saelger">
+      <button class="nav-link active" onclick="showPanel('saelger','oversigt',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Min bolig</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('saelger','boliger',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Boliger til salg</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('saelger','interesserede',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <span>Interesserede</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('saelger','profil',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Min profil</span>
+      </button>
+    </div>
+
+    <!-- KØBER LINKS -->
+    <div class="nav-links" id="nav-koeber" style="display:none;">
+      <button class="nav-link active" onclick="showPanel('koeber','find',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Find boliger</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('koeber','favoritter',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span>Favoritter</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('koeber','minsogning',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <span>Min søgning</span>
+      </button>
+      <button class="nav-link" onclick="showPanel('koeber','profil',this)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Min profil</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Skift tema">
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span class="toggle-label">Mørk</span>
+      </button>
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span class="nav-name" id="nav-name">—</span>
+      <button class="logout-btn" onclick="logout()">Log ud</button>
+    </div>
+  </nav>
+
+  <div class="loading" id="loading"><div class="spinner"></div></div>
+
+  <div class="dashboard" id="dashboard" style="display:none;">
+
+    <!-- ROLLE SWITCHER -->
+    <div class="role-bar" id="role-bar">
+      <div class="role-switcher" id="role-switcher"></div>
+    </div>
+
+    <!-- PROFIL BAR -->
+    <div class="profile-bar" style="margin-top:1.25rem;">
+      <div class="profile-avatar" id="profile-avatar">?</div>
+      <div>
+        <div class="profile-name" id="profile-name">—</div>
+        <span class="profile-role" id="profile-role-badge">—</span>
+        <div class="profile-email" id="profile-email">—</div>
+      </div>
+    </div>
+
+    <!-- ══════════ SÆLGER VIEW ══════════ -->
+    <div class="role-view active" id="view-saelger">
+
+      <!-- Min bolig -->
+      <div class="panel active" id="sp-oversigt">
+        <div class="page-header">
+          <h1>God dag, <span id="s-greeting" style="color:var(--amber)">—</span> 👋</h1>
+          <p>Her er oversigten over dit boligsalg</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Visninger</div><div class="stat-value" id="stat-visninger">0</div><div class="stat-sub">Siden oprettelse</div></div>
+          <div class="stat-card"><div class="stat-label">Interesserede</div><div class="stat-value" id="stat-interesserede">0</div><div class="stat-sub">Potentielle købere</div></div>
+          <div class="stat-card"><div class="stat-label">Dit fee ved salg</div><div class="stat-value" id="stat-fee">—</div><div class="stat-sub">0,5% af salgspris</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Din bolig</div>
+            <span class="status-badge pending"><span class="status-dot"></span>Afventer publicering</span>
+          </div>
+          <div class="details-grid" id="s-oversigt-grid">
+            <div><div class="detail-label">Adresse</div><div class="detail-value" id="s-adresse">—</div></div>
+            <div><div class="detail-label">Boligtype</div><div class="detail-value" id="s-type">—</div></div>
+            <div><div class="detail-label">Forventet pris</div><div class="detail-value" id="s-pris">—</div></div>
+            <div><div class="detail-label">Telefon</div><div class="detail-value" id="s-telefon">—</div></div>
+          </div>
+          <div id="s-oversigt-extra" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--divider);">
+            <div class="details-grid" id="s-oversigt-extra-grid"></div>
+            <div id="s-oversigt-desc-wrap" style="display:none;margin-top:1rem;">
+              <div class="detail-label" style="margin-bottom:0.4rem;">Beskrivelse</div>
+              <div id="s-oversigt-desc" style="font-size:0.88rem;color:var(--text-muted);line-height:1.7;white-space:pre-wrap;"></div>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-primary" onclick="openEditPanel()">Rediger opslag</button>
+            <button class="btn-secondary">Upload billeder</button>
+            <button class="btn-secondary">Del opslag</button>
+          </div>
+        </div>
+
+        <!-- FOTOGRAFERING CARD -->
+        <div class="card" style="border: 1px solid rgba(232,146,10,0.25); background: linear-gradient(135deg, var(--card-bg) 60%, rgba(232,146,10,0.04) 100%);">
+          <div class="card-header" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div style="width:42px;height:42px;border-radius:10px;background:rgba(232,146,10,0.10);border:1px solid rgba(232,146,10,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div>
+                <div class="card-title" style="margin-bottom:0.1rem;">Professionel boligfotografering</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Tiltræk flere købere med professionelle billeder</div>
+              </div>
+            </div>
+            <span class="status-badge" style="background:rgba(232,146,10,0.08);color:var(--amber);border:1px solid rgba(232,146,10,0.2);white-space:nowrap;">Kommer snart</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Op til 25 professionelle billeder
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Levering inden for 48 timer
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Redigerede og klar til opslag
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Certificeret boligfotograf
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:1.25rem;border-top:1px solid var(--divider);flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">Pris oplyses snart</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Engangsbetaling · Ingen abonnement</div>
+            </div>
+            <button disabled style="background:rgba(232,146,10,0.12);color:var(--amber);border:1px solid rgba(232,146,10,0.25);padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:not-allowed;opacity:0.7;">
+              Bestil fotografering →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Boliger til salg -->
+      <div class="panel" id="sp-boliger">
+        <div class="page-header">
+          <h1>Boliger <em style="font-style:italic;color:var(--amber)">til salg</em></h1>
+          <p>Alle aktive boliger på BoligDirekte</p>
+        </div>
+        <div class="boliger-grid" id="s-boliger-grid"></div>
+      </div>
+
+      <!-- Interesserede -->
+      <div class="panel" id="sp-interesserede">
+        <div class="page-header">
+          <h1>Interesserede <em style="font-style:italic;color:var(--amber)">købere</em></h1>
+          <p>Købere der har gemt din bolig som favorit</p>
+        </div>
+        <div id="interesserede-grid"></div>
+      </div>
+
+      <!-- Profil (sælger) -->
+      <div class="panel" id="sp-profil">
+        <div class="page-header">
+          <h1>Min <em style="font-style:italic;color:var(--amber)">profil</em></h1>
+          <p>Dine personlige oplysninger og boligopslag</p>
+        </div>
+
+        <!-- Personlig info -->
+        <div class="card" style="margin-bottom:1.25rem;">
+          <div class="card-header" style="margin-bottom:1.25rem;">
+            <div class="card-title">Personlige oplysninger</div>
+            <span class="status-badge pending" style="background:rgba(22,163,74,0.08);color:#16A34A;border-color:rgba(22,163,74,0.2);">
+              <span class="status-dot" style="background:#16A34A;"></span>Aktiv sælger
+            </span>
+          </div>
+          <div class="details-grid">
+            <div><div class="detail-label">Navn</div><div class="detail-value" id="sp-navn">—</div></div>
+            <div><div class="detail-label">E-mail</div><div class="detail-value" id="sp-email">—</div></div>
+            <div><div class="detail-label">Telefon</div><div class="detail-value" id="sp-tlf">—</div></div>
+            <div><div class="detail-label">Rolle</div><div class="detail-value">Sælger</div></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-secondary" onclick="logout()">Log ud</button>
+          </div>
+        </div>
+
+        <!-- Boligopslag -->
+        <div class="card">
+          <div class="card-header" style="margin-bottom:1.25rem;">
+            <div class="card-title">Dit boligopslag</div>
+            <button class="btn-primary" style="padding:0.5rem 1.1rem;font-size:0.84rem;" onclick="openEditPanel()">Rediger opslag</button>
+          </div>
+
+          <div class="details-grid" id="sp-opslag-grid">
+            <div style="grid-column:1/-1;color:var(--text-muted);font-size:0.88rem;">Ingen oplysninger endnu — klik "Rediger opslag" for at udfylde.</div>
+          </div>
+
+          <div id="sp-desc-wrap" style="display:none;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--divider);">
+            <div class="detail-label" style="margin-bottom:0.5rem;">Beskrivelse</div>
+            <div id="sp-beskrivelse" style="font-size:0.9rem;color:var(--text-muted);line-height:1.7;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ KØBER VIEW ══════════ -->
+    <div class="role-view" id="view-koeber">
+
+      <!-- Find boliger -->
+      <div class="panel active" id="kp-find">
+        <div class="page-header">
+          <h1>Find din <em style="font-style:italic;color:var(--amber)">næste bolig</em></h1>
+          <p>Alle boliger til salg på BoligDirekte</p>
+        </div>
+        <div class="boliger-grid" id="k-boliger-grid"></div>
+      </div>
+
+      <!-- Favoritter -->
+      <div class="panel" id="kp-favoritter">
+        <div class="page-header">
+          <h1>Mine <em style="font-style:italic;color:var(--amber)">favoritter</em></h1>
+          <p>Boliger du har gemt med hjertet</p>
+        </div>
+        <div id="favoritter-grid" class="boliger-grid"></div>
+      </div>
+
+      <!-- Min søgning -->
+      <div class="panel" id="kp-minsogning">
+        <div class="page-header">
+          <h1>Min <em style="font-style:italic;color:var(--amber)">søgning</em></h1>
+          <p>Dine søgekriterier</p>
+        </div>
+        <div class="card">
+          <div class="details-grid">
+            <div><div class="detail-label">Ønsket område</div><div class="detail-value" id="k-omraade">—</div></div>
+            <div><div class="detail-label">Boligtype</div><div class="detail-value" id="k-type">—</div></div>
+            <div><div class="detail-label">Max budget</div><div class="detail-value" id="k-budget">—</div></div>
+          </div>
+          <div class="card-actions"><button class="btn-primary">Rediger søgning</button></div>
+        </div>
+      </div>
+
+      <!-- Profil (køber) -->
+      <div class="panel" id="kp-profil">
+        <div class="page-header"><h1>Min <em style="font-style:italic;color:var(--amber)">profil</em></h1></div>
+        <div class="card">
+          <div class="details-grid">
+            <div><div class="detail-label">Navn</div><div class="detail-value" id="kp-navn">—</div></div>
+            <div><div class="detail-label">E-mail</div><div class="detail-value" id="kp-email">—</div></div>
+            <div><div class="detail-label">Telefon</div><div class="detail-value" id="kp-tlf">—</div></div>
+            <div><div class="detail-label">Rolle</div><div class="detail-value">Køber</div></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-primary">Rediger profil</button>
+            <button class="btn-secondary" onclick="logout()">Log ud</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dashboard -->
+
+  <!-- MODAL: TILFØJ ROLLE -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">—</div>
+        <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      </div>
+      <div class="modal-error" id="modal-error"></div>
+
+      <!-- BLIV KØBER FORM -->
+      <div id="modal-koeber-form">
+        <div class="field">
+          <label>Ønsket område</label>
+          <input type="text" id="m-omraade" placeholder="f.eks. Odense, Fyn eller hele Danmark" />
+        </div>
+        <div class="form-row-2">
+          <div class="field">
+            <label>Boligtype</label>
+            <select id="m-btype">
+              <option value="">Vælg type</option>
+              <option>Villa</option><option>Rækkehus</option><option>Lejlighed</option><option>Fritidshus</option><option>Ligegyldigt</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Maksimalt budget</label>
+            <input type="text" id="m-budget" placeholder="f.eks. 3.000.000 kr." />
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;padding:1rem;font-size:1rem;" onclick="submitAddRole('koeber')">Opret mig som køber →</button>
+      </div>
+
+      <!-- BLIV SÆLGER FORM -->
+      <div id="modal-saelger-form" style="display:none;">
+        <div class="field">
+          <label>Boligens adresse</label>
+          <div class="address-wrap">
+            <input type="text" id="m-adresse" placeholder="Eksempelvej 12, 5000 Odense" autocomplete="off" />
+            <div class="address-suggestions" id="m-adresse-suggestions"></div>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="field">
+            <label>Boligtype</label>
+            <select id="m-stype">
+              <option value="">Vælg type</option>
+              <option>Villa</option><option>Rækkehus</option><option>Lejlighed</option><option>Fritidshus</option><option>Andet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Forventet salgspris</label>
+            <input type="text" id="m-pris" placeholder="f.eks. 2.500.000 kr." />
+          </div>
+        </div>
+        <div style="background:rgba(15,30,60,0.04);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin-bottom:0.85rem;font-size:0.8rem;color:var(--text-muted);line-height:1.65;">
+          <strong style="color:var(--text-main);">Formidlingsaftale</strong><br>
+          BoligDirekte formidler kontakt mellem sælger og køber. Ved oprettelse accepterer du, at BoligDirekte modtager et honorar på <strong style="color:var(--text-main);">0,5% af den endelige salgspris</strong>, hvis boligen sælges til en køber der er kommet i kontakt med dig via platformen. Honoraret forfalder ved underskrift af købsaftale. Aftalen er gældende i <strong style="color:var(--text-main);">12 måneder</strong> fra første registrerede kontakt.
+        </div>
+        <label id="ms-terms-label" style="display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:1rem;cursor:pointer;padding:0.75rem 1rem;border-radius:10px;border:1px solid var(--border);transition:border-color 0.2s,background 0.2s;">
+          <input type="checkbox" id="ms-terms" style="width:17px;height:17px;accent-color:var(--amber);margin-top:2px;flex-shrink:0;cursor:pointer;" />
+          <span style="font-size:0.84rem;color:var(--text-main);line-height:1.5;">Jeg har læst og accepterer ovenstående formidlingsaftale, herunder at betale <strong>0,5% af salgsprisen</strong> til BoligDirekte ved salg via platformen.</span>
+        </label>
+        <button class="btn-primary" style="width:100%;padding:1rem;font-size:1rem;" onclick="submitAddRole('saelger')">Opret mig som sælger →</button>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="modal-success" style="display:none;text-align:center;padding:1.5rem 0;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">✓</div>
+        <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:var(--h1-color);margin-bottom:0.5rem;" id="modal-success-title">Rolle tilføjet!</div>
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1.5rem;" id="modal-success-text">—</p>
+        <button class="btn-primary" style="padding:0.8rem 2rem;" onclick="closeModalDirect();location.reload()">Gå til mit dashboard →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTING VIEW -->
+  <div class="listing-overlay" id="listing-overlay">
+    <div class="listing-nav">
+      <button class="listing-back" onclick="closeListing()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Tilbage til boliger
+      </button>
+      <div style="font-size:0.82rem;color:var(--text-muted);font-weight:500;" id="listing-nav-label">—</div>
+    </div>
+    <div class="listing-body">
+      <!-- Hero billede -->
+      <div class="listing-hero">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+
+      <!-- Titel + pris -->
+      <div class="listing-top">
+        <div>
+          <div class="listing-address" id="lv-adresse">—</div>
+          <span class="listing-type-tag" id="lv-type">—</span>
+        </div>
+        <div class="listing-price-block">
+          <div class="listing-price" id="lv-pris">—</div>
+          <div class="listing-price-sub">Forventet salgspris</div>
+        </div>
+      </div>
+
+      <!-- Hjerte + visninger -->
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <button class="listing-heart-btn" id="listing-heart-btn" onclick="toggleFavorit(window._currentListingUID, this)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span id="listing-heart-label">Gem som favorit</span>
+        </button>
+        <span id="lv-visninger" style="display:none;font-size:0.8rem;color:var(--text-muted);display:flex;align-items:center;gap:0.35rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="lv-visninger-tal">0</span> visninger
+        </span>
+      </div>
+
+      <!-- Nøgletal -->
+      <div class="listing-stats" id="lv-stats"></div>
+
+      <!-- Detaljer -->
+      <div id="lv-details-section">
+        <div class="listing-section-title">Boligdetaljer</div>
+        <div class="listing-details-grid" id="lv-details-grid"></div>
+      </div>
+
+      <!-- Beskrivelse -->
+      <div id="lv-desc-section" style="display:none;">
+        <div class="listing-section-title">Om boligen</div>
+        <div class="listing-description" id="lv-beskrivelse"></div>
+      </div>
+
+      <!-- Kontakt sælger -->
+      <div class="listing-section-title">Sælger</div>
+      <div class="listing-contact-card">
+        <div class="listing-seller-info">
+          <div class="listing-seller-avatar" id="lv-avatar">?</div>
+          <div>
+            <div class="listing-seller-name" id="lv-seller-name">—</div>
+            <div class="listing-seller-role">
+              <span style="display:inline-flex;align-items:center;gap:0.3rem;font-size:0.72rem;font-weight:600;color:#16A34A;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;"><polyline points="20 6 9 17 4 12"/></svg>
+                MitID verificeret sælger
+              </span>
+            </div>
+          </div>
+        </div>
+        <button class="listing-contact-btn" id="lv-contact-btn" onclick="">Kontakt sælger</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT OPSLAG PANEL -->
+  <div class="edit-overlay" id="edit-overlay">
+    <div class="edit-backdrop" onclick="closeEditPanel()"></div>
+    <div class="edit-panel">
+      <div class="edit-panel-head">
+        <div>
+          <div class="edit-panel-title">Rediger <em>opslag</em></div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.15rem;">Ændringer gemmes direkte til din profil</div>
+        </div>
+        <button class="edit-panel-close" onclick="closeEditPanel()">✕</button>
+      </div>
+      <div class="edit-panel-body">
+        <div class="edit-success-banner" id="edit-success-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Opslaget er gemt!
+        </div>
+        <div id="edit-error-banner" style="display:none;align-items:center;gap:0.6rem;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);border-radius:8px;padding:0.7rem 1rem;font-size:0.85rem;color:#DC2626;margin-bottom:1rem;"></div>
+
+        <!-- Boligoplysninger -->
+        <div class="edit-section-label">Boligoplysninger</div>
+        <div class="edit-field" style="margin-bottom:0.85rem;">
+          <label>Adresse</label>
+          <div class="address-wrap">
+            <input type="text" id="e-adresse" placeholder="Eksempelvej 12, 5000 Odense" autocomplete="off" />
+            <div class="address-suggestions" id="e-adresse-suggestions"></div>
+          </div>
+        </div>
+        <div class="edit-grid-2" style="margin-bottom:0.85rem;">
+          <div class="edit-field">
+            <label>Boligtype</label>
+            <select id="e-boligtype">
+              <option value="">Vælg type</option>
+              <option>Villa</option>
+              <option>Rækkehus</option>
+              <option>Lejlighed</option>
+              <option>Fritidshus</option>
+              <option>Andet</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label>Forventet salgspris</label>
+            <input type="text" id="e-salgspris" placeholder="f.eks. 2.500.000 kr." />
+          </div>
+        </div>
+
+        <!-- Detaljer -->
+        <div class="edit-section-label">Detaljer</div>
+        <div class="edit-grid-3" style="margin-bottom:0.85rem;">
+          <div class="edit-field">
+            <label>Boligareal (m²)</label>
+            <input type="number" id="e-areal" placeholder="f.eks. 120" min="0" />
+          </div>
+          <div class="edit-field">
+            <label>Grundareal (m²)</label>
+            <input type="number" id="e-grundareal" placeholder="f.eks. 450" min="0" />
+          </div>
+          <div class="edit-field">
+            <label>Antal rum</label>
+            <input type="number" id="e-rum" placeholder="f.eks. 5" min="1" />
+          </div>
+        </div>
+        <div class="edit-grid-2" style="margin-bottom:0.85rem;">
+          <div class="edit-field">
+            <label>Byggeår</label>
+            <input type="number" id="e-byggeaar" placeholder="f.eks. 1987" min="1800" max="2025" />
+          </div>
+          <div class="edit-field">
+            <label>Antal etager</label>
+            <input type="number" id="e-etager" placeholder="f.eks. 2" min="1" />
+          </div>
+        </div>
+        <div class="edit-grid-2" style="margin-bottom:0.85rem;">
+          <div class="edit-field">
+            <label>Altan / Terrasse</label>
+            <select id="e-altan">
+              <option value="">Ikke oplyst</option>
+              <option value="altan">Altan</option>
+              <option value="terrasse">Terrasse</option>
+              <option value="begge">Altan og terrasse</option>
+              <option value="ingen">Ingen</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label>Husdyr tilladt</label>
+            <select id="e-husdyr">
+              <option value="">Ikke oplyst</option>
+              <option value="ja">Ja</option>
+              <option value="nej">Nej</option>
+              <option value="efter_aftale">Efter aftale</option>
+              <option value="regler">Husordensregler gælder</option>
+            </select>
+          </div>
+        </div>
+        <div class="edit-field" style="margin-bottom:0.85rem;">
+          <label style="display:flex;align-items:center;gap:0.4rem;">
+            Energimærke
+            <span title="Det officielle energimærke fra 1851-ordningen. A er bedst (lavt varmeforbrug), G er dårligst. Findes på din BBR-meddelelse eller på ois.dk." style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:rgba(100,116,139,0.15);color:var(--text-muted);font-size:0.68rem;font-weight:700;cursor:help;flex-shrink:0;">?</span>
+          </label>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;">Officiel energiklasse fra A (bedst) til G (dårligst) — se din BBR-meddelelse</div>
+          <div class="energy-btns" id="e-energi-btns">
+            <button type="button" class="energy-btn" data-val="A" onclick="selectEnergy(this)" style="color:#16a34a;border-color:rgba(22,163,74,0.3);">A</button>
+            <button type="button" class="energy-btn" data-val="B" onclick="selectEnergy(this)" style="color:#65a30d;border-color:rgba(101,163,13,0.3);">B</button>
+            <button type="button" class="energy-btn" data-val="C" onclick="selectEnergy(this)" style="color:#ca8a04;border-color:rgba(202,138,4,0.3);">C</button>
+            <button type="button" class="energy-btn" data-val="D" onclick="selectEnergy(this)" style="color:#d97706;border-color:rgba(217,119,6,0.3);">D</button>
+            <button type="button" class="energy-btn" data-val="E" onclick="selectEnergy(this)" style="color:#ea580c;border-color:rgba(234,88,12,0.3);">E</button>
+            <button type="button" class="energy-btn" data-val="F" onclick="selectEnergy(this)" style="color:#dc2626;border-color:rgba(220,38,38,0.3);">F</button>
+            <button type="button" class="energy-btn" data-val="G" onclick="selectEnergy(this)" style="color:#b91c1c;border-color:rgba(185,28,28,0.3);">G</button>
+            <button type="button" class="energy-btn" data-val="" onclick="selectEnergy(this)">Ved ikke</button>
+          </div>
+        </div>
+
+        <!-- Beskrivelse -->
+        <div class="edit-section-label">Beskrivelse</div>
+        <div class="edit-field" style="margin-bottom:0.85rem;">
+          <label>Boligbeskrivelse</label>
+          <textarea id="e-beskrivelse" placeholder="Beskriv boligen — beliggenhed, stand, særlige forhold, nærliggende skoler og faciliteter…"></textarea>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="edit-section-label">Kontaktoplysninger</div>
+        <div class="edit-grid-2">
+          <div class="edit-field">
+            <label>Telefonnummer</label>
+            <input type="tel" id="e-telefon" placeholder="+45 12 34 56 78" />
+          </div>
+          <div class="edit-field">
+            <label>Foretrukken kontakt</label>
+            <select id="e-kontaktmetode">
+              <option value="">Vælg</option>
+              <option>Telefon</option>
+              <option>SMS</option>
+              <option>E-mail</option>
+              <option>Alle</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="edit-panel-footer">
+        <button class="edit-cancel-btn" id="edit-cancel-btn">Annuller</button>
+        <button class="edit-save-btn" id="edit-save-btn">Gem ændringer →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT MODAL -->
+  <div class="modal-overlay" id="contact-modal-overlay" onclick="closeContactModal(event)">
+    <div class="modal" id="contact-modal" style="max-width:520px;">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="cm-title">—</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.25rem;" id="cm-subtitle">—</div>
+        </div>
+        <button class="modal-close" onclick="document.getElementById('contact-modal-overlay').classList.remove('open')">✕</button>
+      </div>
+
+      <!-- Property image -->
+      <div class="cm-img">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+
+      <!-- Price -->
+      <div class="cm-price" id="cm-price">—</div>
+      <div class="cm-price-label">Forventet salgspris</div>
+
+      <!-- Info row -->
+      <div class="cm-info-row">
+        <div class="cm-info-item">
+          <div class="cm-info-label">Boligtype</div>
+          <div class="cm-info-value" id="cm-type">—</div>
+        </div>
+        <div class="cm-info-item">
+          <div class="cm-info-label">Fee ved salg</div>
+          <div class="cm-info-value" id="cm-fee">—</div>
+        </div>
+      </div>
+
+      <div style="height:1px;background:var(--divider);margin:0.5rem 0 1.25rem;"></div>
+
+      <!-- Seller card -->
+      <div class="cm-seller-card">
+        <div class="cm-seller-avatar" id="cm-avatar">?</div>
+        <div>
+          <div class="cm-seller-name" id="cm-seller-name">—</div>
+          <div class="cm-verified">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            MitID verificeret
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact details -->
+      <div class="cm-contact-list">
+        <div class="cm-contact-item">
+          <div class="cm-contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8 8.09a16 16 0 0 0 5.91 5.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="cm-contact-text" id="cm-phone">—</div>
+        </div>
+        <div class="cm-contact-item">
+          <div class="cm-contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="cm-contact-text" id="cm-email">—</div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="cm-actions">
+        <a class="cm-btn-call" id="cm-call-link" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.56 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8 8.09a16 16 0 0 0 5.91 5.91l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Ring op
+        </a>
+        <a class="cm-btn-mail" id="cm-mail-link" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Send e-mail
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp }                    from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, getDocs, collection, setDoc, updateDoc, deleteDoc, query, where, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+    const app  = initializeApp({ apiKey:"AIzaSyAH0mxBKo3iFUyB5ZKnTvdYEneXPyuvu5I", authDomain:"boligside-3dbfa.firebaseapp.com", projectId:"boligside-3dbfa", storageBucket:"boligside-3dbfa.firebasestorage.app", messagingSenderId:"938144668707", appId:"1:938144668707:web:df10e4a5116ff9939fa596" });
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // Theme
+    window.toggleTheme = function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next === 'dark' ? 'dark' : '');
+      localStorage.setItem('theme', next);
+      document.querySelector('.toggle-label').textContent = next === 'dark' ? 'Lys' : 'Mørk';
+    };
+    (function() {
+      const saved = localStorage.getItem('theme') || 'light';
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.addEventListener('DOMContentLoaded', () => { document.querySelector('.toggle-label').textContent = 'Lys'; });
+      }
+    })();
+    window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20); });
+    window.logout = async () => { await signOut(auth); window.location.href = 'login.html'; };
+
+    // Panel switching
+    window.showPanel = function(role, name, btn) {
+      const prefix = role === 'saelger' ? 'sp' : 'kp';
+      document.querySelectorAll(`#view-${role} .panel`).forEach(p => p.classList.remove('active'));
+      document.getElementById(`${prefix}-${name}`).classList.add('active');
+      document.querySelectorAll(`#nav-${role} .nav-link`).forEach(l => l.classList.remove('active'));
+      btn.classList.add('active');
+      if (name === 'boliger' || name === 'find') loadBoliger(role);
+      if (name === 'favoritter')    loadFavoritter();
+      if (name === 'interesserede') loadInteresserede();
+    };
+
+    // Role switch
+    window.switchRole = function(role) {
+      localStorage.setItem('bd_role', role);
+      document.getElementById('view-saelger').classList.toggle('active', role === 'saelger');
+      document.getElementById('view-koeber').classList.toggle('active',  role === 'koeber');
+      document.getElementById('nav-saelger').style.display = role === 'saelger' ? 'flex' : 'none';
+      document.getElementById('nav-koeber').style.display  = role === 'koeber'  ? 'flex' : 'none';
+      document.querySelectorAll('#role-switcher .role-btn[data-role]').forEach(b => {
+        b.classList.toggle('active', b.dataset.role === role);
+      });
+      document.getElementById('profile-role-badge').textContent = role === 'saelger' ? 'Sælger' : 'Køber';
+    };
+
+    function fmt(str) {
+      if (!str) return '—';
+      const n = parseInt(str.replace(/\D/g,''));
+      return isNaN(n) ? str : new Intl.NumberFormat('da-DK').format(n) + ' kr.';
+    }
+    function ini(a,b) { return ((a?.[0]||'')+(b?.[0]||'')).toUpperCase(); }
+
+    window._sellersMap    = {};
+    window._myFavoritter  = new Set();
+    window._viewedSession = new Set();
+
+    // ── FAVORITTER ──
+    window.toggleFavorit = async function(sellerUID, btn) {
+      if (!currentUser || !sellerUID) return;
+      const role = localStorage.getItem('bd_role');
+      if (role !== 'koeber') return; // kun købere
+      const favId  = currentUser.uid + '_' + sellerUID;
+      const favRef = doc(db, 'favoritter', favId);
+      const isFav  = window._myFavoritter.has(sellerUID);
+      // Optimistisk UI-opdatering
+      const allBtns = document.querySelectorAll(`[data-fav-uid="${sellerUID}"]`);
+      if (isFav) {
+        window._myFavoritter.delete(sellerUID);
+        allBtns.forEach(b => b.classList.remove('active'));
+        document.getElementById('listing-heart-label') && (document.getElementById('listing-heart-label').textContent = 'Gem som favorit');
+        await deleteDoc(favRef).catch(()=>{});
+      } else {
+        window._myFavoritter.add(sellerUID);
+        allBtns.forEach(b => b.classList.add('active'));
+        document.getElementById('listing-heart-label') && (document.getElementById('listing-heart-label').textContent = 'Gemt');
+        const d = window._sellersMap[sellerUID] || {};
+        await setDoc(favRef, {
+          buyerUID:  currentUser.uid,
+          buyerNavn: (window._profil?.fornavn || '') + ' ' + (window._profil?.efternavn || ''),
+          buyerEmail: window._profil?.email || currentUser.email,
+          sellerUID,
+          adresse:   d.adresse   || '',
+          boligtype: d.boligtype || '',
+          salgspris: d.salgspris || '',
+          gemtAt:    serverTimestamp()
+        }).catch(()=>{});
+        // Opdater sælgers interesserede-tæller
+        setDoc(doc(db, 'saelgere', sellerUID), { interesserede: increment(1) }, { merge: true }).catch(()=>{});
+      }
+    };
+
+    async function loadFavoritter() {
+      const grid = document.getElementById('favoritter-grid');
+      if (!grid || !currentUser) return;
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Indlæser…</h3><p></p></div>';
+      try {
+        const snap = await getDocs(query(collection(db, 'favoritter'), where('buyerUID', '==', currentUser.uid)));
+        if (snap.empty) {
+          grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="font-size:2rem;">♡</div><h3>Ingen favoritter endnu</h3><p>Klik på hjertet på en bolig for at gemme den her.</p></div>';
+          return;
+        }
+        grid.innerHTML = '';
+        snap.forEach(s => {
+          const d = s.data();
+          const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
+          const feeStr = fmt(String(Math.round(feeNum * 0.005)));
+          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${d.sellerUID}')">
+            <div class="bolig-img">🏠</div>
+            <div class="bolig-body">
+              <div class="bolig-type">${d.boligtype||'Bolig'}</div>
+              <div class="bolig-adresse">${d.adresse||'—'}</div>
+              <div class="bolig-pris">${d.salgspris||'—'}</div>
+              <div class="bolig-footer">
+                <span class="bolig-fee">Fee: ${feeStr}</span>
+                <div style="display:flex;align-items:center;gap:0.4rem;">
+                  <button class="heart-btn active" data-fav-uid="${d.sellerUID}" onclick="event.stopPropagation();toggleFavorit('${d.sellerUID}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="contact-btn" onclick="event.stopPropagation();openListing('${d.sellerUID}')">Se opslag</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        });
+      } catch(e) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente favoritter</h3></div>';
+      }
+    }
+
+    async function loadInteresserede() {
+      const grid = document.getElementById('interesserede-grid');
+      if (!grid || !currentUser) return;
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Indlæser…</h3><p></p></div>';
+      try {
+        const snap = await getDocs(query(collection(db, 'favoritter'), where('sellerUID', '==', currentUser.uid)));
+        if (snap.empty) {
+          grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="font-size:2rem;">🔍</div><h3>Ingen interesserede endnu</h3><p>Når en køber gemmer din bolig som favorit, dukker de op her.</p></div>';
+          return;
+        }
+        grid.innerHTML = '';
+        snap.forEach(s => {
+          const d = s.data();
+          const navnTrimmed = (d.buyerNavn||'').trim() || 'Anonym';
+          const initials = navnTrimmed.split(' ').map(w => w[0]||'').join('').toUpperCase().slice(0,2) || '?';
+          const dato = d.gemtAt?.toDate ? d.gemtAt.toDate().toLocaleDateString('da-DK',{day:'numeric',month:'long'}) : '';
+          grid.innerHTML += `<div class="int-card">
+            <div class="int-avatar">${initials}</div>
+            <div>
+              <div class="int-name">${navnTrimmed}</div>
+              <div class="int-meta">${d.buyerEmail||''}${dato ? ' · Gemt ' + dato : ''}</div>
+            </div>
+            <div class="int-badge"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Interesseret</div>
+          </div>`;
+        });
+        // Opdater tæller
+        document.getElementById('stat-interesserede').textContent = snap.size;
+      } catch(e) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente data</h3></div>';
+      }
+    }
+
+    // ── LISTING VIEW ──
+    window.openListing = function(uid) {
+      const d = window._sellersMap[uid];
+      if (!d) return;
+      window._currentListingUID = uid;
+
+      // Tæl visning (kun én gang per session, og ikke sælgeren selv)
+      if (!window._viewedSession.has(uid) && currentUser?.uid !== uid) {
+        window._viewedSession.add(uid);
+        setDoc(doc(db, 'saelgere', uid), { visninger: increment(1) }, { merge: true }).catch(()=>{});
+        if (currentUser?.uid === (window._sellerData?.uid) || false) {} // no-op
+        // Opdater sælgers eget tal hvis det er deres bolig
+        const visEl = document.getElementById('stat-visninger');
+        if (visEl && uid !== currentUser?.uid) {
+          const cur = parseInt(visEl.textContent) || 0;
+          // vis-tælling tilhører sælger, ikke køber
+        }
+      }
+
+      // Hjerte-state
+      const isFav     = window._myFavoritter.has(uid);
+      const heartBtn  = document.getElementById('listing-heart-btn');
+      const heartLbl  = document.getElementById('listing-heart-label');
+      const role      = localStorage.getItem('bd_role');
+      if (role === 'koeber') {
+        heartBtn.style.display = '';
+        heartBtn.classList.toggle('active', isFav);
+        heartBtn.dataset.favUid = uid;
+        heartLbl.textContent = isFav ? 'Gemt' : 'Gem som favorit';
+      } else {
+        heartBtn.style.display = 'none';
+      }
+
+      // Visninger
+      const visEl = document.getElementById('lv-visninger');
+      const visTal = document.getElementById('lv-visninger-tal');
+      if (d.visninger) {
+        visTal.textContent = d.visninger;
+        visEl.style.display = 'flex';
+      } else {
+        visEl.style.display = 'none';
+      }
+
+      const name     = ((d.fornavn||'') + ' ' + (d.efternavn||'')).trim() || 'Sælger';
+      const initials = ((d.fornavn?.[0]||'') + (d.efternavn?.[0]||'')).toUpperCase() || '?';
+      const feeNum   = parseInt((d.salgspris||'').replace(/\D/g,''));
+      const feeStr   = isNaN(feeNum) ? '—' : fmt(String(Math.round(feeNum * 0.005)));
+
+      document.getElementById('lv-adresse').textContent     = d.adresse   || 'Adresse ikke angivet';
+      document.getElementById('lv-type').textContent        = d.boligtype || 'Bolig';
+      document.getElementById('lv-pris').textContent        = d.salgspris || '—';
+      document.getElementById('listing-nav-label').textContent = d.adresse || '';
+      document.getElementById('lv-avatar').textContent      = initials;
+      document.getElementById('lv-seller-name').textContent = name;
+
+      // Nøgletal
+      const stats = [];
+      if (d.areal)     stats.push({ val: d.areal + ' m²',  lbl: 'Boligareal' });
+      if (d.rum)       stats.push({ val: d.rum,             lbl: 'Rum' });
+      if (d.byggeaar)  stats.push({ val: d.byggeaar,        lbl: 'Byggeår' });
+      if (d.etager)    stats.push({ val: d.etager,          lbl: 'Etager' });
+      if (!stats.length) stats.push({ val: '—', lbl: 'Boligareal' }, { val: '—', lbl: 'Rum' }, { val: '—', lbl: 'Byggeår' });
+      document.getElementById('lv-stats').innerHTML = stats.map(s =>
+        `<div class="listing-stat"><div class="listing-stat-val">${s.val}</div><div class="listing-stat-lbl">${s.lbl}</div></div>`
+      ).join('');
+
+      // Detaljer grid
+      const energiLabels = { A:'A', B:'B', C:'C', D:'D', E:'E', F:'F', G:'G' };
+      const altanLabels  = { altan:'Altan', terrasse:'Terrasse', begge:'Altan & terrasse', ingen:'Ingen' };
+      const husdyrLabels = { ja:'Tilladt', nej:'Ikke tilladt', efter_aftale:'Efter aftale', regler:'Husordensregler' };
+      const details = [];
+      if (d.grundareal)   details.push({ lbl: 'Grundareal',  val: d.grundareal + ' m²' });
+      if (d.boligtype)    details.push({ lbl: 'Boligtype',   val: d.boligtype });
+      if (d.etager)       details.push({ lbl: 'Etager',      val: d.etager });
+      if (d.byggeaar)     details.push({ lbl: 'Byggeår',     val: d.byggeaar });
+      if (d.altan)        details.push({ lbl: 'Altan',       val: altanLabels[d.altan] || d.altan });
+      if (d.husdyr)       details.push({ lbl: 'Husdyr',      val: husdyrLabels[d.husdyr] || d.husdyr });
+      if (d.energimaerke) details.push({ lbl: 'Energimærke', val: `<span class="energy-badge energy-${d.energimaerke}">${d.energimaerke}</span>` });
+      details.push({ lbl: 'Fee ved salg', val: feeStr });
+      document.getElementById('lv-details-grid').innerHTML = details.map(det =>
+        `<div class="listing-detail"><div class="listing-detail-lbl">${det.lbl}</div><div class="listing-detail-val">${det.val}</div></div>`
+      ).join('');
+
+      // Beskrivelse
+      const descSection = document.getElementById('lv-desc-section');
+      if (d.beskrivelse) {
+        document.getElementById('lv-beskrivelse').textContent = d.beskrivelse;
+        descSection.style.display = 'block';
+      } else {
+        descSection.style.display = 'none';
+      }
+
+      // Kontakt-knap
+      document.getElementById('lv-contact-btn').onclick = () => openContactModal(uid);
+
+      document.getElementById('listing-overlay').classList.add('open');
+      document.getElementById('listing-overlay').scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeListing = function() {
+      document.getElementById('listing-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    async function loadBoliger(role) {
+      const gridId = role === 'saelger' ? 's-boliger-grid' : 'k-boliger-grid';
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Indlæser...</h3><p></p></div>';
+      // Forudindlæs købers favoritter så hjerte-state er korrekt fra start
+      if (role === 'koeber' && currentUser) {
+        try {
+          const favSnap = await getDocs(query(collection(db, 'favoritter'), where('buyerUID', '==', currentUser.uid)));
+          window._myFavoritter = new Set(favSnap.docs.map(d => d.data().sellerUID));
+        } catch {}
+      }
+      try {
+        const snap = await getDocs(collection(db, 'saelgere'));
+        if (snap.empty) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🏡</div><h3>Ingen boliger endnu</h3><p>Bliv den første til at oprette en bolig.</p></div>'; return; }
+        grid.innerHTML = '';
+        snap.forEach(s => {
+          const d = s.data();
+          window._sellersMap[s.id] = d;
+          const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
+          const feeStr = fmt(String(Math.round(feeNum * 0.005)));
+          const meta    = [d.areal ? d.areal+' m²' : '', d.rum ? d.rum+' rum' : '', d.byggeaar ? 'Bygget '+d.byggeaar : ''].filter(Boolean).join(' · ') || '&nbsp;';
+          const isFavCls = window._myFavoritter.has(s.id) ? ' active' : '';
+          const isKoeber = localStorage.getItem('bd_role') === 'koeber';
+          const heartHtml = isKoeber ? `<button class="heart-btn${isFavCls}" data-fav-uid="${s.id}" onclick="event.stopPropagation();toggleFavorit('${s.id}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>` : '';
+          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div><div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
+        });
+      } catch(e) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente boliger</h3><p></p></div>'; }
+    }
+
+    window.openContactModal = function(uid) {
+      const d = window._sellersMap[uid];
+      if (!d) return;
+      const name = ((d.fornavn||'') + ' ' + (d.efternavn||'')).trim() || 'Sælger';
+      const initials = ((d.fornavn?.[0]||'') + (d.efternavn?.[0]||'')).toUpperCase() || '?';
+      const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
+      const feeStr = isNaN(feeNum) ? '—' : fmt(String(Math.round(feeNum * 0.005)));
+
+      document.getElementById('cm-title').textContent     = d.adresse || 'Bolig';
+      document.getElementById('cm-subtitle').textContent  = (d.boligtype || 'Bolig') + ' · til salg';
+      document.getElementById('cm-price').textContent     = d.salgspris || '—';
+      document.getElementById('cm-type').textContent      = d.boligtype || '—';
+      document.getElementById('cm-fee').textContent       = feeStr;
+      document.getElementById('cm-avatar').textContent    = initials;
+      document.getElementById('cm-seller-name').textContent = name;
+      document.getElementById('cm-phone').textContent     = d.telefon || 'Ikke oplyst';
+      document.getElementById('cm-email').textContent     = d.email || 'Ikke oplyst';
+      document.getElementById('cm-call-link').href        = d.telefon ? 'tel:' + d.telefon.replace(/\s/g,'') : '#';
+      document.getElementById('cm-mail-link').href        = d.email ? 'mailto:' + d.email : '#';
+
+      document.getElementById('contact-modal-overlay').classList.add('open');
+    };
+
+    window.closeContactModal = function(e) {
+      if (e.target === document.getElementById('contact-modal-overlay'))
+        document.getElementById('contact-modal-overlay').classList.remove('open');
+    };
+
+    // ── REDIGER OPSLAG ──
+    let selectedEnergy = '';
+
+    window.selectEnergy = function(btn) {
+      document.querySelectorAll('.energy-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedEnergy = btn.dataset.val;
+    };
+
+    window.openEditPanel = function() {
+      const d = window._sellerData || {};
+      document.getElementById('e-adresse').value       = d.adresse        || '';
+      document.getElementById('e-boligtype').value     = d.boligtype      || '';
+      document.getElementById('e-salgspris').value     = d.salgspris      || '';
+      document.getElementById('e-areal').value         = d.areal          || '';
+      document.getElementById('e-grundareal').value    = d.grundareal     || '';
+      document.getElementById('e-rum').value           = d.rum            || '';
+      document.getElementById('e-byggeaar').value      = d.byggeaar       || '';
+      document.getElementById('e-etager').value        = d.etager         || '';
+      document.getElementById('e-altan').value         = d.altan          || '';
+      document.getElementById('e-husdyr').value        = d.husdyr         || '';
+      document.getElementById('e-beskrivelse').value   = d.beskrivelse    || '';
+      document.getElementById('e-telefon').value       = d.telefon        || '';
+      document.getElementById('e-kontaktmetode').value = d.kontaktmetode  || '';
+      selectedEnergy = d.energimaerke || '';
+      document.querySelectorAll('.energy-btn').forEach(b => b.classList.toggle('selected', b.dataset.val === selectedEnergy));
+      document.getElementById('edit-success-banner').classList.remove('show');
+      document.getElementById('edit-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      initEditDawa();
+    };
+
+    window.closeEditPanel = function() {
+      document.getElementById('edit-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
+    async function doSaveOpslag() {
+      const btn     = document.getElementById('edit-save-btn');
+      const errEl   = document.getElementById('edit-error-banner');
+      errEl.style.display = 'none';
+      btn.textContent = 'Gemmer…'; btn.disabled = true;
+      try {
+        if (!currentUser) throw new Error('Ikke logget ind — genindlæs siden');
+        const updates = {
+          adresse:       document.getElementById('e-adresse').value.trim(),
+          boligtype:     document.getElementById('e-boligtype').value,
+          salgspris:     document.getElementById('e-salgspris').value.trim(),
+          areal:         document.getElementById('e-areal').value,
+          grundareal:    document.getElementById('e-grundareal').value,
+          rum:           document.getElementById('e-rum').value,
+          byggeaar:      document.getElementById('e-byggeaar').value,
+          etager:        document.getElementById('e-etager').value,
+          altan:         document.getElementById('e-altan').value,
+          husdyr:        document.getElementById('e-husdyr').value,
+          energimaerke:  selectedEnergy,
+          beskrivelse:   document.getElementById('e-beskrivelse').value.trim(),
+          telefon:       document.getElementById('e-telefon').value.trim(),
+          kontaktmetode: document.getElementById('e-kontaktmetode').value,
+          opdateret:     serverTimestamp()
+        };
+        await setDoc(doc(db, 'saelgere', currentUser.uid), updates, { merge: true });
+        window._sellerData = { ...(window._sellerData || {}), ...updates };
+        // Opdater oversigt-kort
+        document.getElementById('s-adresse').textContent = updates.adresse   || '—';
+        document.getElementById('s-type').textContent    = updates.boligtype || '—';
+        document.getElementById('s-pris').textContent    = fmt(updates.salgspris);
+        document.getElementById('s-telefon').textContent = updates.telefon   || '—';
+        const prisNum = parseInt((updates.salgspris||'').replace(/\D/g,''));
+        if (!isNaN(prisNum)) document.getElementById('stat-fee').textContent = fmt(String(Math.round(prisNum*0.005)));
+        // Opdater profil-siden
+        refreshSellerProfile(updates);
+        document.getElementById('edit-success-banner').classList.add('show');
+        btn.textContent = 'Gem ændringer →'; btn.disabled = false;
+        setTimeout(() => document.getElementById('edit-success-banner').classList.remove('show'), 3500);
+      } catch(e) {
+        console.error('saveOpslag:', e);
+        errEl.textContent = 'Fejl: ' + (e.message || 'Prøv igen');
+        errEl.style.display = 'flex';
+        btn.textContent = 'Gem ændringer →'; btn.disabled = false;
+      }
+    }
+
+    // DAWA autocomplete til edit-panel adressefelt (sættes op når panelet åbnes)
+    let editDawaTimer = null;
+    let editDawaInit  = false;
+    function initEditDawa() {
+      if (editDawaInit) return;
+      editDawaInit = true;
+      const inp = document.getElementById('e-adresse');
+      const box = document.getElementById('e-adresse-suggestions');
+      inp.addEventListener('input', () => {
+        clearTimeout(editDawaTimer);
+        const q = inp.value.trim();
+        if (q.length < 2) { box.classList.remove('open'); return; }
+        editDawaTimer = setTimeout(async () => {
+          try {
+            const res  = await fetch(`https://api.dataforsyningen.dk/autocomplete?q=${encodeURIComponent(q)}&type=adresse&per_side=6`);
+            const data = await res.json();
+            box.innerHTML = '';
+            if (!data.length) { box.classList.remove('open'); return; }
+            data.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'suggestion-item';
+              div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--amber);flex-shrink:0"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${item.tekst}`;
+              div.addEventListener('mousedown', e => { e.preventDefault(); inp.value = item.tekst; box.classList.remove('open'); });
+              box.appendChild(div);
+            });
+            box.classList.add('open');
+          } catch { box.classList.remove('open'); }
+        }, 200);
+      });
+      inp.addEventListener('blur', () => setTimeout(() => box.classList.remove('open'), 150));
+    }
+
+    // Event listeners for edit-panel (module-safe)
+    document.getElementById('edit-save-btn').addEventListener('click', doSaveOpslag);
+    document.getElementById('edit-cancel-btn').addEventListener('click', () => window.closeEditPanel());
+
+    // ── PROFIL OPDATERING ──
+    const altanTekst  = { altan:'Altan', terrasse:'Terrasse', begge:'Altan & terrasse', ingen:'Ingen' };
+    const husdyrTekst = { ja:'Tilladt', nej:'Ikke tilladt', efter_aftale:'Efter aftale', regler:'Husordensregler' };
+
+    function refreshSellerProfile(d) {
+      const el = id => document.getElementById(id);
+      // Personlige felter
+      el('sp-tlf').textContent  = d.telefon || '—';
+      // Oversigt-kort — primære felter
+      if (el('s-adresse'))  el('s-adresse').textContent  = d.adresse   || '—';
+      if (el('s-type'))     el('s-type').textContent     = d.boligtype || '—';
+      if (el('s-pris'))     el('s-pris').textContent     = fmt(d.salgspris);
+      if (el('s-telefon'))  el('s-telefon').textContent  = d.telefon   || '—';
+      // Oversigt-kort — ekstra felter
+      const extraGrid = el('s-oversigt-extra-grid');
+      const extraWrap = el('s-oversigt-extra');
+      if (extraGrid) {
+        const altanTxt  = { altan:'Altan', terrasse:'Terrasse', begge:'Altan & terrasse', ingen:'Ingen' };
+        const husdyrTxt = { ja:'Tilladt', nej:'Ikke tilladt', efter_aftale:'Efter aftale', regler:'Husordensregler' };
+        const extraRows = [
+          { l:'Boligareal',  v: d.areal      ? d.areal + ' m²'      : null },
+          { l:'Grundareal',  v: d.grundareal ? d.grundareal + ' m²' : null },
+          { l:'Antal rum',   v: d.rum        },
+          { l:'Byggeår',     v: d.byggeaar   },
+          { l:'Etager',      v: d.etager     },
+          { l:'Altan',       v: altanTxt[d.altan]    || d.altan   },
+          { l:'Husdyr',      v: husdyrTxt[d.husdyr]  || d.husdyr  },
+          { l:'Energimærke', v: d.energimaerke ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:5px;font-weight:800;font-size:0.82rem;" class="energy-badge energy-${d.energimaerke}">${d.energimaerke}</span>` : null },
+        ].filter(r => r.v);
+        if (extraRows.length) {
+          extraGrid.innerHTML = extraRows.map(r => `<div><div class="detail-label">${r.l}</div><div class="detail-value">${r.v}</div></div>`).join('');
+          extraWrap.style.display = 'block';
+        } else {
+          extraWrap.style.display = 'none';
+        }
+        // Beskrivelse
+        const descWrap = el('s-oversigt-desc-wrap');
+        const descEl   = el('s-oversigt-desc');
+        if (descWrap && descEl) {
+          if (d.beskrivelse) { descEl.textContent = d.beskrivelse; descWrap.style.display = 'block'; }
+          else descWrap.style.display = 'none';
+        }
+      }
+      // Genopbyg opslags-detaljer
+      const grid = el('sp-opslag-grid');
+      if (!grid) return;
+      const rows = [
+        { l:'Adresse',      v: d.adresse     },
+        { l:'Boligtype',    v: d.boligtype   },
+        { l:'Salgspris',    v: fmt(d.salgspris) },
+        { l:'Boligareal',   v: d.areal     ? d.areal + ' m²'   : null },
+        { l:'Grundareal',   v: d.grundareal ? d.grundareal + ' m²' : null },
+        { l:'Antal rum',    v: d.rum         },
+        { l:'Byggeår',      v: d.byggeaar    },
+        { l:'Etager',       v: d.etager      },
+        { l:'Altan',        v: altanTekst[d.altan]   || d.altan   },
+        { l:'Husdyr',       v: husdyrTekst[d.husdyr] || d.husdyr  },
+        { l:'Energimærke',  v: d.energimaerke ? `<span class="energy-badge energy-${d.energimaerke}" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:5px;font-weight:800;font-size:0.82rem;">${d.energimaerke}</span>` : null },
+        { l:'Kontaktmetode',v: d.kontaktmetode },
+      ].filter(r => r.v);
+      grid.innerHTML = rows.map(r =>
+        `<div><div class="detail-label">${r.l}</div><div class="detail-value">${r.v}</div></div>`
+      ).join('');
+      // Beskrivelse
+      const descWrap = el('sp-desc-wrap');
+      if (descWrap) {
+        if (d.beskrivelse) {
+          descWrap.style.display = 'block';
+          el('sp-beskrivelse').textContent = d.beskrivelse;
+        } else {
+          descWrap.style.display = 'none';
+        }
+      }
+    }
+
+    // ── MODAL ──
+    let currentUser = null;
+
+    window.openModal = function(rolle) {
+      document.getElementById('modal-koeber-form').style.display  = rolle === 'koeber'  ? 'block' : 'none';
+      document.getElementById('modal-saelger-form').style.display = rolle === 'saelger' ? 'block' : 'none';
+      document.getElementById('modal-success').style.display      = 'none';
+      document.getElementById('modal-error').style.display        = 'none';
+      document.getElementById('modal-title').innerHTML = rolle === 'koeber'
+        ? 'Bliv <em>køber</em>'
+        : 'Sæt din bolig <em>til salg</em>';
+      document.getElementById('modal-overlay').classList.add('open');
+    };
+
+    window.closeModal = function(e) {
+      if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+    };
+    window.closeModalDirect = function() {
+      document.getElementById('modal-overlay').classList.remove('open');
+    };
+
+    window.submitAddRole = async function(rolle) {
+      const errorEl = document.getElementById('modal-error');
+      errorEl.style.display = 'none';
+      const btn = document.querySelector('#modal-' + rolle + '-form .btn-primary');
+
+      if (rolle === 'koeber') {
+        const omraade = document.getElementById('m-omraade').value.trim();
+        if (!omraade) { errorEl.textContent = 'Udfyld ønsket område.'; errorEl.style.display = 'block'; return; }
+        btn.textContent = 'Opretter...'; btn.disabled = true;
+        try {
+          await setDoc(doc(db, 'koebere', currentUser.uid), {
+            fornavn:   window._profil?.fornavn   || '',
+            efternavn: window._profil?.efternavn || '',
+            email:     currentUser.email,
+            telefon:   window._profil?.telefon   || '',
+            omraade,
+            boligtype: document.getElementById('m-btype').value,
+            budget:    document.getElementById('m-budget').value.trim(),
+            rolle:     'koeber',
+            oprettet:  serverTimestamp()
+          });
+          document.getElementById('modal-koeber-form').style.display = 'none';
+          document.getElementById('modal-success-title').textContent = 'Du er nu køber!';
+          document.getElementById('modal-success-text').textContent  = 'Din køberprofil er oprettet. Genindlæs dashboardet for at se din køberside.';
+          document.getElementById('modal-success').style.display     = 'block';
+        } catch(e) { errorEl.textContent = 'Noget gik galt — prøv igen.'; errorEl.style.display = 'block'; btn.textContent = 'Opret mig som køber →'; btn.disabled = false; }
+
+      } else {
+        const adresse = document.getElementById('m-adresse').value.trim();
+        if (!adresse) { errorEl.textContent = 'Udfyld boligens adresse.'; errorEl.style.display = 'block'; return; }
+        const msTerms = document.getElementById('ms-terms');
+        const msLabel = document.getElementById('ms-terms-label');
+        if (!msTerms.checked) {
+          msLabel.style.borderColor = 'rgba(220,38,38,0.5)';
+          msLabel.style.background  = 'rgba(220,38,38,0.04)';
+          msTerms.addEventListener('change', () => { msLabel.style.borderColor = ''; msLabel.style.background = ''; }, { once: true });
+          errorEl.textContent = 'Du skal acceptere formidlingsaftalen.';
+          errorEl.style.display = 'block';
+          return;
+        }
+        btn.textContent = 'Opretter...'; btn.disabled = true;
+        try {
+          await setDoc(doc(db, 'saelgere', currentUser.uid), {
+            fornavn:         window._profil?.fornavn   || '',
+            efternavn:       window._profil?.efternavn || '',
+            email:           currentUser.email,
+            telefon:         window._profil?.telefon   || '',
+            adresse,
+            boligtype:       document.getElementById('m-stype').value,
+            salgspris:       document.getElementById('m-pris').value.trim(),
+            rolle:           'saelger',
+            oprettet:        serverTimestamp(),
+            termsAccepted:   true,
+            termsAcceptedAt: serverTimestamp(),
+            termsVersion:    '1.0'
+          });
+          document.getElementById('modal-saelger-form').style.display = 'none';
+          document.getElementById('modal-success-title').textContent  = 'Din bolig er oprettet!';
+          document.getElementById('modal-success-text').textContent   = 'Din sælgerprofil er klar. Genindlæs dashboardet for at se din sælgerside.';
+          document.getElementById('modal-success').style.display      = 'block';
+        } catch(e) { errorEl.textContent = 'Noget gik galt — prøv igen.'; errorEl.style.display = 'block'; btn.textContent = 'Opret mig som sælger →'; btn.disabled = false; }
+      }
+    };
+
+    // DAWA autocomplete til modal adressefelt
+    let dawaTimer = null;
+    document.addEventListener('DOMContentLoaded', () => {
+      const inp = document.getElementById('m-adresse');
+      const box = document.getElementById('m-adresse-suggestions');
+      if (!inp) return;
+      inp.addEventListener('input', () => {
+        clearTimeout(dawaTimer);
+        const q = inp.value.trim();
+        if (q.length < 2) { box.classList.remove('open'); return; }
+        dawaTimer = setTimeout(async () => {
+          try {
+            const res  = await fetch(`https://api.dataforsyningen.dk/autocomplete?q=${encodeURIComponent(q)}&type=adresse&per_side=6`);
+            const data = await res.json();
+            box.innerHTML = '';
+            if (!data.length) { box.classList.remove('open'); return; }
+            data.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'suggestion-item';
+              div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--amber);flex-shrink:0"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${item.tekst}`;
+              div.addEventListener('mousedown', e => { e.preventDefault(); inp.value = item.tekst; box.classList.remove('open'); });
+              box.appendChild(div);
+            });
+            box.classList.add('open');
+          } catch(e) { box.classList.remove('open'); }
+        }, 200);
+      });
+      inp.addEventListener('blur', () => setTimeout(() => box.classList.remove('open'), 150));
+    });
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) { window.location.href = 'login.html'; return; }
+
+      const [sellerSnap, buyerSnap] = await Promise.all([
+        getDoc(doc(db, 'saelgere', user.uid)),
+        getDoc(doc(db, 'koebere',  user.uid))
+      ]);
+
+      const hasSeller = sellerSnap.exists();
+      const hasBuyer  = buyerSnap.exists();
+      const roles = [];
+      if (hasSeller) roles.push('saelger');
+      if (hasBuyer)  roles.push('koeber');
+
+      if (!roles.length) { window.location.href = 'login.html'; return; }
+      currentUser = user;
+      window._profil = (hasSeller ? sellerSnap : buyerSnap).data();
+
+      const currentRole = roles.includes(localStorage.getItem('bd_role')) ? localStorage.getItem('bd_role') : roles[0];
+
+      // Build role switcher
+      const switcher = document.getElementById('role-switcher');
+      const roleLabels = { saelger: { icon: '🏠', label: 'Sælger' }, koeber: { icon: '🔍', label: 'Køber' } };
+      const otherRole  = { saelger: 'koeber', koeber: 'saelger' };
+      const otherLabel = { saelger: 'Bliv køber', koeber: 'Bliv sælger' };
+
+      roles.forEach(r => {
+        const btn = document.createElement('button');
+        btn.className = 'role-btn' + (r === currentRole ? ' active' : '');
+        btn.dataset.role = r;
+        btn.innerHTML = `${roleLabels[r].icon} <span>${roleLabels[r].label}</span>`;
+        btn.onclick = () => switchRole(r);
+        switcher.appendChild(btn);
+      });
+
+      // "Tilføj" knap for manglende rolle
+      const missing = roles.length === 1 ? otherRole[roles[0]] : null;
+      if (missing) {
+        const addBtn = document.createElement('button');
+        addBtn.className = 'role-btn add';
+        addBtn.innerHTML = `+ <span>${otherLabel[roles[0]]}</span>`;
+        addBtn.onclick = () => openModal(missing);
+        switcher.appendChild(addBtn);
+      }
+
+      // Fill seller data
+      if (hasSeller) {
+        const d = sellerSnap.data();
+        window._sellerData = d;
+        const name = d.fornavn + ' ' + d.efternavn;
+        document.getElementById('s-greeting').textContent = d.fornavn;
+        document.getElementById('s-adresse').textContent  = d.adresse   || '—';
+        document.getElementById('s-type').textContent     = d.boligtype || '—';
+        document.getElementById('s-pris').textContent     = fmt(d.salgspris);
+        document.getElementById('s-telefon').textContent  = d.telefon   || '—';
+        document.getElementById('sp-navn').textContent    = name;
+        document.getElementById('sp-email').textContent   = d.email     || user.email;
+        document.getElementById('sp-tlf').textContent     = d.telefon   || '—';
+        const prisNum = parseInt((d.salgspris||'').replace(/\D/g,''));
+        if (!isNaN(prisNum)) document.getElementById('stat-fee').textContent = fmt(String(Math.round(prisNum*0.005)));
+        refreshSellerProfile(d);
+        // Vis aktuelle visninger og interesserede-tal
+        if (d.visninger)    document.getElementById('stat-visninger').textContent    = d.visninger;
+        if (d.interesserede) document.getElementById('stat-interesserede').textContent = d.interesserede;
+        // Forudindlæs interesserede tæl
+        getDocs(query(collection(db, 'favoritter'), where('sellerUID', '==', user.uid)))
+          .then(snap => { document.getElementById('stat-interesserede').textContent = snap.size; })
+          .catch(()=>{});
+      }
+
+      // Fill buyer data
+      if (hasBuyer) {
+        const d = buyerSnap.data();
+        const name = d.fornavn + ' ' + d.efternavn;
+        document.getElementById('k-omraade').textContent  = d.omraade   || '—';
+        document.getElementById('k-type').textContent     = d.boligtype || '—';
+        document.getElementById('k-budget').textContent   = fmt(d.budget);
+        document.getElementById('kp-navn').textContent    = name;
+        document.getElementById('kp-email').textContent   = d.email     || user.email;
+        document.getElementById('kp-tlf').textContent     = d.telefon   || '—';
+      }
+
+      // Fill shared nav/profile
+      const primary = hasSeller ? sellerSnap.data() : buyerSnap.data();
+      const i = ini(primary.fornavn, primary.efternavn);
+      document.getElementById('nav-avatar').textContent    = i;
+      document.getElementById('nav-name').textContent      = primary.fornavn;
+      document.getElementById('profile-avatar').textContent = i;
+      document.getElementById('profile-name').textContent  = primary.fornavn + ' ' + primary.efternavn;
+      document.getElementById('profile-email').textContent = primary.email || user.email;
+
+      // Activate correct role
+      switchRole(currentRole);
+      if (currentRole === 'koeber') loadBoliger('koeber');
+
+      document.getElementById('loading').style.display   = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

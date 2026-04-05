@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoligDirekte — Sælg selv, betal kun ved salg</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── LIGHT THEME (default) ── */
+    :root {
+      --amber: #E8920A;
+      --amber-light: #F5B93A;
+      --white: #FFFFFF;
+
+      --page-bg:       #F9F8F5;
+      --nav-bg:        rgba(255,255,255,0.93);
+      --nav-border:    rgba(15,30,60,0.09);
+      --nav-shadow:    rgba(15,30,60,0.08);
+
+      --grid-color:    rgba(15,30,60,0.05);
+      --radial-1:      rgba(245,158,11,0.10);
+      --radial-2:      rgba(20,55,210,0.06);
+      --radial-3:      rgba(245,158,11,0.04);
+      --blob-a:        rgba(245,158,11,0.09);
+      --blob-b:        rgba(20,55,200,0.07);
+      --beam-h1:       rgba(232,146,10,0.50);
+      --beam-h2:       rgba(20,55,200,0.28);
+      --beam-h3:       rgba(232,146,10,0.22);
+      --beam-v1:       rgba(232,146,10,0.32);
+      --beam-v2:       rgba(20,55,200,0.18);
+      --vignette:      rgba(220,215,205,0.35);
+
+      --text-main:     #0F1E3D;
+      --text-muted:    #64748B;
+      --border:        rgba(15,30,60,0.09);
+      --logo-color:    #0F1E3D;
+
+      --h1-color:      #0F1E3D;
+      --p-color:       rgba(15,30,60,0.62);
+      --badge-bg:      rgba(232,146,10,0.10);
+      --badge-border:  rgba(232,146,10,0.25);
+      --badge-color:   #E8920A;
+      --input-bg:      #FFFFFF;
+      --input-border:  rgba(15,30,60,0.10);
+      --input-color:   #0F1E3D;
+      --input-ph:      rgba(15,30,60,0.35);
+      --btn-bg:        #0F1E3D;
+      --btn-color:     #FFFFFF;
+      --btn-hover:     #1a3160;
+      --trust-color:   rgba(15,30,60,0.40);
+      --trust-span:    rgba(15,30,60,0.60);
+      --scroll-color:  rgba(15,30,60,0.30);
+      --scroll-line:   rgba(15,30,60,0.22);
+
+      --stats-bg:      #FFFFFF;
+      --stat-num:      #0F1E3D;
+      --section-title: #0F1E3D;
+
+      --card-bg:       #FFFFFF;
+      --card-shadow:   0 2px 12px rgba(15,30,60,0.06);
+      --card-hover-shadow: 0 12px 40px rgba(232,146,10,0.10);
+      --step-num-col:  rgba(15,30,60,0.05);
+      --step-h3:       #0F1E3D;
+
+      --comp-bg:       #F6F5F1;
+      --comp-tbl:      #FFFFFF;
+      --comp-tbl-shadow: 0 4px 24px rgba(15,30,60,0.06);
+      --comp-cell:     #0F1E3D;
+      --comp-hdr-bg:   #0F1E3D;
+      --comp-hdr-col:  rgba(255,255,255,0.60);
+      --comp-hi-bg:    rgba(232,146,10,0.05);
+      --check:         #16A34A;
+      --cross:         #DC2626;
+
+      --signup-bg:     #F6F5F1;
+      --signup-box:    #0F1E3D;
+      --signup-box-shadow: 0 20px 60px rgba(15,30,60,0.18);
+      --si-input-bg:   rgba(255,255,255,0.07);
+      --si-input-brd:  rgba(255,255,255,0.12);
+      --si-btn-bg:     #E8920A;
+      --si-btn-color:  #FFFFFF;
+      --si-btn-hover:  #F5B93A;
+      --si-note:       rgba(255,255,255,0.30);
+
+      --footer-bg:     #080f22;
+
+      --navy:          #0F1E3D;
+      --navy-dark:     #080f22;
+      --navy-light:    #1a3160;
+      --off-white:     #F6F5F1;
+
+      --calc-lbl:      rgba(15,30,60,0.5);
+      --calc-val:      #0F1E3D;
+      --calc-slider:   rgba(15,30,60,0.12);
+      --calc-range:    rgba(15,30,60,0.35);
+      --calc-card:     rgba(15,30,60,0.06);
+      --calc-card-brd: rgba(15,30,60,0.14);
+      --calc-card-lbl: rgba(15,30,60,0.45);
+      --calc-card-sub: rgba(15,30,60,0.35);
+      --calc-badge:    rgba(15,30,60,0.7);
+    }
+
+    /* ── DARK THEME ── */
+    [data-theme="dark"] {
+      --page-bg:       #070f28;
+      --nav-bg:        rgba(7,15,40,0.90);
+      --nav-border:    rgba(255,255,255,0.06);
+      --nav-shadow:    rgba(0,0,0,0.45);
+
+      --grid-color:    rgba(255,255,255,0.055);
+      --radial-1:      rgba(245,158,11,0.11);
+      --radial-2:      rgba(20,55,210,0.22);
+      --radial-3:      rgba(245,158,11,0.05);
+      --blob-a:        rgba(245,158,11,0.14);
+      --blob-b:        rgba(25,70,220,0.19);
+      --beam-h1:       rgba(245,158,11,0.70);
+      --beam-h2:       rgba(100,150,255,0.60);
+      --beam-h3:       rgba(245,158,11,0.40);
+      --beam-v1:       rgba(245,158,11,0.50);
+      --beam-v2:       rgba(100,150,255,0.45);
+      --vignette:      rgba(5,8,18,0.65);
+
+      --text-main:     #FFFFFF;
+      --text-muted:    #8899bb;
+      --border:        rgba(255,255,255,0.08);
+      --logo-color:    #FFFFFF;
+
+      --h1-color:      #FFFFFF;
+      --p-color:       rgba(255,255,255,0.68);
+      --badge-bg:      rgba(245,158,11,0.15);
+      --badge-border:  rgba(245,158,11,0.30);
+      --badge-color:   #FCD34D;
+      --input-bg:      rgba(255,255,255,0.08);
+      --input-border:  rgba(255,255,255,0.15);
+      --input-color:   #FFFFFF;
+      --input-ph:      rgba(255,255,255,0.38);
+      --btn-bg:        #F59E0B;
+      --btn-color:     #050a18;
+      --btn-hover:     #FCD34D;
+      --trust-color:   rgba(255,255,255,0.42);
+      --trust-span:    rgba(255,255,255,0.62);
+      --scroll-color:  rgba(255,255,255,0.30);
+      --scroll-line:   rgba(255,255,255,0.28);
+
+      --stats-bg:      rgba(255,255,255,0.03);
+      --stat-num:      #FFFFFF;
+      --section-title: #FFFFFF;
+
+      --card-bg:       rgba(255,255,255,0.03);
+      --card-shadow:   none;
+      --card-hover-shadow: 0 12px 40px rgba(245,158,11,0.08);
+      --step-num-col:  rgba(255,255,255,0.04);
+      --step-h3:       #FFFFFF;
+
+      --comp-bg:       transparent;
+      --comp-tbl:      #0f1d3a;
+      --comp-tbl-shadow: 0 4px 24px rgba(0,0,0,0.35);
+      --comp-cell:     rgba(255,255,255,0.80);
+      --comp-hdr-bg:   rgba(255,255,255,0.05);
+      --comp-hdr-col:  rgba(255,255,255,0.50);
+      --comp-hi-bg:    rgba(245,158,11,0.06);
+      --check:         #4ade80;
+      --cross:         #f87171;
+
+      --signup-bg:     transparent;
+      --signup-box:    rgba(255,255,255,0.03);
+      --signup-box-shadow: none;
+      --si-input-bg:   rgba(255,255,255,0.08);
+      --si-input-brd:  rgba(255,255,255,0.14);
+      --si-btn-bg:     #F59E0B;
+      --si-btn-color:  #050a18;
+      --si-btn-hover:  #FCD34D;
+      --si-note:       rgba(255,255,255,0.30);
+
+      --footer-bg:     transparent;
+
+      --navy:          #0F1E3D;
+      --navy-dark:     #070f28;
+      --navy-light:    #1a3160;
+      --off-white:     transparent;
+
+      --calc-lbl:      rgba(255,255,255,0.6);
+      --calc-val:      #FFFFFF;
+      --calc-slider:   rgba(255,255,255,0.15);
+      --calc-range:    rgba(255,255,255,0.35);
+      --calc-card:     rgba(255,255,255,0.09);
+      --calc-card-brd: rgba(255,255,255,0.15);
+      --calc-card-lbl: rgba(255,255,255,0.5);
+      --calc-card-sub: rgba(255,255,255,0.35);
+      --calc-badge:    rgba(255,255,255,0.8);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--page-bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: box-shadow 0.3s, background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled { box-shadow: 0 2px 28px var(--nav-shadow); }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--logo-color);
+      letter-spacing: -0.02em;
+      transition: color 0.4s;
+    }
+    .logo span { color: var(--amber); }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+
+    .nav-btn {
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .nav-btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
+    .nav-btn-outline:hover { background: var(--border); transform: translateY(-1px); }
+
+    /* MODE SWITCH */
+    .mode-switch {
+      display: flex;
+      background: rgba(15,30,60,0.07);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px;
+      margin: 1.2rem auto 2rem;
+      width: fit-content;
+    }
+    [data-theme="dark"] .mode-switch { background: rgba(255,255,255,0.07); }
+    .mode-btn {
+      padding: 0.6rem 1.5rem;
+      border-radius: 100px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      white-space: nowrap;
+    }
+    .mode-btn.active {
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      box-shadow: 0 2px 8px rgba(15,30,60,0.15);
+    }
+    [data-theme="dark"] .mode-btn.active { background: var(--amber); color: #050a18; }
+    .mode-btn:not(.active):hover { color: var(--text-main); }
+
+    .hero-content { transition: opacity 0.2s; }
+    .hero-content.fading { opacity: 0; }
+
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--input-bg);
+      border: 1px solid var(--nav-border);
+      border-radius: 100px;
+      padding: 0.3rem 0.75rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover { border-color: var(--amber); color: var(--text-main); }
+    .theme-toggle svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.4s; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+
+    /* ─── BAGGRUND ─── */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--page-bg);
+      transition: background 0.4s;
+    }
+
+    .page-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 55px 55px;
+      mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+      transition: none;
+    }
+
+    .page-radial {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 12% 22%, var(--radial-1) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 50% at 88% 78%, var(--radial-2) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 35% at 55% 50%, var(--radial-3) 0%, transparent 55%);
+    }
+
+    .blob-amber {
+      position: absolute;
+      top: -8%; left: 2%;
+      width: 600px; height: 480px;
+      background: var(--blob-a);
+      border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%;
+      filter: blur(100px);
+      animation: morph-a 14s ease-in-out infinite;
+    }
+
+    .blob-blue {
+      position: absolute;
+      bottom: -10%; right: 0%;
+      width: 620px; height: 500px;
+      background: var(--blob-b);
+      border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%;
+      filter: blur(120px);
+      animation: morph-b 18s ease-in-out infinite;
+    }
+
+    .beam { position: absolute; pointer-events: none; }
+
+    .beam-h1 {
+      top: 19%; height: 2px; width: 340px;
+      background: linear-gradient(to right, transparent, var(--beam-h1) 50%, transparent);
+      filter: blur(1px);
+      animation: sweep-h 10s cubic-bezier(0.4,0,0.6,1) 0s infinite;
+    }
+    .beam-h2 {
+      top: 55%; height: 1px; width: 220px;
+      background: linear-gradient(to right, transparent, var(--beam-h2) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-h 13s cubic-bezier(0.4,0,0.6,1) 4s infinite;
+    }
+    .beam-h3 {
+      top: 80%; height: 1px; width: 180px;
+      background: linear-gradient(to right, transparent, var(--beam-h3) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-h 16s cubic-bezier(0.4,0,0.6,1) 9s infinite;
+    }
+    .beam-v1 {
+      left: 20%; width: 1px; height: 280px;
+      background: linear-gradient(to bottom, transparent, var(--beam-v1) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-v 12s cubic-bezier(0.4,0,0.6,1) 2s infinite;
+    }
+    .beam-v2 {
+      right: 25%; width: 1px; height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--beam-v2) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-v 15s cubic-bezier(0.4,0,0.6,1) 7s infinite;
+    }
+
+    .page-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 85% 70% at 50% 35%, transparent 50%, var(--vignette) 100%);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      padding: 3rem 2rem 2rem;
+    }
+
+    .hero-bg { display: none; }
+    .hero-grid { display: none; }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(232,146,10,0.1);
+      border: 1px solid rgba(232,146,10,0.25);
+      color: var(--amber);
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 700;
+      color: var(--h1-color);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+      animation: fadeDown 0.6s 0.2s ease both;
+    }
+
+    .hero-form {
+      display: flex;
+      gap: 0;
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+      animation: fadeDown 0.6s 0.3s ease both;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(15,30,60,0.08);
+      overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .hero-form:focus-within {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(232,146,10,0.12);
+    }
+
+    .hero-search-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      min-height: 48px;
+      cursor: text;
+    }
+    .hero-search-wrap svg {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .hero-form input {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.25rem 0;
+      border: none;
+      background: transparent;
+      color: var(--input-color);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .hero-form input::placeholder { color: var(--input-ph); }
+
+    .search-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border-radius: 100px;
+      padding: 0.18rem 0.3rem 0.18rem 0.7rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .search-tag-remove {
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.22);
+      color: inherit;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem;
+      padding: 0;
+      line-height: 1;
+      transition: background 0.15s;
+    }
+    .search-tag-remove:hover { background: rgba(255,255,255,0.4); }
+
+    .hero-divider {
+      width: 1px;
+      height: 22px;
+      background: var(--input-border);
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    .hero-filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 0 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s;
+      height: 100%;
+    }
+    .hero-filter-btn:hover { color: var(--text-main); }
+    .hero-filter-btn svg { width: 14px; height: 14px; }
+
+    .hero-search-btn {
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border: none;
+      padding: 0 1.3rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .hero-search-btn:hover { background: var(--btn-hover); }
+    .hero-search-btn svg { width: 15px; height: 15px; }
+
+    /* SEARCH DROPDOWN */
+    .search-wrap {
+      position: relative;
+      z-index: 50;
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+      animation: fadeDown 0.6s 0.3s ease both;
+    }
+    .search-wrap .hero-form { margin: 0; animation: none; }
+
+    .search-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0; right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(15,30,60,0.18);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 200;
+      display: none;
+    }
+    [data-theme="dark"] .search-dropdown {
+      background: #121d3a;
+    }
+    .search-dropdown::-webkit-scrollbar { width: 6px; }
+    .search-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .search-dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .search-dropdown.open { display: block; }
+
+    .search-dd-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-bottom: 1px solid var(--border);
+    }
+    .search-dd-item:last-child { border-bottom: none; }
+    .search-dd-item:hover,
+    .search-dd-item.focused { background: #fdf6ec; }
+    [data-theme="dark"] .search-dd-item:hover,
+    [data-theme="dark"] .search-dd-item.focused { background: #1a2d55; }
+
+    .search-dd-icon {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: rgba(232,146,10,0.10);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+    }
+    .search-dd-main {
+      flex: 1;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    .search-dd-main em { font-style: normal; color: var(--amber); font-weight: 600; }
+    .search-dd-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .search-dd-empty {
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* FILTER DROPDOWN */
+    .filter-wrap {
+      position: relative;
+    }
+    .filter-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(15,30,60,0.15);
+      z-index: 200;
+      padding: 0.75rem;
+      display: none;
+      min-width: 340px;
+    }
+    [data-theme="dark"] .filter-dropdown { background: #121d3a; }
+    .filter-dropdown.open { display: block; }
+
+    .filter-dd-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-dd-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+    .filter-dd-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .filter-dd-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.85rem;
+      cursor: pointer;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--text-main);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      transition: all 0.15s;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .filter-dd-item:hover { border-color: var(--amber); color: var(--amber); }
+    .filter-dd-item.checked {
+      background: var(--amber);
+      border-color: var(--amber);
+      color: #fff;
+    }
+
+    /* LISTINGS SECTION */
+    .listings-section {
+      display: none;
+      position: relative;
+      z-index: 1;
+      padding: 3rem 2rem 6rem;
+    }
+    .listings-section.active { display: block; }
+
+    .listings-header {
+      max-width: 1060px;
+      margin: 0 auto 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .listings-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--h1-color);
+      letter-spacing: -0.02em;
+    }
+    .listings-title span { color: var(--amber); }
+    .listings-back {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .listings-back:hover { border-color: var(--amber); color: var(--text-main); }
+
+    .listings-grid {
+      max-width: 1060px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media (max-width: 900px) { .listings-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .listings-grid { grid-template-columns: 1fr; } }
+
+    .listing-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .listing-card:hover { box-shadow: var(--card-hover-shadow); transform: translateY(-3px); }
+
+    .listing-card-img {
+      height: 190px;
+      position: relative;
+    }
+    .listing-card-img .prop-img-overlay { background: linear-gradient(to bottom, transparent 50%, rgba(10,15,30,0.5) 100%); }
+    .listing-price {
+      position: absolute;
+      bottom: 10px; left: 10px;
+      background: rgba(10,15,30,0.82);
+      color: #fff;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 7px;
+      backdrop-filter: blur(8px);
+    }
+    .listing-card-body { padding: 1.1rem 1.2rem 1.3rem; }
+    .listing-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(232,146,10,0.12);
+      color: var(--amber);
+      margin-bottom: 0.5rem;
+    }
+    .listing-tag.leje { background: rgba(20,100,200,0.10); color: #4080d0; }
+    [data-theme="dark"] .listing-tag.leje { color: #7ab0f0; }
+    .listing-addr {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+    }
+    .listing-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .listing-btn {
+      display: block;
+      width: 100%;
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border: none;
+      border-radius: 8px;
+      padding: 0.65rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .listing-btn:hover { background: var(--btn-hover); }
+
+    .hero-trust {
+      font-size: 0.82rem;
+      color: var(--trust-color);
+      letter-spacing: 0.02em;
+      animation: fadeDown 0.6s 0.4s ease both;
+    }
+    .hero-trust span { color: var(--trust-span); }
+
+    .search-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber);
+      text-align: center;
+      margin-bottom: 0.6rem;
+    }
+
+    /* HERO CARDS */
+    .hero-cards {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-cards-set { display: none; }
+    .hero-cards-set.active { display: contents; }
+
+    .side-cards {
+      position: absolute;
+      top: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 7rem 0 3rem;
+      pointer-events: none;
+    }
+    .side-left  { left: 1.5%; }
+    .side-right { right: 1.5%; }
+
+    .prop-card {
+      position: relative;
+      width: 205px;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 10px 36px rgba(15,30,60,0.13);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      pointer-events: auto;
+      flex-shrink: 0;
+      transition: box-shadow 0.3s;
+    }
+    .prop-card:hover { box-shadow: 0 18px 50px rgba(15,30,60,0.22); }
+
+    /* Left column rotations + floats */
+    .side-left .prop-card:nth-child(1) { animation: fl1 7s ease-in-out infinite; }
+    .side-left .prop-card:nth-child(2) { animation: fl2 8.5s ease-in-out 0.8s infinite; margin-left: 18px; }
+    .side-left .prop-card:nth-child(3) { animation: fl3 9s ease-in-out 1.5s infinite; }
+    /* Right column rotations + floats */
+    .side-right .prop-card:nth-child(1) { animation: fr1 7.5s ease-in-out 0.3s infinite; }
+    .side-right .prop-card:nth-child(2) { animation: fr2 8s ease-in-out 1.1s infinite; margin-right: 18px; }
+    .side-right .prop-card:nth-child(3) { animation: fr3 9.5s ease-in-out 0.6s infinite; }
+
+    @keyframes fl1 { 0%,100%{transform:rotate(-2deg) translateY(0)}   50%{transform:rotate(-2deg) translateY(-9px)} }
+    @keyframes fl2 { 0%,100%{transform:rotate(1.5deg) translateY(0)}  50%{transform:rotate(1.5deg) translateY(-11px)} }
+    @keyframes fl3 { 0%,100%{transform:rotate(-1deg) translateY(0)}   50%{transform:rotate(-1deg) translateY(-8px)} }
+    @keyframes fr1 { 0%,100%{transform:rotate(2deg) translateY(0)}    50%{transform:rotate(2deg) translateY(-10px)} }
+    @keyframes fr2 { 0%,100%{transform:rotate(-1.5deg) translateY(0)} 50%{transform:rotate(-1.5deg) translateY(-12px)} }
+    @keyframes fr3 { 0%,100%{transform:rotate(1deg) translateY(0)}    50%{transform:rotate(1deg) translateY(-8px)} }
+
+    .prop-card-img {
+      height: 130px;
+      position: relative;
+      overflow: hidden;
+    }
+    .prop-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(10,15,30,0.55) 100%);
+    }
+    .prop-price-badge {
+      position: absolute;
+      bottom: 7px; left: 7px;
+      background: rgba(10,15,30,0.82);
+      color: #fff;
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 5px;
+      backdrop-filter: blur(8px);
+      letter-spacing: -0.01em;
+    }
+    .prop-bd-badge {
+      position: absolute;
+      top: 7px; right: 7px;
+      background: rgba(232,146,10,0.92);
+      color: #fff;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.4rem;
+      border-radius: 4px;
+    }
+    .prop-tag {
+      display: inline-block;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(232,146,10,0.12);
+      color: var(--amber);
+      margin-bottom: 0.4rem;
+    }
+    .prop-tag.leje-tag {
+      background: rgba(20,100,200,0.10);
+      color: #4080d0;
+    }
+    [data-theme="dark"] .prop-tag.leje-tag { color: #7ab0f0; background: rgba(100,160,255,0.12); }
+    .prop-card-body { padding: 0.8rem 0.9rem 0.9rem; }
+    .prop-card-addr {
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--text-main);
+      margin-bottom: 0.28rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .prop-card-meta {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--scroll-color);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fadeDown 0.6s 0.8s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--scroll-line), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--stats-bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .stats-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--stat-num);
+      line-height: 1;
+    }
+    .stat-number span { color: var(--amber); }
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* SECTIONS */
+    section { padding: 6rem 2rem; position: relative; z-index: 1; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--section-title);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 520px;
+    }
+
+    /* HOW IT WORKS */
+    .how { background: transparent; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .step {
+      position: relative;
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .step:hover {
+      border-color: rgba(232,146,10,0.35);
+      box-shadow: var(--card-hover-shadow);
+      transform: translateY(-4px);
+    }
+
+    .step-num {
+      font-family: 'Fraunces', serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      opacity: 0.8;
+      text-align: center;
+    }
+
+    .step { text-align: center; }
+    .step-icon { margin-left: auto; margin-right: auto; }
+    .step h3 { text-align: center; }
+    .step p { text-align: center; }
+
+    .step-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(232,146,10,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+    }
+    .step-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--amber);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .step h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--step-h3);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .step p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* COMPARISON */
+    .comparison { background: transparent; }
+
+    .comp-table {
+      margin-top: 3rem;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--comp-tbl);
+      box-shadow: var(--comp-tbl-shadow);
+    }
+
+    .comp-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-row:last-child { border-bottom: none; }
+
+    .comp-cell {
+      padding: 1.1rem 1.5rem;
+      font-size: 0.92rem;
+      color: var(--comp-cell);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid var(--border);
+    }
+    .comp-cell:last-child { border-right: none; }
+
+    .comp-row.header .comp-cell {
+      background: var(--comp-hdr-bg);
+      color: var(--comp-hdr-col);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+    }
+    .comp-row.header .comp-cell.highlight {
+      background: var(--amber);
+      color: var(--white);
+    }
+
+    .comp-cell.highlight { background: var(--comp-hi-bg); font-weight: 600; }
+    .comp-cell.bad { color: #DC2626; }
+    .comp-cell.good { color: #16A34A; }
+    .comp-cell.best { color: var(--amber); font-weight: 700; }
+
+    .check { color: var(--check); margin-right: 0.4rem; }
+    .cross { color: var(--cross); margin-right: 0.4rem; }
+
+    /* CALCULATOR */
+    .calculator { background: transparent; }
+
+    .calc-box {
+      margin-top: 3.5rem;
+      background: var(--calc-card);
+      border: 1px solid var(--calc-card-brd);
+      border-radius: 20px;
+      padding: 3rem;
+    }
+
+    .calc-label {
+      font-size: 0.88rem;
+      color: var(--calc-lbl);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .calc-value {
+      font-family: 'Fraunces', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--calc-val);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .calc-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--calc-slider);
+      outline: none;
+      margin-bottom: 0.5rem;
+    }
+    .calc-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--amber);
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(232,146,10,0.25);
+    }
+
+    .calc-range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--calc-range);
+      margin-bottom: 3rem;
+    }
+
+    .calc-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .calc-result {
+      background: var(--calc-card);
+      border: 1px solid var(--calc-card-brd);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .calc-result.highlight {
+      background: rgba(232,146,10,0.12);
+      border-color: rgba(232,146,10,0.3);
+    }
+
+    .calc-result-label {
+      font-size: 0.78rem;
+      color: var(--calc-card-lbl);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+    .calc-result.highlight .calc-result-label { color: rgba(232,146,10,0.9); }
+
+    .calc-result-value {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--calc-val);
+      letter-spacing: -0.02em;
+    }
+    .calc-result.highlight .calc-result-value { color: var(--amber); }
+
+    .calc-result-sub {
+      font-size: 0.78rem;
+      color: var(--calc-card-sub);
+      margin-top: 0.3rem;
+    }
+
+    .savings-badge {
+      margin-top: 2rem;
+      background: rgba(22,163,74,0.12);
+      border: 1px solid rgba(22,163,74,0.25);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .savings-badge-text { font-size: 0.95rem; color: var(--calc-badge); }
+    .savings-badge-text strong { color: #16A34A; font-weight: 600; }
+
+    /* SIGNUP */
+    .signup { background: var(--signup-bg); text-align: center; }
+
+    .signup-box {
+      max-width: 560px;
+      margin: 3rem auto 0;
+      background: var(--signup-box);
+      border-radius: 20px;
+      padding: 3.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--signup-box-shadow);
+    }
+
+    .signup-box::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -20%;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(232,146,10,0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .signup-box h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .signup-box p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .signup-form { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .signup-form input {
+      padding: 0.9rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid var(--si-input-brd);
+      background: var(--si-input-bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .signup-form input::placeholder { color: var(--si-note); }
+    .signup-form input:focus { border-color: var(--amber); }
+
+    .signup-form button {
+      background: var(--si-btn-bg);
+      color: var(--si-btn-color);
+      border: none;
+      padding: 0.9rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .signup-form button:hover { background: var(--si-btn-hover); transform: translateY(-1px); }
+
+    .signup-note {
+      font-size: 0.78rem;
+      color: var(--si-note);
+      margin-top: 1rem;
+    }
+
+    .success-msg {
+      display: none;
+      background: rgba(22,163,74,0.15);
+      border: 1px solid rgba(22,163,74,0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      color: #4ADE80;
+      font-size: 0.92rem;
+      text-align: center;
+      margin-top: 0.75rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--footer-bg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      z-index: 1;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+    .footer-logo span { color: var(--amber); }
+    footer p { font-size: 0.82rem; color: rgba(255,255,255,0.3); line-height: 1.6; }
+
+    /* ANIMATIONS */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+    }
+    /* Blob morph — organisk form-skift + langsom float */
+    @keyframes morph-a {
+      0%   { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); }
+      25%  { border-radius: 50% 50% 38% 62% / 58% 42% 58% 42%; transform: translate(20px, 30px) scale(1.04); }
+      50%  { border-radius: 38% 62% 60% 40% / 42% 58% 42% 58%; transform: translate(-15px, 15px) scale(0.97); }
+      75%  { border-radius: 55% 45% 46% 54% / 54% 46% 54% 46%; transform: translate(25px, -20px) scale(1.02); }
+      100% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); }
+    }
+    @keyframes morph-b {
+      0%   { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); }
+      30%  { border-radius: 60% 40% 55% 45% / 44% 56% 44% 56%; transform: translate(-30px, -25px) scale(1.05); }
+      60%  { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; transform: translate(20px, 15px) scale(0.96); }
+      100% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); }
+    }
+    /* Beam sweep — accelerer ind, hold, fade ud */
+    @keyframes sweep-h {
+      0%   { left: -25%; opacity: 0; }
+      6%   { opacity: 1; }
+      94%  { opacity: 1; }
+      100% { left: 115%; opacity: 0; }
+    }
+    @keyframes sweep-v {
+      0%   { top: -25%; opacity: 0; }
+      6%   { opacity: 1; }
+      94%  { opacity: 1; }
+      100% { top: 115%; opacity: 0; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .prop-card { width: 175px; }
+      .side-left { left: 0.5%; }
+      .side-right { right: 0.5%; }
+    }
+    @media (max-width: 1000px) { .hero-cards { display: none; } }
+
+    @media (max-width: 640px) {
+      .hero-form { flex-direction: column; }
+      .comp-row { grid-template-columns: 1.5fr 1fr 1fr; }
+      .comp-cell { padding: 0.9rem 0.75rem; font-size: 0.8rem; }
+      .stats-inner { gap: 2rem; }
+      .calc-box { padding: 2rem 1.5rem; }
+      .signup-box { padding: 2.5rem 1.5rem; }
+      section { padding: 4rem 1.25rem; }
+
+      nav { padding: 1rem 1.25rem; }
+      .toggle-label { display: none; }
+      .theme-toggle { padding: 0.3rem 0.5rem; }
+      .nav-btn { padding: 0.55rem 0.9rem; font-size: 0.82rem; }
+      .nav-right { gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE BACKGROUND -->
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-radial"></div>
+    <div class="blob-amber"></div>
+    <div class="blob-blue"></div>
+    <div class="page-grid"></div>
+    <div class="beam beam-h1"></div>
+    <div class="beam beam-h2"></div>
+    <div class="beam beam-h3"></div>
+    <div class="beam beam-v1"></div>
+    <div class="beam beam-v2"></div>
+    <div class="page-vignette"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="logo">Bolig<span>Direkte</span></div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Skift tema">
+        <!-- Moon icon (shown in light mode) -->
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <!-- Sun icon (shown in dark mode) -->
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span class="toggle-label">Mørk</span>
+      </button>
+      <button class="nav-btn nav-btn-outline" onclick="window.open('login.html','_blank')">Log ind</button>
+      <button class="nav-btn" onclick="window.open('tilmeld.html','_blank')">Tilmeld dig</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-cards" aria-hidden="true">
+
+      <!-- ── SALG set ── -->
+      <div class="hero-cards-set active" id="cards-salg">
+        <div class="side-cards side-left">
+          <div class="prop-card" style="--img:linear-gradient(140deg,#c8855a,#e2a97a 45%,#b86844 75%,#7a4830)">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#c8855a,#e2a97a 45%,#b86844 75%,#7a4830)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">3.250.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Lindevej 8, Odense</div>
+              <div class="prop-card-meta"><span>🏠 Villa</span><span>148 m²</span><span>5 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#c9962a,#e8b84a 45%,#b07820 75%,#7a5015)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">2.100.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Kornmarksvej 3, Vejle</div>
+              <div class="prop-card-meta"><span>🏘 Rækkehus</span><span>108 m²</span><span>4 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#c4a87a,#dcc89a 45%,#a88855 75%,#7a6035)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">4.800.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Strandvejen 55, Hellerup</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>95 m²</span><span>3 vær.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="side-cards side-right">
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#5c7f9e,#86a8be 45%,#3f6280 75%,#2a4560)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">1.895.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Vesterbrogade 44, Kbh</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>82 m²</span><span>3 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#6a8f6e,#8fb892 45%,#4f7055 75%,#364e39)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">7.200.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Skovvej 12, Frederiksberg</div>
+              <div class="prop-card-meta"><span>🏠 Villa</span><span>185 m²</span><span>6 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#8b7355,#a89070 45%,#6e5540 75%,#4a3828)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">2.650.000 kr.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag">Til salg</div>
+              <div class="prop-card-addr">Rosendalsvej 21, Aarhus</div>
+              <div class="prop-card-meta"><span>🏘 Rækkehus</span><span>112 m²</span><span>4 vær.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LEJE set ── -->
+      <div class="hero-cards-set" id="cards-leje">
+        <div class="side-cards side-left">
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#5a6f8a,#7a92a8 45%,#3e5570 75%,#283848)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">9.500 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Nørrebrogade 78, Kbh</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>65 m²</span><span>2 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#c4826a,#e0a892 45%,#a86250 75%,#784540)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">5.200 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Studiestræde 12, Kbh</div>
+              <div class="prop-card-meta"><span>🛏 Værelse</span><span>18 m²</span><span>1 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#4a8a88,#6aacaa 45%,#326868 75%,#1e4848)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">8.200 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Åboulevard 30, Aarhus</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>72 m²</span><span>3 vær.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="side-cards side-right">
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#4a5080,#6a70a8 45%,#303060 75%,#1e2048)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">7.800 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Istedgade 15, Kbh V</div>
+              <div class="prop-card-meta"><span>🏠 Studio</span><span>32 m²</span><span>1 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#a06880,#c088a0 45%,#805065 75%,#583545)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">7.500 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Allehelgensgade 5, Roskilde</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>78 m²</span><span>3 vær.</span></div>
+            </div>
+          </div>
+          <div class="prop-card">
+            <div class="prop-card-img" style="background:linear-gradient(140deg,#4a6e50,#6a9270 45%,#364e3a 75%,#223228)">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">6.900 kr./md.</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">Frederiksgade 20, Odense</div>
+              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>68 m²</span><span>2 vær.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Danmarks nye boligplatform &nbsp;·&nbsp; Kom med fra start</div>
+      <div class="mode-switch">
+        <button class="mode-btn active" data-mode="salg" onclick="switchMode('salg')">🏠 Køb &amp; Salg</button>
+        <button class="mode-btn" data-mode="leje" onclick="switchMode('leje')">🔑 Leje &amp; Udleje</button>
+      </div>
+      <h1>Sælg din bolig.<br><em>Betal kun når<br>den er solgt.</em></h1>
+      <p>BoligDirekte giver dig fuld kontrol over dit boligsalg — uden månedlige abonnementer og uden mæglersalær. Du betaler kun 0,5% når handlen er i hus.</p>
+      <div class="search-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>&nbsp; Find bolig nu — søg her &nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
+      <div class="search-wrap">
+        <div class="hero-form">
+          <div class="hero-search-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="hero-search" placeholder="Søg by, postnummer eller adresse…" autocomplete="off" />
+          </div>
+          <div class="hero-divider"></div>
+          <button class="hero-filter-btn" id="filter-btn" onclick="toggleFilter(event)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+            Filter <span id="filter-count" style="display:none;background:var(--amber);color:#fff;border-radius:100px;padding:0.05rem 0.45rem;font-size:0.72rem;font-weight:700;margin-left:2px;"></span>
+          </button>
+          <button class="hero-search-btn" onclick="openListings(true)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Søg
+          </button>
+        </div>
+        <div class="search-dropdown" id="search-dropdown"></div>
+        <div class="filter-dropdown" id="filter-dropdown">
+          <div class="filter-dd-label">Boligtype</div>
+          <div class="filter-dd-grid">
+            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Huse</label>
+            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Lejligheder</label>
+            <label class="filter-dd-item" data-leje-only onclick="toggleFilter_item(this)">Værelser</label>
+            <label class="filter-dd-item" data-leje-only onclick="toggleFilter_item(this)">Studieboliger</label>
+            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Rækkehuse</label>
+          </div>
+        </div>
+      </div>
+      <div class="hero-trust">
+        <span>Gratis at oprette</span> &nbsp;·&nbsp; <span>Kun 0,5% ved salg</span> &nbsp;·&nbsp; <span>MitID verificeret</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-number">307 <span>mia.</span></div>
+        <div class="stat-label">Solgt for i Danmark i 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100<span>k+</span></div>
+        <div class="stat-label">Bolighandler om året</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">0,5<span>%</span></div>
+        <div class="stat-label">Vores fee — kun ved salg</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3 <span>mio.</span></div>
+        <div class="stat-label">Gennemsnitlig salgspris</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTINGS -->
+  <div class="listings-section" id="listings-section">
+    <div class="listings-header">
+      <div class="listings-title" id="listings-title">Boliger til salg</div>
+      <button class="listings-back" onclick="closeListings()">← Tilbage</button>
+    </div>
+    <div class="listings-grid" id="listings-grid">
+
+      <!-- SALG -->
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#c8855a,#e2a97a 45%,#b86844 75%,#7a4830)">
+          <div class="prop-img-overlay"></div><div class="listing-price">3.250.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Lindevej 8, Odense</div>
+          <div class="listing-meta"><span>🏠 Villa</span><span>148 m²</span><span>5 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#c9962a,#e8b84a 45%,#b07820 75%,#7a5015)">
+          <div class="prop-img-overlay"></div><div class="listing-price">2.100.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Kornmarksvej 3, Vejle</div>
+          <div class="listing-meta"><span>🏘 Rækkehus</span><span>108 m²</span><span>4 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#c4a87a,#dcc89a 45%,#a88855 75%,#7a6035)">
+          <div class="prop-img-overlay"></div><div class="listing-price">4.800.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Strandvejen 55, Hellerup</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>95 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#5c7f9e,#86a8be 45%,#3f6280 75%,#2a4560)">
+          <div class="prop-img-overlay"></div><div class="listing-price">1.895.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Vesterbrogade 44, København</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>82 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#6a8f6e,#8fb892 45%,#4f7055 75%,#364e39)">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.200.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Skovvej 12, Frederiksberg</div>
+          <div class="listing-meta"><span>🏠 Villa</span><span>185 m²</span><span>6 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#8b7355,#a89070 45%,#6e5540 75%,#4a3828)">
+          <div class="prop-img-overlay"></div><div class="listing-price">2.650.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Rosendalsvej 21, Aarhus</div>
+          <div class="listing-meta"><span>🏘 Rækkehus</span><span>112 m²</span><span>4 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+
+      <!-- LEJE -->
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#5a6f8a,#7a92a8 45%,#3e5570 75%,#283848)">
+          <div class="prop-img-overlay"></div><div class="listing-price">9.500 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Nørrebrogade 78, København</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>65 m²</span><span>2 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#c4826a,#e0a892 45%,#a86250 75%,#784540)">
+          <div class="prop-img-overlay"></div><div class="listing-price">5.200 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Studiestræde 12, København</div>
+          <div class="listing-meta"><span>🛏 Værelse</span><span>18 m²</span><span>1 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#4a8a88,#6aacaa 45%,#326868 75%,#1e4848)">
+          <div class="prop-img-overlay"></div><div class="listing-price">8.200 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Åboulevard 30, Aarhus</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>72 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#4a5080,#6a70a8 45%,#303060 75%,#1e2048)">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.800 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Istedgade 15, København V</div>
+          <div class="listing-meta"><span>🏠 Studio</span><span>32 m²</span><span>1 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#a06880,#c088a0 45%,#805065 75%,#583545)">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.500 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Allehelgensgade 5, Roskilde</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>78 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" style="display:none">
+        <div class="listing-card-img" style="background:linear-gradient(140deg,#4a6e50,#6a9270 45%,#364e3a 75%,#223228)">
+          <div class="prop-img-overlay"></div><div class="listing-price">6.900 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Frederiksgade 20, Odense</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>68 m²</span><span>2 vær.</span></div>
+          <button class="listing-btn">Se opslag</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Sådan virker det</div>
+        <h2 class="section-title">Tre trin til dit boligsalg</h2>
+        <p class="section-sub">Ingen binding, ingen skjulte gebyrer — du betaler først når boligen er solgt.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">Trin 01</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>Opret din bolig</h3>
+          <p>Log ind med MitID for at verificere din identitet og adresse. Opret dit boligopslag med billeder, beskrivelse og pris — helt gratis.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">Trin 02</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>Mød dine købere</h3>
+          <p>Din annonce er synlig for alle — ingen login kræves for at se opslag. Del den på sociale medier og lad interesserede kontakte dig direkte.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">Trin 03</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>Betal kun ved salg</h3>
+          <p>Når boligen er tinglyst til ny ejer verificerer vi salget automatisk via de offentlige registre. Derefter sendes en faktura på 0,5% af salgsprisen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="comparison">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Prissammenligning</div>
+        <h2 class="section-title">Hvad koster de andre?</h2>
+        <p class="section-sub">Se hvad du sparer sammenlignet med en traditionel mægler.</p>
+      </div>
+      <div class="comp-table reveal">
+        <div class="comp-row header">
+          <div class="comp-cell">Platform</div>
+          <div class="comp-cell">Traditionel mægler</div>
+          <div class="comp-cell highlight">BoligDirekte</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Gratis at oprette</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Betalingsmodel</div>
+          <div class="comp-cell">1–3% salær</div>
+          <div class="comp-cell highlight best">0,5% ved salg</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Pris på 2 mio. bolig</div>
+          <div class="comp-cell bad">20.000–60.000 kr</div>
+          <div class="comp-cell highlight good">15.000 kr</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Betal kun ved salg</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">MitID verificering</div>
+          <div class="comp-cell good"><span class="check">✓</span> Ja</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="calculator">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Besparelsesberegner</div>
+        <h2 class="section-title">Hvad sparer du?</h2>
+        <p class="section-sub">Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.</p>
+      </div>
+      <div class="calc-box reveal">
+        <div class="calc-label">Din forventede salgspris</div>
+        <div class="calc-value" id="calc-display">2.000.000 kr.</div>
+        <input type="range" class="calc-slider" id="calc-slider"
+          min="500000" max="10000000" step="100000" value="2000000"
+          oninput="updateCalc(this.value)" />
+        <div class="calc-range-labels">
+          <span>500.000 kr.</span>
+          <span>10.000.000 kr.</span>
+        </div>
+        <div class="calc-results">
+          <div class="calc-result">
+            <div class="calc-result-label">Traditionel mægler (2%)</div>
+            <div class="calc-result-value" id="agent-cost">40.000 kr.</div>
+            <div class="calc-result-sub">Betales uanset resultat</div>
+          </div>
+          <div class="calc-result highlight">
+            <div class="calc-result-label">BoligDirekte (0,5%)</div>
+            <div class="calc-result-value" id="our-cost">15.000 kr.</div>
+            <div class="calc-result-sub">Kun ved succesfuldt salg</div>
+          </div>
+        </div>
+        <div class="savings-badge">
+          <div class="savings-badge-text">
+            <span id="savings-msg-pre">Du sparer </span><strong id="savings-amount">35.000 kr.</strong><span id="savings-msg-post"> sammenlignet med en traditionel mægler på 2%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Bolig<span>Direkte</span></div>
+    <p>© 2025 BoligDirekte · Sælg din bolig — betal kun ved salg<br>
+    Platform under udvikling · MitID verificeret</p>
+  </footer>
+
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next === 'dark' ? 'dark' : '');
+      localStorage.setItem('theme', next);
+      document.querySelector('.toggle-label').textContent = next === 'dark' ? 'Lys' : 'Mørk';
+    }
+
+    // Apply saved theme on load
+    (function() {
+      const saved = localStorage.getItem('theme') || 'light';
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Label updated after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelector('.toggle-label').textContent = 'Lys';
+        });
+      }
+    })();
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function fmt(n) {
+      return new Intl.NumberFormat('da-DK').format(Math.round(n)) + ' kr.';
+    }
+
+    function updateCalc(val) {
+      val = parseInt(val);
+      const mode = window._currentMode || 'salg';
+      if (mode === 'leje') {
+        const portalYear = val * 399 * 12;
+        document.getElementById('calc-display').textContent = val + ' lejemål';
+        document.getElementById('agent-cost').textContent = fmt(val * 399) + '/md.';
+        document.getElementById('our-cost').textContent = '0 kr.';
+        document.getElementById('savings-amount').textContent = fmt(portalYear) + '/år';
+      } else {
+        document.getElementById('calc-display').textContent = fmt(val);
+        document.getElementById('agent-cost').textContent = fmt(val * 0.02);
+        document.getElementById('our-cost').textContent = fmt(val * 0.005);
+        document.getElementById('savings-amount').textContent = fmt(val * 0.02 - val * 0.005);
+      }
+    }
+
+    const SVG = {
+      lock:   '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      home:   '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+      check:  '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+      eye:    '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+      card:   '<svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>',
+      users:  '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    };
+
+    const modeContent = {
+      salg: {
+        badge: 'Danmarks nye boligplatform &nbsp;·&nbsp; Kom med fra start',
+        h1: 'Sælg din bolig.<br><em>Betal kun når<br>den er solgt.</em>',
+        heroP: 'BoligDirekte giver dig fuld kontrol over dit boligsalg — uden månedlige abonnementer og uden mæglersalær. Du betaler kun 0,5% når handlen er i hus.',
+        trust: '<span>Gratis at oprette</span> &nbsp;·&nbsp; <span>Kun 0,5% ved salg</span> &nbsp;·&nbsp; <span>MitID verificeret</span>',
+        stats: [
+          { num: '307 <span>mia.</span>', label: 'Solgt for i Danmark i 2025' },
+          { num: '100<span>k+</span>', label: 'Bolighandler om året' },
+          { num: '0,5<span>%</span>', label: 'Vores fee — kun ved salg' },
+          { num: '3 <span>mio.</span>', label: 'Gennemsnitlig salgspris' }
+        ],
+        howLabel: 'Sådan virker det',
+        howTitle: 'Tre trin til dit boligsalg',
+        howSub: 'Ingen binding, ingen skjulte gebyrer — du betaler først når boligen er solgt.',
+        steps: [
+          { icon: SVG.lock,  title: 'Opret din bolig', text: 'Log ind med MitID for at verificere din identitet og adresse. Opret dit boligopslag med billeder, beskrivelse og pris — helt gratis.' },
+          { icon: SVG.users, title: 'Mød dine købere', text: 'Din annonce er synlig for alle — ingen login kræves for at se opslag. Del den på sociale medier og lad interesserede kontakte dig direkte.' },
+          { icon: SVG.check, title: 'Betal kun ved salg', text: 'Når boligen er tinglyst til ny ejer verificerer vi salget automatisk via de offentlige registre. Derefter sendes en faktura på 0,5% af salgsprisen.' }
+        ],
+        compTitle: 'Hvad koster de andre?',
+        compSub: 'Se hvad du sparer sammenlignet med en traditionel mægler.',
+        compHeaders: ['Platform', 'Traditionel mægler', 'BoligDirekte'],
+        compRows: [
+          { cells: ['Gratis at oprette', '<span class="cross">✗</span> Nej', '<span class="check">✓</span> Ja'], cls: ['', 'bad', 'good'] },
+          { cells: ['Betalingsmodel', '1–3% salær', '0,5% ved salg'], cls: ['', '', 'best'] },
+          { cells: ['Pris på 2 mio. bolig', '20.000–60.000 kr', '15.000 kr'], cls: ['', 'bad', 'good'] },
+          { cells: ['Betal kun ved salg', '<span class="cross">✗</span> Nej', '<span class="check">✓</span> Ja'], cls: ['', 'bad', 'good'] },
+          { cells: ['MitID verificering', '<span class="check">✓</span> Ja', '<span class="check">✓</span> Ja'], cls: ['', 'good', 'good'] }
+        ],
+        calcLabel: 'Din forventede salgspris',
+        calcTitle: 'Hvad sparer du?',
+        calcSub: 'Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.',
+        sliderMin: 500000, sliderMax: 10000000, sliderStep: 100000, sliderVal: 2000000,
+        sliderLeft: '500.000 kr.', sliderRight: '10.000.000 kr.',
+        res1Label: 'Traditionel mægler (2%)', res1Sub: 'Betales uanset resultat',
+        res2Label: 'BoligDirekte (0,5%)', res2Sub: 'Kun ved succesfuldt salg',
+        savingsPre: 'Du sparer', savingsPost: 'sammenlignet med en traditionel mægler på 2%',
+        signupH3: 'Tilmeld dig ventelisten',
+        signupP: 'Sælg din bolig på dine egne præmisser — vi giver dig besked når vi åbner.',
+      },
+      leje: {
+        badge: 'Danmarks nye boligplatform &nbsp;·&nbsp; Kom med fra start',
+        h1: 'Udlej din bolig.<br><em>Find den rette<br>lejer direkte.</em>',
+        heroP: 'BoligDirekte forbinder udlejere og lejere uden mellemmænd. Opret din udlejningsbolig gratis — lejere betaler kun et lille gebyr for at se dine kontaktoplysninger.',
+        trust: '<span>Gratis for udlejer</span> &nbsp;·&nbsp; <span>Lejer betaler for kontakt</span> &nbsp;·&nbsp; <span>MitID verificeret</span>',
+        stats: [
+          { num: '620<span>k+</span>', label: 'Lejeboliger i Danmark' },
+          { num: '500<span>k+</span>', label: 'Lejere søger aktivt bolig' },
+          { num: '0 <span>kr.</span>', label: 'For udlejere — altid gratis' },
+          { num: '399 <span>kr.</span>', label: 'Hvad Boligportal koster/md.' }
+        ],
+        howLabel: 'Sådan virker det',
+        howTitle: 'Tre trin til din udlejning',
+        howSub: 'Ingen abonnement, ingen annoncepakker — udlejere betaler aldrig noget.',
+        steps: [
+          { icon: SVG.lock, title: 'Opret din udlejningsbolig', text: 'Verificer din identitet med MitID og opret et opslag med billeder, beskrivelse og månedlig husleje — helt gratis og uden tidsbegrænsning.' },
+          { icon: SVG.eye,  title: 'Lejere finder dig', text: 'Din bolig er synlig for alle lejere på platformen. Interesserede kan se opslaget frit, men betaler et lille engangsgebyr for at kontakte dig direkte.' },
+          { icon: SVG.card, title: 'Lejer betaler for kontakt', text: 'Når en lejer ønsker at kontakte dig betaler de ét engangsgebyr. Du modtager henvendelsen direkte og vælger selv hvem du vil leje ud til.' }
+        ],
+        compTitle: 'Hvad koster de andre?',
+        compSub: 'Se hvad du sparer som udlejer sammenlignet med Boligportal.',
+        compHeaders: ['Platform', 'Boligportal.dk', 'BoligDirekte'],
+        compRows: [
+          { cells: ['Gratis for udlejer', '<span class="cross">✗</span> Fra 399 kr./md.', '<span class="check">✓</span> Altid gratis'], cls: ['', 'bad', 'good'] },
+          { cells: ['Betalingsmodel', 'Månedligt abonnement', 'Lejer betaler'], cls: ['', '', 'best'] },
+          { cells: ['Pris per annonce/år', 'Op til 4.788 kr.', '0 kr.'], cls: ['', 'bad', 'good'] },
+          { cells: ['Lejer betaler kontakt', '<span class="cross">✗</span> Nej', '<span class="check">✓</span> Ja'], cls: ['', 'bad', 'good'] }
+        ],
+        calcLabel: 'Antal lejemål du annoncerer',
+        calcTitle: 'Hvad sparer du som udlejer?',
+        calcSub: 'Flyt skyderen og se hvad du sparer i abonnementsomkostninger sammenlignet med Boligportal.',
+        sliderMin: 1, sliderMax: 20, sliderStep: 1, sliderVal: 1,
+        sliderLeft: '1 lejemål', sliderRight: '20 lejemål',
+        res1Label: 'Boligportal (399 kr./md.)', res1Sub: 'Betales uanset om du finder lejer',
+        res2Label: 'BoligDirekte (0 kr.)', res2Sub: 'Altid gratis for udlejer',
+        savingsPre: 'Du sparer', savingsPost: 'om året sammenlignet med Boligportal',
+        signupH3: 'Bliv udlejer på BoligDirekte',
+        signupP: 'Nå lejere direkte uden abonnement — vi giver dig besked når platformen åbner.',
+      }
+    };
+
+    function switchMode(mode, instant) {
+      window._currentMode = mode;
+
+      // Buttons
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+      });
+
+      const hc = document.querySelector('.hero-content');
+      if (!instant) hc.classList.add('fading');
+      setTimeout(() => {
+        const c = modeContent[mode];
+
+        // Hero
+        document.querySelector('.hero-badge').innerHTML = c.badge;
+        document.querySelector('.hero-content h1').innerHTML = c.h1;
+        document.querySelector('.hero-content > p').innerHTML = c.heroP;
+        document.querySelector('.hero-trust').innerHTML = c.trust;
+
+        // Stats
+        const statEls = document.querySelectorAll('.stat');
+        c.stats.forEach((s, i) => {
+          statEls[i].querySelector('.stat-number').innerHTML = s.num;
+          statEls[i].querySelector('.stat-label').textContent = s.label;
+        });
+
+        // How it works
+        document.querySelector('.how .section-label').textContent = c.howLabel;
+        document.querySelector('.how .section-title').textContent = c.howTitle;
+        document.querySelector('.how .section-sub').textContent = c.howSub;
+        document.querySelectorAll('.step').forEach((el, i) => {
+          el.querySelector('.step-icon').innerHTML = c.steps[i].icon;
+          el.querySelector('h3').textContent = c.steps[i].title;
+          el.querySelector('p').textContent = c.steps[i].text;
+        });
+
+        // Comparison
+        document.querySelector('.comparison .section-title').textContent = c.compTitle;
+        document.querySelector('.comparison .section-sub').textContent = c.compSub;
+        let tblHTML = `<div class="comp-row header">
+          <div class="comp-cell">${c.compHeaders[0]}</div>
+          <div class="comp-cell">${c.compHeaders[1]}</div>
+          <div class="comp-cell highlight">${c.compHeaders[2]}</div>
+        </div>`;
+        c.compRows.forEach(row => {
+          tblHTML += `<div class="comp-row">
+            <div class="comp-cell ${row.cls[0]}">${row.cells[0]}</div>
+            <div class="comp-cell ${row.cls[1]}">${row.cells[1]}</div>
+            <div class="comp-cell highlight ${row.cls[2]}">${row.cells[2]}</div>
+          </div>`;
+        });
+        document.querySelector('.comp-table').innerHTML = tblHTML;
+
+        // Calculator
+        document.querySelector('.calculator .section-title').textContent = c.calcTitle;
+        document.querySelector('.calculator .section-sub').textContent = c.calcSub;
+        document.querySelector('.calc-label').textContent = c.calcLabel;
+        const sl = document.getElementById('calc-slider');
+        sl.min = c.sliderMin; sl.max = c.sliderMax; sl.step = c.sliderStep; sl.value = c.sliderVal;
+        document.querySelector('.calc-range-labels').innerHTML = `<span>${c.sliderLeft}</span><span>${c.sliderRight}</span>`;
+        document.querySelector('.calc-result:not(.highlight) .calc-result-label').textContent = c.res1Label;
+        document.querySelector('.calc-result:not(.highlight) .calc-result-sub').textContent = c.res1Sub;
+        document.querySelector('.calc-result.highlight .calc-result-label').textContent = c.res2Label;
+        document.querySelector('.calc-result.highlight .calc-result-sub').textContent = c.res2Sub;
+        document.getElementById('savings-msg-pre').textContent = c.savingsPre + ' ';
+        document.getElementById('savings-msg-post').textContent = ' ' + c.savingsPost;
+        updateCalc(c.sliderVal);
+
+        // Signup (optional — sektion kan være fjernet)
+        const signupH3 = document.querySelector('.signup-box h3');
+        const signupP  = document.querySelector('.signup-box > p');
+        if (signupH3) signupH3.textContent = c.signupH3;
+        if (signupP)  signupP.textContent  = c.signupP;
+
+        // Cards
+        document.getElementById('cards-salg').classList.toggle('active', mode === 'salg');
+        document.getElementById('cards-leje').classList.toggle('active', mode === 'leje');
+
+        // Opdater listings hvis de er åbne
+        if (document.getElementById('listings-section').classList.contains('active')) {
+          openListings();
+        }
+
+        // Filter — skjul leje-only items i salg-mode
+        document.querySelectorAll('[data-leje-only]').forEach(el => {
+          el.style.display = mode === 'leje' ? '' : 'none';
+          if (mode === 'salg') el.classList.remove('checked');
+        });
+        // Opdater badge-tæller
+        const count = document.querySelectorAll('#filter-dropdown .filter-dd-item.checked').length;
+        const badge = document.getElementById('filter-count');
+        if (count > 0) { badge.style.display = ''; badge.textContent = count; }
+        else { badge.style.display = 'none'; }
+
+        if (!instant) hc.classList.remove('fading');
+      }, instant ? 0 : 180);
+    }
+
+    switchMode('salg', true);
+
+    // ── LISTINGS ──
+    const pageSections = ['.how', '.comparison', '.calculator', '.signup'];
+
+    function openListings(scroll) {
+      const mode = window._currentMode || 'salg';
+      const q = document.getElementById('hero-search').value.trim();
+
+      // Titel
+      const label = mode === 'leje' ? 'til leje' : 'til salg';
+      document.getElementById('listings-title').innerHTML =
+        q ? `Boliger <span>${label}</span> nær "${q}"` : `Boliger <span>${label}</span>`;
+
+      // Vis kun rigtige mode-kort
+      document.querySelectorAll('.listing-card').forEach(card => {
+        card.style.display = card.dataset.mode === mode ? '' : 'none';
+      });
+
+      // Skjul landingssektioner, vis listings
+      pageSections.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) el.style.display = 'none';
+      });
+      document.getElementById('listings-section').classList.add('active');
+      if (scroll) setTimeout(() => {
+        document.querySelector('.stats-bar').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+
+    function closeListings() {
+      document.getElementById('listings-section').classList.remove('active');
+      pageSections.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) el.style.display = '';
+      });
+    }
+
+    // ── FILTER ──
+    function toggleFilter(e) {
+      e.stopPropagation();
+      const dd = document.getElementById('filter-dropdown');
+      const btn = document.getElementById('filter-btn');
+      if (dd.classList.contains('open')) { dd.classList.remove('open'); return; }
+
+      // measure dropdown width while hidden
+      dd.style.visibility = 'hidden';
+      dd.style.display = 'block';
+      const ddW = dd.offsetWidth;
+      dd.style.display = '';
+      dd.style.visibility = '';
+
+      const bRect = btn.getBoundingClientRect();
+      const wRect = btn.closest('.search-wrap').getBoundingClientRect();
+      let left = (bRect.left - wRect.left) + bRect.width / 2 - ddW / 2;
+      left = Math.max(0, Math.min(left, wRect.width - ddW));
+      dd.style.left = left + 'px';
+
+      dd.classList.add('open');
+    }
+    function toggleFilter_item(el) {
+      el.classList.toggle('checked');
+      const count = document.querySelectorAll('#filter-dropdown .filter-dd-item.checked').length;
+      const badge = document.getElementById('filter-count');
+      if (count > 0) { badge.style.display = ''; badge.textContent = count; }
+      else { badge.style.display = 'none'; }
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#filter-btn') && !e.target.closest('#filter-dropdown')) {
+        document.getElementById('filter-dropdown')?.classList.remove('open');
+      }
+    });
+
+    // ── SEARCH AUTOCOMPLETE ──
+    (function() {
+      const input    = document.getElementById('hero-search');
+      const dropdown = document.getElementById('search-dropdown');
+      let timer, focusIdx = -1, results = [];
+
+      function highlight(text, q) {
+        const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+        return text.replace(re, '<em>$1</em>');
+      }
+
+      function addTag(text) {
+        if (!text.trim()) return;
+        const wrap = document.querySelector('.hero-search-wrap');
+        const tag = document.createElement('span');
+        tag.className = 'search-tag';
+        tag.innerHTML = `${text}<button class="search-tag-remove" onclick="this.parentElement.remove();document.getElementById('hero-search').focus()">×</button>`;
+        wrap.insertBefore(tag, input);
+        input.value = '';
+        input.placeholder = 'Tilføj flere…';
+      }
+
+      function render(items, q) {
+        focusIdx = -1;
+        if (!items.length) {
+          dropdown.innerHTML = '<div class="search-dd-empty">Ingen resultater for "' + q + '"</div>';
+        } else {
+          dropdown.innerHTML = items.map((it, i) =>
+            `<div class="search-dd-item" data-idx="${i}">
+              <div class="search-dd-icon">📍</div>
+              <div class="search-dd-main">${highlight(it.nr + ' ' + it.navn, q)}</div>
+              <div class="search-dd-sub">${it.kommunenavn || ''}</div>
+            </div>`
+          ).join('');
+          dropdown.querySelectorAll('.search-dd-item').forEach(el => {
+            el.addEventListener('mousedown', e => {
+              e.preventDefault();
+              const it = results[+el.dataset.idx];
+              addTag(it.navn);
+              input.focus();
+            });
+          });
+        }
+        dropdown.classList.add('open');
+      }
+
+      function close() { dropdown.classList.remove('open'); focusIdx = -1; }
+
+      function moveFocus(dir) {
+        const items = dropdown.querySelectorAll('.search-dd-item');
+        if (!items.length) return;
+        items[focusIdx]?.classList.remove('focused');
+        focusIdx = (focusIdx + dir + items.length) % items.length;
+        items[focusIdx].classList.add('focused');
+        items[focusIdx].scrollIntoView({ block: 'nearest' });
+      }
+
+      input.addEventListener('input', () => {
+        const q = input.value.trim();
+        clearTimeout(timer);
+        if (q.length < 2) { close(); return; }
+        timer = setTimeout(async () => {
+          try {
+            const res = await fetch(
+              'https://api.dataforsyningen.dk/postnumre/autocomplete?q=' +
+              encodeURIComponent(q) + '&per_side=20'
+            );
+            const data = await res.json();
+            results = data.map(d => ({
+              nr: d.postnummer.nr,
+              navn: d.postnummer.navn,
+              kommunenavn: d.postnummer.kommuner?.[0]?.navn || ''
+            }));
+            render(results, q);
+          } catch(e) { close(); }
+        }, 180);
+      });
+
+      input.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); moveFocus(1); return; }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); moveFocus(-1); return; }
+        if (e.key === 'Escape') { close(); return; }
+        if (e.key === ',' || (e.key === 'Enter' && dropdown.classList.contains('open'))) {
+          e.preventDefault();
+          const focused = dropdown.querySelector('.search-dd-item.focused');
+          if (focused) {
+            const it = results[+focused.dataset.idx];
+            addTag(it.navn);
+            focusIdx = -1;
+            focused.classList.remove('focused');
+          } else if (input.value.trim()) {
+            addTag(input.value.trim());
+            close();
+          }
+          return;
+        }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (input.value.trim()) addTag(input.value.trim());
+          close();
+          openListings();
+          toggleFilter(new MouseEvent('click'));
+        }
+        if (e.key === 'Backspace' && input.value === '') {
+          const tags = document.querySelectorAll('.search-tag');
+          if (tags.length) tags[tags.length - 1].remove();
+        }
+      });
+
+      document.querySelector('.hero-search-wrap').addEventListener('click', () => input.focus());
+
+      input.addEventListener('blur', () => setTimeout(close, 150));
+    })();
+
+    function mainSignup() {
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      if (!name || !email || !email.includes('@')) return;
+      document.getElementById('success-msg').style.display = 'block';
+      document.getElementById('signup-name').value = '';
+      document.getElementById('signup-email').value = '';
+    }
+  </script>
+</body>
+</html>
