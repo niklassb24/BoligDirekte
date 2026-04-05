@@ -121,6 +121,13 @@
     .status-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.8rem; border-radius: 100px; }
     .status-badge.pending { background: rgba(232,146,10,0.1); color: var(--amber); border: 1px solid rgba(232,146,10,0.2); }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-badge-btn { cursor: pointer; user-select: none; position: relative; }
+    .status-badge-btn::after { content: ' ▾'; font-size: 0.65rem; opacity: 0.7; }
+    .status-dropdown { position: absolute; top: calc(100% + 6px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 8px 24px rgba(15,30,60,0.12); z-index: 200; min-width: 170px; overflow: hidden; display: none; }
+    .status-dropdown.open { display: block; }
+    .status-dd-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1rem; font-size: 0.83rem; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .status-dd-item:hover { background: var(--border); }
+    .status-dd-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.25rem; }
     .detail-label { font-size: 0.73rem; font-weight: 500; color: var(--label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
     .detail-value { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
@@ -456,7 +463,12 @@
         <div class="card">
           <div class="card-header">
             <div class="card-title">Din bolig</div>
-            <span class="status-badge pending"><span class="status-dot"></span>Afventer publicering</span>
+            <span class="status-badge status-badge-btn" id="listing-status-badge" onclick="toggleStatusDropdown(event)" style="background:rgba(22,163,74,0.08);color:#16A34A;border:1px solid rgba(22,163,74,0.2);"><span class="status-dot" style="background:#16A34A;"></span><span id="listing-status-label">Live</span>
+              <div class="status-dropdown" id="status-dropdown">
+                <div class="status-dd-item" onclick="setListingStatus(event,'aktiv')"><div class="status-dd-dot" style="background:#16A34A;"></div>Aktiv</div>
+                <div class="status-dd-item" onclick="setListingStatus(event,'nede')"><div class="status-dd-dot" style="background:#F59E0B;"></div>Midlertidig nede</div>
+              </div>
+            </span>
           </div>
           <div class="details-grid" id="s-oversigt-grid">
             <div><div class="detail-label">Adresse</div><div class="detail-value" id="s-adresse">—</div></div>
@@ -475,6 +487,54 @@
             <button class="btn-primary" onclick="openEditPanel()">Rediger opslag</button>
             <button class="btn-secondary">Upload billeder</button>
             <button class="btn-secondary">Del opslag</button>
+          </div>
+        </div>
+
+        <!-- ANNONCERING CARD -->
+        <div class="card" id="annoncering-card" style="border:1px solid rgba(99,102,241,0.25);background:linear-gradient(135deg,var(--card-bg) 60%,rgba(99,102,241,0.04) 100%);">
+          <div class="card-header" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div style="width:42px;height:42px;border-radius:10px;background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div>
+                <div class="card-title" style="margin-bottom:0.1rem;">Fremhæv dit opslag på forsiden</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Dit opslag vises på hero-sektionen for alle besøgende</div>
+              </div>
+            </div>
+            <span id="annoncering-status-badge" style="display:none;background:rgba(99,102,241,0.10);color:#6366f1;border:1px solid rgba(99,102,241,0.25);display:inline-flex;align-items:center;gap:0.4rem;font-size:0.78rem;font-weight:600;padding:0.3rem 0.8rem;border-radius:100px;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#6366f1;"></span>Aktiv annoncering</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Vist på forsiden for alle
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Flydende boligkort i hero
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Annuller til enhver tid
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Mere synlighed = flere henvendelser
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:1.25rem;border-top:1px solid var(--divider);flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">500 kr.<span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);"> /md.</span></div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Månedligt abonnement · Annuller når som helst</div>
+            </div>
+            <div id="annoncering-btn-wrap">
+              <button id="annoncering-køb-btn" onclick="købAnnoncering()" style="background:#6366f1;color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+                Køb annoncering →
+              </button>
+              <button id="annoncering-annuller-btn" onclick="annullerAnnoncering()" style="display:none;background:rgba(220,38,38,0.07);color:#DC2626;border:1px solid rgba(220,38,38,0.2);padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;">
+                Annuller annoncering
+              </button>
+            </div>
           </div>
         </div>
 
@@ -736,6 +796,7 @@
         <div>
           <div class="listing-address" id="lv-adresse">—</div>
           <span class="listing-type-tag" id="lv-type">—</span>
+          <div id="lv-serial" style="font-size:0.72rem;color:var(--text-muted);margin-top:0.3rem;letter-spacing:0.05em;"></div>
         </div>
         <div class="listing-price-block">
           <div class="listing-price" id="lv-pris">—</div>
@@ -1076,8 +1137,6 @@
     // ── FAVORITTER ──
     window.toggleFavorit = async function(sellerUID, btn) {
       if (!currentUser || !sellerUID) return;
-      const role = localStorage.getItem('bd_role');
-      if (role !== 'koeber') return; // kun købere
       const favId  = currentUser.uid + '_' + sellerUID;
       const favRef = doc(db, 'favoritter', favId);
       const isFav  = window._myFavoritter.has(sellerUID);
@@ -1227,6 +1286,7 @@
       document.getElementById('lv-adresse').textContent     = d.adresse   || 'Adresse ikke angivet';
       document.getElementById('lv-type').textContent        = d.boligtype || 'Bolig';
       document.getElementById('lv-pris').textContent        = d.salgspris || '—';
+      document.getElementById('lv-serial').textContent      = d.serialNr  ? 'Opslags-ID: ' + d.serialNr : '';
       document.getElementById('listing-nav-label').textContent = d.adresse || '';
       document.getElementById('lv-avatar').textContent      = initials;
       document.getElementById('lv-seller-name').textContent = name;
@@ -1285,8 +1345,8 @@
       const gridId = role === 'saelger' ? 's-boliger-grid' : 'k-boliger-grid';
       const grid = document.getElementById(gridId);
       grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⏳</div><h3>Indlæser...</h3><p></p></div>';
-      // Forudindlæs købers favoritter så hjerte-state er korrekt fra start
-      if (role === 'koeber' && currentUser) {
+      // Forudindlæs favoritter så hjerte-state er korrekt fra start
+      if (currentUser) {
         try {
           const favSnap = await getDocs(query(collection(db, 'favoritter'), where('buyerUID', '==', currentUser.uid)));
           window._myFavoritter = new Set(favSnap.docs.map(d => d.data().sellerUID));
@@ -1296,19 +1356,103 @@
         const snap = await getDocs(collection(db, 'saelgere'));
         if (snap.empty) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🏡</div><h3>Ingen boliger endnu</h3><p>Bliv den første til at oprette en bolig.</p></div>'; return; }
         grid.innerHTML = '';
+        const serialUpdates = [];
         snap.forEach(s => {
-          const d = s.data();
-          window._sellersMap[s.id] = d;
+          let d = s.data();
+          if (d.status === 'nede') return;
+          if (!d.serialNr) {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let nr = 'BD-';
+            for (let i = 0; i < 6; i++) nr += chars[Math.floor(Math.random() * chars.length)];
+            d = { ...d, serialNr: nr };
+            serialUpdates.push(updateDoc(doc(db, 'saelgere', s.id), { serialNr: nr }));
+          }
+          window._sellersMap[s.id] = { ...d, _docId: s.id };
           const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
           const feeStr = fmt(String(Math.round(feeNum * 0.005)));
           const meta    = [d.areal ? d.areal+' m²' : '', d.rum ? d.rum+' rum' : '', d.byggeaar ? 'Bygget '+d.byggeaar : ''].filter(Boolean).join(' · ') || '&nbsp;';
           const isFavCls = window._myFavoritter.has(s.id) ? ' active' : '';
-          const isKoeber = localStorage.getItem('bd_role') === 'koeber';
-          const heartHtml = isKoeber ? `<button class="heart-btn${isFavCls}" data-fav-uid="${s.id}" onclick="event.stopPropagation();toggleFavorit('${s.id}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>` : '';
-          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div><div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
+          const heartHtml = `<button class="heart-btn${isFavCls}" data-fav-uid="${s.id}" onclick="event.stopPropagation();toggleFavorit('${s.id}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
+          const serialTag = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.5rem;">${d.serialNr}</div>` : '';
+          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${serialTag}<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
         });
+        if (serialUpdates.length) await Promise.all(serialUpdates).catch(() => {});
+      // Auto-åbn opslag fra URL-param (?opslag=DOCID)
+      const autoOpslag = new URLSearchParams(window.location.search).get('opslag');
+      if (autoOpslag && window._sellersMap[autoOpslag]) {
+        setTimeout(() => openListing(autoOpslag), 200);
+      }
       } catch(e) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente boliger</h3><p></p></div>'; }
     }
+
+    function updateAnnonceringUI(aktiv) {
+      const badge   = document.getElementById('annoncering-status-badge');
+      const købBtn  = document.getElementById('annoncering-køb-btn');
+      const annBtn  = document.getElementById('annoncering-annuller-btn');
+      if (!badge) return;
+      if (aktiv) {
+        badge.style.display  = 'inline-flex';
+        købBtn.style.display = 'none';
+        annBtn.style.display = '';
+      } else {
+        badge.style.display  = 'none';
+        købBtn.style.display = '';
+        annBtn.style.display = 'none';
+      }
+    }
+
+    window.købAnnoncering = async function() {
+      const user = auth.currentUser;
+      if (!user) return;
+      const btn = document.getElementById('annoncering-køb-btn');
+      btn.textContent = 'Aktiverer…';
+      btn.disabled = true;
+      await updateDoc(doc(db, 'saelgere', user.uid), { annoncering: true }).catch(() => {});
+      updateAnnonceringUI(true);
+      btn.textContent = 'Køb annoncering →';
+      btn.disabled = false;
+    };
+
+    window.annullerAnnoncering = async function() {
+      const user = auth.currentUser;
+      if (!user) return;
+      if (!confirm('Er du sikker på at du vil annullere annonceringen?')) return;
+      await updateDoc(doc(db, 'saelgere', user.uid), { annoncering: false }).catch(() => {});
+      updateAnnonceringUI(false);
+    };
+
+    function updateStatusBadge(status) {
+      const badge = document.getElementById('listing-status-badge');
+      const label = document.getElementById('listing-status-label');
+      if (!badge || !label) return;
+      if (status === 'nede') {
+        badge.style.cssText = 'background:rgba(245,158,11,0.1);color:#F59E0B;border:1px solid rgba(245,158,11,0.25);cursor:pointer;user-select:none;position:relative;';
+        label.textContent = 'Midlertidig nede';
+        badge.querySelector('.status-dot').style.background = '#F59E0B';
+      } else {
+        badge.style.cssText = 'background:rgba(22,163,74,0.08);color:#16A34A;border:1px solid rgba(22,163,74,0.2);cursor:pointer;user-select:none;position:relative;';
+        label.textContent = 'Live';
+        badge.querySelector('.status-dot').style.background = '#16A34A';
+      }
+    }
+
+    window.toggleStatusDropdown = function(e) {
+      e.stopPropagation();
+      document.getElementById('status-dropdown').classList.toggle('open');
+    };
+
+    window.setListingStatus = async function(e, status) {
+      e.stopPropagation();
+      const user = auth.currentUser;
+      if (!user) return;
+      document.getElementById('status-dropdown').classList.remove('open');
+      updateStatusBadge(status);
+      await updateDoc(doc(db, 'saelgere', user.uid), { status }).catch(() => {});
+    };
+
+    document.addEventListener('click', () => {
+      document.getElementById('status-dropdown')?.classList.remove('open');
+    });
 
     window.openContactModal = function(uid) {
       const d = window._sellersMap[uid];
@@ -1661,19 +1805,22 @@
       if (hasSeller) roles.push('saelger');
       if (hasBuyer)  roles.push('koeber');
 
-      if (!roles.length) { window.location.href = 'login.html'; return; }
+      if (!hasSeller && !hasBuyer) { window.location.href = 'login.html'; return; }
       currentUser = user;
       window._profil = (hasSeller ? sellerSnap : buyerSnap).data();
 
-      const currentRole = roles.includes(localStorage.getItem('bd_role')) ? localStorage.getItem('bd_role') : roles[0];
+      // Check for ?tab= URL param, then localStorage, then default to 'saelger'
+      const tabParam = new URLSearchParams(window.location.search).get('tab');
+      const storedRole = localStorage.getItem('bd_role');
+      const currentRole = (tabParam === 'koeber' || tabParam === 'saelger') ? tabParam
+                        : (storedRole === 'koeber' || storedRole === 'saelger') ? storedRole
+                        : 'saelger';
 
-      // Build role switcher
+      // Build role switcher — always show both buttons
       const switcher = document.getElementById('role-switcher');
       const roleLabels = { saelger: { icon: '🏠', label: 'Sælger' }, koeber: { icon: '🔍', label: 'Køber' } };
-      const otherRole  = { saelger: 'koeber', koeber: 'saelger' };
-      const otherLabel = { saelger: 'Bliv køber', koeber: 'Bliv sælger' };
 
-      roles.forEach(r => {
+      ['saelger', 'koeber'].forEach(r => {
         const btn = document.createElement('button');
         btn.className = 'role-btn' + (r === currentRole ? ' active' : '');
         btn.dataset.role = r;
@@ -1681,16 +1828,6 @@
         btn.onclick = () => switchRole(r);
         switcher.appendChild(btn);
       });
-
-      // "Tilføj" knap for manglende rolle
-      const missing = roles.length === 1 ? otherRole[roles[0]] : null;
-      if (missing) {
-        const addBtn = document.createElement('button');
-        addBtn.className = 'role-btn add';
-        addBtn.innerHTML = `+ <span>${otherLabel[roles[0]]}</span>`;
-        addBtn.onclick = () => openModal(missing);
-        switcher.appendChild(addBtn);
-      }
 
       // Fill seller data
       if (hasSeller) {
@@ -1701,6 +1838,8 @@
         document.getElementById('s-adresse').textContent  = d.adresse   || '—';
         document.getElementById('s-type').textContent     = d.boligtype || '—';
         document.getElementById('s-pris').textContent     = fmt(d.salgspris);
+        updateStatusBadge(d.status || 'aktiv');
+        updateAnnonceringUI(d.annoncering === true);
         document.getElementById('s-telefon').textContent  = d.telefon   || '—';
         document.getElementById('sp-navn').textContent    = name;
         document.getElementById('sp-email').textContent   = d.email     || user.email;
