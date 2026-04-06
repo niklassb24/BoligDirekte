@@ -681,9 +681,18 @@
           <div class="stat-card"><div class="stat-label">Interesserede</div><div class="stat-value" id="stat-interesserede">0</div><div class="stat-sub">Potentielle købere</div></div>
           <div class="stat-card"><div class="stat-label">Dit fee ved salg</div><div class="stat-value" id="stat-fee">—</div><div class="stat-sub">0,5% af salgspris</div></div>
         </div>
+        <!-- MINE BOLIGER -->
+        <div class="card" id="mine-boliger-card">
+          <div class="card-header">
+            <div class="card-title">Mine boliger</div>
+            <button class="btn-secondary" onclick="openModal('saelger')" style="padding:0.45rem 1rem;font-size:0.82rem;">+ Tilføj bolig</button>
+          </div>
+          <div id="mine-boliger-liste" style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.5rem;"></div>
+        </div>
+
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Din bolig</div>
+            <div class="card-title">Aktiv bolig</div>
             <span class="status-badge status-badge-btn" id="listing-status-badge" onclick="toggleStatusDropdown(event)" style="background:rgba(22,163,74,0.08);color:#16A34A;border:1px solid rgba(22,163,74,0.2);"><span class="status-dot" style="background:#16A34A;"></span><span id="listing-status-label">Live</span>
               <div class="status-dropdown" id="status-dropdown">
                 <div class="status-dd-item" onclick="setListingStatus(event,'aktiv')"><div class="status-dd-dot" style="background:#16A34A;"></div>Aktiv</div>
@@ -2236,18 +2245,20 @@
         allBtns.forEach(b => b.classList.add('active'));
         document.getElementById('listing-heart-label') && (document.getElementById('listing-heart-label').textContent = 'Gemt');
         const d = window._sellersMap[sellerUID] || {};
+        const sellerActualUID = d.userId || sellerUID;
         await setDoc(favRef, {
           buyerUID:  currentUser.uid,
           buyerNavn: (window._profil?.fornavn || '') + ' ' + (window._profil?.efternavn || ''),
           buyerEmail: window._profil?.email || currentUser.email,
-          sellerUID,
+          sellerUID: sellerActualUID,
+          boligId:   sellerUID,
           adresse:   d.adresse   || '',
           boligtype: d.boligtype || '',
           salgspris: d.salgspris || '',
           gemtAt:    serverTimestamp()
         }).catch(()=>{});
-        // Opdater sælgers interesserede-tæller
-        setDoc(doc(db, 'saelgere', sellerUID), { interesserede: increment(1) }, { merge: true }).catch(()=>{});
+        // Opdater boligens interesserede-tæller
+        updateDoc(doc(db, 'saelgere', sellerUID), { interesserede: increment(1) }).catch(()=>{});
       }
     };
 
@@ -2264,9 +2275,10 @@
         grid.innerHTML = '';
         snap.forEach(s => {
           const d = s.data();
+          const boligId = d.boligId || d.sellerUID;
           const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
           const feeStr = fmt(String(Math.round(feeNum * 0.005)));
-          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${d.sellerUID}')">
+          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${boligId}')">
             <div class="bolig-img">🏠</div>
             <div class="bolig-body">
               <div class="bolig-type">${d.boligtype||'Bolig'}</div>
@@ -2275,8 +2287,8 @@
               <div class="bolig-footer">
                 <span class="bolig-fee">Fee: ${feeStr}</span>
                 <div style="display:flex;align-items:center;gap:0.4rem;">
-                  <button class="heart-btn active" data-fav-uid="${d.sellerUID}" onclick="event.stopPropagation();toggleFavorit('${d.sellerUID}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-                  <button class="contact-btn" onclick="event.stopPropagation();openListing('${d.sellerUID}')">Se opslag</button>
+                  <button class="heart-btn active" data-fav-uid="${boligId}" onclick="event.stopPropagation();toggleFavorit('${boligId}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="contact-btn" onclick="event.stopPropagation();openListing('${boligId}')">Se opslag</button>
                 </div>
               </div>
             </div>
@@ -2875,7 +2887,8 @@
       try {
       const d = window._sellersMap?.[uid] || window._sellersMap?.[window._currentListingUID];
       if (!d) { document.getElementById('contact-modal-overlay').classList.add('open'); return; }
-      window._cmSaelgerId = uid;
+      const saelgerUserId = d.userId || uid;
+      window._cmSaelgerId = saelgerUserId;
 
       const name     = ((d.fornavn||'') + ' ' + (d.efternavn||'')).trim() || 'Sælger';
       const initials = ((d.fornavn?.[0]||'') + (d.efternavn?.[0]||'')).toUpperCase() || '?';
@@ -2904,7 +2917,7 @@
       document.getElementById('cm-chat-section').style.display    = hasConsent ? 'block' : 'none';
 
       if (hasConsent) {
-        startCMChatListener(uid, d.adresse || '');
+        startCMChatListener(saelgerUserId, d.adresse || '');
       }
 
       document.getElementById('contact-modal-overlay').classList.add('open');
@@ -2922,7 +2935,7 @@
       document.getElementById('cm-chat-section').style.display    = 'block';
       const uid = window._cmSaelgerId;
       const d   = window._sellersMap?.[uid] || {};
-      startCMChatListener(uid, d.adresse || '');
+      startCMChatListener(uid, d?.adresse || '');
     };
 
     function startCMChatListener(saelgerId, boligAdresse) {
@@ -3315,9 +3328,9 @@
       window._currentListingUID = uid;
 
       // Tæl visning (kun én gang per session, og ikke sælgeren selv)
-      if (!window._viewedSession.has(uid) && currentUser?.uid !== uid) {
+      if (!window._viewedSession.has(uid) && currentUser?.uid !== (d.userId || uid)) {
         window._viewedSession.add(uid);
-        setDoc(doc(db, 'saelgere', uid), { visninger: increment(1) }, { merge: true }).catch(()=>{});
+        updateDoc(doc(db, 'saelgere', uid), { visninger: increment(1) }).catch(()=>{});
         if (currentUser?.uid === (window._sellerData?.uid) || false) {} // no-op
         // Opdater sælgers eget tal hvis det er deres bolig
         const visEl = document.getElementById('stat-visninger');
@@ -3439,22 +3452,23 @@
       if (btn) { btn.textContent = 'Uploader...'; btn.disabled = true; }
 
       try {
-        const ext  = file.name.split('.').pop();
-        const path = `boliger/${currentUser.uid}/hero.${ext}`;
-        const ref  = storageRef(storage, path);
-        const task = uploadBytesResumable(ref, file);
+        const ext    = file.name.split('.').pop();
+        const boligId = rolle === 'saelger' ? (window._currentBoligId || currentUser.uid) : currentUser.uid;
+        const path   = `boliger/${boligId}/hero.${ext}`;
+        const ref    = storageRef(storage, path);
+        const task   = uploadBytesResumable(ref, file);
 
         task.on('state_changed', null, (err) => {
           console.error('Upload fejl:', err);
           if (btn) { btn.textContent = 'Upload billeder'; btn.disabled = false; }
         }, async () => {
-          const url = await getDownloadURL(ref);
+          const url  = await getDownloadURL(ref);
           const coll = rolle === 'saelger' ? 'saelgere' : 'udlejere';
-          await updateDoc(doc(db, coll, currentUser.uid), { billedUrl: url });
+          await updateDoc(doc(db, coll, boligId), { billedUrl: url });
 
           // Opdater lokal data-cache
-          if (rolle === 'saelger' && window._sellersMap?.[currentUser.uid]) {
-            window._sellersMap[currentUser.uid].billedUrl = url;
+          if (rolle === 'saelger' && window._sellersMap?.[boligId]) {
+            window._sellersMap[boligId].billedUrl = url;
           } else if (rolle === 'udlejer' && window._udlejereMap?.[currentUser.uid]) {
             window._udlejereMap[currentUser.uid].billedUrl = url;
           }
@@ -3643,7 +3657,12 @@
       const errorEl = document.getElementById('fjern-rolle-error');
       btn.textContent = 'Fjerner...'; btn.disabled = true;
       try {
-        await deleteDoc(doc(db, rolleCollections[rolle], currentUser.uid));
+        if (rolle === 'saelger') {
+          const boligerSnap = await getDocs(query(collection(db, 'saelgere'), where('userId', '==', currentUser.uid)));
+          await Promise.all(boligerSnap.docs.map(d => deleteDoc(d.ref)));
+        } else {
+          await deleteDoc(doc(db, rolleCollections[rolle], currentUser.uid));
+        }
         // Opdater localStorage
         const roles = JSON.parse(localStorage.getItem('bd_roles') || '[]').filter(r => r !== rolle);
         localStorage.setItem('bd_roles', JSON.stringify(roles));
@@ -3676,7 +3695,7 @@
       if (currentUser) {
         try {
           const favSnap = await getDocs(query(collection(db, 'favoritter'), where('buyerUID', '==', currentUser.uid)));
-          window._myFavoritter = new Set(favSnap.docs.map(d => d.data().sellerUID));
+          window._myFavoritter = new Set(favSnap.docs.map(d => d.data().boligId || d.data().sellerUID));
         } catch {}
       }
       try {
@@ -3736,7 +3755,7 @@
       const btn = document.getElementById('annoncering-køb-btn');
       btn.textContent = 'Aktiverer…';
       btn.disabled = true;
-      await updateDoc(doc(db, 'saelgere', user.uid), { annoncering: true }).catch(() => {});
+      await updateDoc(doc(db, 'saelgere', window._currentBoligId || user.uid), { annoncering: true }).catch(() => {});
       updateAnnonceringUI(true);
       btn.textContent = 'Køb annoncering →';
       btn.disabled = false;
@@ -3746,7 +3765,7 @@
       const user = auth.currentUser;
       if (!user) return;
       if (!confirm('Er du sikker på at du vil annullere annonceringen?')) return;
-      await updateDoc(doc(db, 'saelgere', user.uid), { annoncering: false }).catch(() => {});
+      await updateDoc(doc(db, 'saelgere', window._currentBoligId || user.uid), { annoncering: false }).catch(() => {});
       updateAnnonceringUI(false);
     };
 
@@ -3777,7 +3796,7 @@
       document.getElementById('status-dropdown').classList.remove('open');
       updateStatusBadge(status);
       updateSPStatusBadge(status);
-      await updateDoc(doc(db, 'saelgere', user.uid), { status }).catch(() => {});
+      await updateDoc(doc(db, 'saelgere', window._currentBoligId || user.uid), { status }).catch(() => {});
     };
 
     function updateSPStatusBadge(status) {
@@ -3808,7 +3827,7 @@
       document.getElementById('sp-status-dropdown').classList.remove('open');
       updateSPStatusBadge(status);
       updateStatusBadge(status);
-      await updateDoc(doc(db, 'saelgere', user.uid), { status }).catch(() => {});
+      await updateDoc(doc(db, 'saelgere', window._currentBoligId || user.uid), { status }).catch(() => {});
     };
 
     document.addEventListener('click', () => {
@@ -3816,6 +3835,49 @@
       document.getElementById('sp-status-dropdown')?.classList.remove('open');
     });
 
+
+    // ── MINE BOLIGER LISTE ──
+    function renderMineBoligerListe() {
+      const liste = document.getElementById('mine-boliger-liste');
+      if (!liste || !window._mineBoligerList) return;
+      liste.innerHTML = '';
+      window._mineBoligerList.forEach(b => {
+        const isActive = b.id === window._currentBoligId;
+        const row = document.createElement('div');
+        row.style.cssText = `display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;border-radius:10px;border:1.5px solid ${isActive ? 'var(--amber)' : 'var(--border)'};background:${isActive ? 'rgba(232,146,10,0.05)' : 'transparent'};cursor:pointer;transition:all 0.15s;`;
+        row.innerHTML = `
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            <div style="font-size:1.2rem;">🏠</div>
+            <div>
+              <div style="font-size:0.9rem;font-weight:600;color:var(--text-main);">${b.adresse || 'Adresse ikke angivet'}</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">${b.boligtype || 'Bolig'} · ${b.salgspris || 'Pris ikke angivet'}</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem;">
+            ${isActive ? '<span style="font-size:0.72rem;font-weight:600;color:var(--amber);background:rgba(232,146,10,0.1);border:1px solid rgba(232,146,10,0.25);padding:0.2rem 0.6rem;border-radius:100px;">Aktiv</span>' : `<button onclick="event.stopPropagation();selectBolig('${b.id}')" style="font-size:0.78rem;font-weight:600;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--border);padding:0.3rem 0.75rem;border-radius:8px;cursor:pointer;">Vælg</button>`}
+          </div>`;
+        row.onclick = () => selectBolig(b.id);
+        liste.appendChild(row);
+      });
+    }
+
+    window.selectBolig = function(boligId) {
+      const b = window._mineBoligerList?.find(x => x.id === boligId);
+      if (!b) return;
+      window._currentBoligId = boligId;
+      window._sellerData = b;
+      // Opdater oversigt-kort
+      document.getElementById('s-adresse').textContent  = b.adresse   || '—';
+      document.getElementById('s-type').textContent     = b.boligtype || '—';
+      document.getElementById('s-pris').textContent     = fmt(b.salgspris);
+      document.getElementById('s-telefon').textContent  = b.telefon   || '—';
+      const prisNum = parseInt((b.salgspris||'').replace(/\D/g,''));
+      if (!isNaN(prisNum)) document.getElementById('stat-fee').textContent = fmt(String(Math.round(prisNum*0.005)));
+      updateStatusBadge(b.status || 'aktiv');
+      updateAnnonceringUI(b.annoncering === true);
+      refreshSellerProfile(b);
+      renderMineBoligerListe();
+    };
 
     // ── REDIGER OPSLAG ──
     let selectedEnergy = '';
@@ -4054,8 +4116,13 @@
           kontaktmetode: document.getElementById('e-kontaktmetode').value,
           opdateret:     serverTimestamp()
         };
-        await setDoc(doc(db, 'saelgere', currentUser.uid), updates, { merge: true });
+        await updateDoc(doc(db, 'saelgere', window._currentBoligId), updates);
         window._sellerData = { ...(window._sellerData || {}), ...updates };
+        if (window._mineBoligerList) {
+          const idx = window._mineBoligerList.findIndex(b => b.id === window._currentBoligId);
+          if (idx >= 0) window._mineBoligerList[idx] = { ...window._mineBoligerList[idx], ...updates };
+        }
+        renderMineBoligerListe();
         // Opdater oversigt-kort
         document.getElementById('s-adresse').textContent = updates.adresse   || '—';
         document.getElementById('s-type').textContent    = updates.boligtype || '—';
@@ -4277,7 +4344,11 @@
         }
         btn.textContent = 'Opretter...'; btn.disabled = true;
         try {
-          await setDoc(doc(db, 'saelgere', currentUser.uid), { ...base, adresse, boligtype: document.getElementById('m-stype').value, salgspris: document.getElementById('m-pris').value.trim(), rolle: 'saelger', termsAccepted: true, termsAcceptedAt: serverTimestamp(), termsVersion: '1.0' });
+          const newBoligData = { ...base, userId: currentUser.uid, adresse, boligtype: document.getElementById('m-stype').value, salgspris: document.getElementById('m-pris').value.trim(), rolle: 'saelger', termsAccepted: true, termsAcceptedAt: serverTimestamp(), termsVersion: '1.0' };
+          const boligRef = await addDoc(collection(db, 'saelgere'), newBoligData);
+          window._currentBoligId = boligRef.id;
+          if (!window._mineBoligerList) window._mineBoligerList = [];
+          window._mineBoligerList.push({ id: boligRef.id, ...newBoligData });
           const rs = JSON.parse(localStorage.getItem('bd_roles') || '[]'); if (!rs.includes('saelger')) { rs.push('saelger'); localStorage.setItem('bd_roles', JSON.stringify(rs)); }
           showModalSuccess('Din bolig er oprettet!', 'Din sælgerprofil er klar.');
         } catch(e) { errorEl.textContent = 'Noget gik galt — prøv igen.'; errorEl.style.display = 'block'; btn.textContent = 'Opret mig som sælger →'; btn.disabled = false; }
@@ -4344,13 +4415,13 @@
       if (!user) { window.location.href = 'login.html'; return; }
 
       const [sellerSnap, buyerSnap, udlejerSnap, lejerSnap] = await Promise.all([
-        getDoc(doc(db, 'saelgere', user.uid)),
+        getDocs(query(collection(db, 'saelgere'), where('userId', '==', user.uid))),
         getDoc(doc(db, 'koebere',  user.uid)),
         getDoc(doc(db, 'udlejere', user.uid)),
         getDoc(doc(db, 'lejere',   user.uid))
       ]);
 
-      const hasSeller  = sellerSnap.exists();
+      const hasSeller  = !sellerSnap.empty;
       const hasBuyer   = buyerSnap.exists();
       const hasUdlejer = udlejerSnap.exists();
       const hasLejer   = lejerSnap.exists();
@@ -4366,7 +4437,7 @@
       }
 
       // Prioriteret primær profil
-      const primarySnap = hasSeller ? sellerSnap : hasBuyer ? buyerSnap : hasUdlejer ? udlejerSnap : lejerSnap;
+      const primarySnap = hasSeller ? sellerSnap.docs[0] : hasBuyer ? buyerSnap : hasUdlejer ? udlejerSnap : lejerSnap;
       window._profil = primarySnap.data();
 
       // Bestem aktiv rolle
@@ -4403,8 +4474,11 @@
 
       // Udfyld sælger-data
       if (hasSeller) {
-        const d = sellerSnap.data();
+        window._mineBoligerList = sellerSnap.docs.map(s => ({ id: s.id, ...s.data() }));
+        const firstDoc = sellerSnap.docs[0];
+        const d = firstDoc.data();
         window._sellerData = d;
+        window._currentBoligId = firstDoc.id;
         document.getElementById('s-greeting').textContent = d.fornavn;
         document.getElementById('s-adresse').textContent  = d.adresse   || '—';
         document.getElementById('s-type').textContent     = d.boligtype || '—';
@@ -4423,6 +4497,7 @@
         getDocs(query(collection(db, 'favoritter'), where('sellerUID', '==', user.uid)))
           .then(snap => { document.getElementById('stat-interesserede').textContent = snap.size; })
           .catch(()=>{});
+        renderMineBoligerListe();
       }
 
       // Udfyld køber-data
