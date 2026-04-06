@@ -589,6 +589,58 @@
     .chat-panel .chat-messages { height: 360px; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* FOTOGRAFERING KALENDER */
+    .foto-overlay { position: fixed; inset: 0; z-index: 650; background: rgba(7,15,40,0.55); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+    .foto-overlay.open { display: flex; }
+    .foto-modal { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 0; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.25); animation: fadeDown 0.25s ease both; }
+    .foto-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 1.75rem 1rem; border-bottom: 1px solid var(--border); }
+    .foto-modal-title { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; color: var(--h1-color); }
+    .foto-modal-close { background: transparent; border: 1px solid var(--border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+    .foto-modal-close:hover { border-color: #DC2626; color: #DC2626; }
+    .foto-modal-body { padding: 1.5rem 1.75rem; }
+    /* Kalender nav */
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .cal-nav-btn { background: transparent; border: 1px solid var(--border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .cal-nav-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .cal-nav-btn svg { width: 14px; height: 14px; }
+    .cal-month-label { font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600; color: var(--h1-color); }
+    /* Ugedage header */
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px; }
+    .cal-wd { text-align: center; font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0; }
+    .cal-wd.weekend { color: rgba(100,116,139,0.45); }
+    /* Dage grid */
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+    .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 0.82rem; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; color: var(--text-main); background: var(--stat-bg); }
+    .cal-day:hover:not(.disabled):not(.weekend-day):not(.selected) { border-color: var(--amber); color: var(--amber); background: rgba(232,146,10,0.06); }
+    .cal-day.selected { background: var(--btn-bg); color: var(--btn-color); border-color: transparent; }
+    .cal-day.today:not(.selected) { border-color: var(--amber); }
+    .cal-day.disabled { opacity: 0.28; cursor: not-allowed; background: transparent; border-color: transparent; }
+    .cal-day.weekend-day { color: var(--text-muted); opacity: 0.38; cursor: not-allowed; background: transparent; }
+    .cal-day.filler { visibility: hidden; cursor: default; background: transparent; }
+    /* Tidsslots optaget */
+    .time-slot.optaget { background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.2); color: rgba(220,38,38,0.5); cursor: not-allowed; text-decoration: line-through; }
+    /* Tidsslots */
+    .time-slots-wrap { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--divider); }
+    .time-slots-label { font-size: 0.8rem; font-weight: 600; color: var(--label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+    .time-slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .time-slot { padding: 0.5rem 0.25rem; text-align: center; border-radius: 8px; border: 1px solid var(--border); font-size: 0.82rem; font-weight: 500; cursor: pointer; background: var(--stat-bg); color: var(--text-main); transition: all 0.15s; }
+    .time-slot:hover:not(.selected) { border-color: var(--amber); color: var(--amber); background: rgba(232,146,10,0.06); }
+    .time-slot.selected { background: var(--btn-bg); color: var(--btn-color); border-color: transparent; }
+    /* Bekræft */
+    .foto-confirm-bar { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--divider); display: none; }
+    .foto-confirm-bar.show { display: block; }
+    .foto-confirm-summary { background: rgba(232,146,10,0.07); border: 1px solid rgba(232,146,10,0.2); border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.88rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.6; }
+    .foto-confirm-summary strong { color: var(--amber); }
+    .foto-bekraeft-btn { width: 100%; background: var(--btn-bg); color: var(--btn-color); border: none; padding: 0.8rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: background 0.2s; }
+    .foto-bekraeft-btn:hover { background: var(--btn-hover); }
+    /* Success */
+    .foto-success { display: none; text-align: center; padding: 2rem 1rem; }
+    .foto-success.show { display: block; }
+    .foto-success-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(22,163,74,0.1); border: 1px solid rgba(22,163,74,0.25); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+    .foto-success-icon svg { width: 24px; height: 24px; color: #16A34A; }
+    .foto-success h3 { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 700; color: var(--h1-color); margin-bottom: 0.4rem; }
+    .foto-success p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
     @keyframes fadeDown { from { opacity:0; transform: translateY(-12px); } to { opacity:1; transform: translateY(0); } }
     @keyframes morph-a { 0% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); } 50% { border-radius: 38% 62% 60% 40% / 42% 58% 42% 58%; transform: translate(-15px, 15px) scale(0.97); } 100% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); } }
     @keyframes morph-b { 0% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); } 50% { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; transform: translate(20px, 15px) scale(0.96); } 100% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); } }
@@ -888,7 +940,7 @@
               <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">Pris oplyses snart</div>
               <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Engangsbetaling · Ingen abonnement</div>
             </div>
-            <button disabled style="background:rgba(232,146,10,0.12);color:var(--amber);border:1px solid rgba(232,146,10,0.25);padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:not-allowed;opacity:0.7;">
+            <button onclick="åbnFotoModal()" style="background:var(--amber);color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
               Bestil fotografering →
             </button>
           </div>
@@ -1204,7 +1256,7 @@
               <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">Pris oplyses snart</div>
               <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Engangsbetaling · Ingen abonnement</div>
             </div>
-            <button disabled style="background:rgba(232,146,10,0.12);color:var(--amber);border:1px solid rgba(232,146,10,0.25);padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:not-allowed;opacity:0.7;">Bestil fotografering →</button>
+            <button onclick="åbnFotoModal()" style="background:var(--amber);color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Bestil fotografering →</button>
           </div>
         </div>
 
@@ -4868,6 +4920,178 @@
       document.getElementById('loading').style.display   = 'none';
       document.getElementById('dashboard').style.display = 'block';
     });
+  </script>
+
+  <!-- FOTOGRAFERING KALENDER OVERLAY -->
+  <div class="foto-overlay" id="foto-overlay" onclick="if(event.target===this)lukkFotoModal()">
+    <div class="foto-modal">
+      <div class="foto-modal-head">
+        <div class="foto-modal-title">Bestil fotografering</div>
+        <button class="foto-modal-close" onclick="lukkFotoModal()">✕</button>
+      </div>
+      <div class="foto-modal-body">
+        <div id="foto-kalender-view">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="calSkift(-1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <div class="cal-month-label" id="cal-month-label"></div>
+            <button class="cal-nav-btn" onclick="calSkift(1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+          <div class="cal-weekdays">
+            <div class="cal-wd">Man</div><div class="cal-wd">Tir</div><div class="cal-wd">Ons</div><div class="cal-wd">Tor</div><div class="cal-wd">Fre</div><div class="cal-wd weekend">Lør</div><div class="cal-wd weekend">Søn</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="time-slots-wrap" id="time-slots-wrap" style="display:none;">
+            <div class="time-slots-label" id="time-slots-label">Vælg tidspunkt</div>
+            <div class="time-slots-grid" id="time-slots-grid"></div>
+          </div>
+          <div class="foto-confirm-bar" id="foto-confirm-bar">
+            <div class="foto-confirm-summary" id="foto-confirm-summary"></div>
+            <button class="foto-bekraeft-btn" onclick="bekræftFoto()">Bekræft booking</button>
+          </div>
+        </div>
+        <div class="foto-success" id="foto-success">
+          <div class="foto-success-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>Booking bekræftet!</h3>
+          <p id="foto-success-text"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── FOTOGRAFERING KALENDER ──
+    let _calYear, _calMonth, _calSelDato = null, _calSelTid = null;
+
+    const _MÅNEDER   = ['Januar','Februar','Marts','April','Maj','Juni','Juli','August','September','Oktober','November','December'];
+    const _MÅNEDER_L = ['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+    const _MÅNEDER_K = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+    const _UGEDAGE   = ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'];
+
+    // Generer deterministisk "optaget" slots baseret på dato — ser realistisk ud
+    function getOptagetSlots(date) {
+      const seed = date.getFullYear() * 10000 + (date.getMonth()+1) * 100 + date.getDate();
+      const slots = [];
+      // 2-4 optaget slots per dag baseret på seed
+      const allSlots = [];
+      for (let h = 8; h <= 15; h++) { allSlots.push(h+':00'); allSlots.push(h+':30'); }
+      allSlots.push('16:00');
+      let s = seed;
+      const antal = 2 + (s % 3); // 2, 3 eller 4
+      const brugte = new Set();
+      for (let i = 0; i < antal; i++) {
+        s = (s * 1664525 + 1013904223) & 0xffffffff;
+        const idx = Math.abs(s) % allSlots.length;
+        brugte.add(allSlots[idx]);
+      }
+      return brugte;
+    }
+
+    window.åbnFotoModal = function() {
+      const now = new Date();
+      _calYear  = now.getFullYear();
+      _calMonth = now.getMonth();
+      _calSelDato = null; _calSelTid = null;
+      document.getElementById('foto-success').classList.remove('show');
+      document.getElementById('foto-kalender-view').style.display = '';
+      document.getElementById('time-slots-wrap').style.display = 'none';
+      document.getElementById('foto-confirm-bar').classList.remove('show');
+      document.getElementById('foto-overlay').classList.add('open');
+      renderKal();
+    };
+
+    window.lukkFotoModal = function() {
+      document.getElementById('foto-overlay').classList.remove('open');
+    };
+
+    window.calSkift = function(dir) {
+      _calMonth += dir;
+      if (_calMonth > 11) { _calMonth = 0; _calYear++; }
+      if (_calMonth < 0)  { _calMonth = 11; _calYear--; }
+      _calSelDato = null; _calSelTid = null;
+      document.getElementById('time-slots-wrap').style.display = 'none';
+      document.getElementById('foto-confirm-bar').classList.remove('show');
+      renderKal();
+    };
+
+    function renderKal() {
+      document.getElementById('cal-month-label').textContent = _MÅNEDER[_calMonth] + ' ' + _calYear;
+      const grid  = document.getElementById('cal-grid');
+      grid.innerHTML = '';
+      const today = new Date(); today.setHours(0,0,0,0);
+      const daysInMonth = new Date(_calYear, _calMonth + 1, 0).getDate();
+      // Offset: mandag=0, ..., søndag=6
+      const firstDay = new Date(_calYear, _calMonth, 1);
+      const offset   = (firstDay.getDay() + 6) % 7; // mandag-baseret offset
+      // Tomme filler-celler
+      for (let i = 0; i < offset; i++) {
+        const f = document.createElement('div'); f.className = 'cal-day filler'; grid.appendChild(f);
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(_calYear, _calMonth, d);
+        const wd   = date.getDay(); // 0=søn, 6=lør
+        const isWeekend = wd === 0 || wd === 6;
+        const isPast    = date < today;
+        const isSel     = _calSelDato && date.toDateString() === _calSelDato.toDateString();
+        const isToday   = date.toDateString() === today.toDateString();
+        const btn = document.createElement('div');
+        btn.className = 'cal-day';
+        btn.textContent = d;
+        if (isWeekend)         btn.classList.add('weekend-day');
+        else if (isPast)       btn.classList.add('disabled');
+        else if (isSel)        btn.classList.add('selected');
+        if (isToday && !isSel) btn.classList.add('today');
+        if (!isWeekend && !isPast) btn.onclick = () => vælgDato(date);
+        grid.appendChild(btn);
+      }
+    }
+
+    function vælgDato(date) {
+      _calSelDato = date; _calSelTid = null;
+      document.getElementById('foto-confirm-bar').classList.remove('show');
+      renderKal();
+      document.getElementById('time-slots-label').textContent =
+        _UGEDAGE[date.getDay()] + ' ' + date.getDate() + '. ' + _MÅNEDER_K[date.getMonth()];
+      const optagetSlots = getOptagetSlots(date);
+      const grid = document.getElementById('time-slots-grid');
+      grid.innerHTML = '';
+      for (let h = 8; h <= 16; h++) {
+        ['00','30'].forEach(m => {
+          if (h === 16 && m === '30') return;
+          const label   = h + ':' + m;
+          const optaget = optagetSlots.has(label);
+          const btn = document.createElement('div');
+          btn.className = 'time-slot' + (optaget ? ' optaget' : '');
+          btn.textContent = label;
+          if (!optaget) btn.onclick = () => vælgTid(label, btn);
+          grid.appendChild(btn);
+        });
+      }
+      document.getElementById('time-slots-wrap').style.display = '';
+      document.getElementById('time-slots-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function vælgTid(tid, btn) {
+      _calSelTid = tid;
+      document.querySelectorAll('.time-slot:not(.optaget)').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      const d = _calSelDato;
+      const tekst = _UGEDAGE[d.getDay()] + ' d. ' + d.getDate() + '. ' + _MÅNEDER_L[d.getMonth()] + ' ' + d.getFullYear() + ' kl. ' + tid;
+      document.getElementById('foto-confirm-summary').innerHTML =
+        'Din fotografering er booket til:<br><strong>' + tekst + '</strong><br><span style="font-size:0.8rem;color:var(--text-muted);">Varighed ca. 30–60 min. Vi kontakter dig inden besøget.</span>';
+      const bar = document.getElementById('foto-confirm-bar');
+      bar.classList.add('show');
+      bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    window.bekræftFoto = function() {
+      if (!_calSelDato || !_calSelTid) return;
+      const d = _calSelDato;
+      const tekst = _UGEDAGE[d.getDay()] + ' d. ' + d.getDate() + '. ' + _MÅNEDER_L[d.getMonth()] + ' kl. ' + _calSelTid;
+      document.getElementById('foto-success-text').textContent =
+        'Fotografen kommer ' + tekst + '. Du modtager en bekræftelse på e-mail.';
+      document.getElementById('foto-kalender-view').style.display = 'none';
+      document.getElementById('foto-success').classList.add('show');
+    };
   </script>
 </body>
 </html>

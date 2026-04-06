@@ -2076,7 +2076,7 @@
         <div class="calc-label">Din forventede salgspris</div>
         <div class="calc-value" id="calc-display">2.000.000 kr.</div>
         <input type="range" class="calc-slider" id="calc-slider"
-          min="500000" max="10000000" step="100000" value="2000000"
+          min="0" max="76" step="1" value="3"
           oninput="updateCalc(this.value)" />
         <div class="calc-range-labels">
           <span>500.000 kr.</span>
@@ -2150,20 +2150,28 @@
       return new Intl.NumberFormat('da-DK').format(Math.round(n)) + ' kr.';
     }
 
+    // Slider pos → pris: 0-29 = 500k-15M (trin 500k), 29-76 = 15M-250M (trin 5M)
+    function sliderToPrice(pos) {
+      pos = parseInt(pos);
+      if (pos <= 29) return 500000 + pos * 500000;
+      return 15000000 + (pos - 29) * 5000000;
+    }
+
     function updateCalc(val) {
-      val = parseInt(val);
       const mode = window._currentMode || 'salg';
       if (mode === 'leje') {
+        val = parseInt(val);
         const portalYear = val * 399 * 12;
         document.getElementById('calc-display').textContent = val + ' lejemål';
         document.getElementById('agent-cost').textContent = fmt(val * 399) + '/md.';
         document.getElementById('our-cost').textContent = '0 kr.';
         document.getElementById('savings-amount').textContent = fmt(portalYear) + '/år';
       } else {
-        document.getElementById('calc-display').textContent = fmt(val);
-        document.getElementById('agent-cost').textContent = fmt(val * 0.02);
-        document.getElementById('our-cost').textContent = fmt(val * 0.005);
-        document.getElementById('savings-amount').textContent = fmt(val * 0.02 - val * 0.005);
+        const price = sliderToPrice(val);
+        document.getElementById('calc-display').textContent = fmt(price);
+        document.getElementById('agent-cost').textContent = fmt(price * 0.02);
+        document.getElementById('our-cost').textContent = fmt(price * 0.005);
+        document.getElementById('savings-amount').textContent = fmt(price * 0.02 - price * 0.005);
       }
     }
 
@@ -2209,8 +2217,8 @@
         calcLabel: 'Din forventede salgspris',
         calcTitle: 'Hvad sparer du?',
         calcSub: 'Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.',
-        sliderMin: 500000, sliderMax: 10000000, sliderStep: 100000, sliderVal: 2000000,
-        sliderLeft: '500.000 kr.', sliderRight: '10.000.000 kr.',
+        sliderMin: 0, sliderMax: 76, sliderStep: 1, sliderVal: 3,
+        sliderLeft: '500.000 kr.', sliderRight: '250.000.000 kr.',
         res1Label: 'Traditionel mægler (2%)', res1Sub: 'Betales uanset resultat',
         res2Label: 'BoligDirekte (0,5%)', res2Sub: 'Kun ved succesfuldt salg',
         savingsPre: 'Du sparer', savingsPost: 'sammenlignet med en traditionel mægler på 2%',
