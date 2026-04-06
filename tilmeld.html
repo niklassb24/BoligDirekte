@@ -338,10 +338,40 @@
     .suggestion-item:hover { background: rgba(232,146,10,0.07); }
     .suggestion-item svg { width: 14px; height: 14px; color: var(--amber); flex-shrink: 0; }
 
+    /* ── ROLE PICKER ── */
+    .role-picker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+    }
+    .role-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 0.6rem;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      background: transparent;
+    }
+    .role-card:hover {
+      border-color: rgba(232,146,10,0.45);
+      background: rgba(232,146,10,0.04);
+    }
+    .role-card.active {
+      border-color: var(--amber);
+      background: rgba(232,146,10,0.07);
+      box-shadow: 0 0 0 3px rgba(232,146,10,0.12);
+    }
+    .role-icon { font-size: 1.4rem; margin-bottom: 0.35rem; }
+    .role-title { font-size: 0.84rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.2rem; line-height: 1.3; }
+    .role-sub { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
+
     @media (max-width: 540px) {
       .form-row { grid-template-columns: 1fr; }
       .signup-card { padding: 1.75rem 1.25rem; }
       .trust-row { gap: 1rem; }
+      .role-picker { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -381,6 +411,35 @@
 
         <!-- UNIFIED FORM -->
         <div id="main-form">
+
+          <!-- Rolle-vælger -->
+          <div style="font-size:0.75rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.65rem;">Hvad vil du bruge BoligDirekte til?</div>
+          <div class="role-picker">
+            <div class="role-card active" data-role="saelger" onclick="setRole('saelger')">
+              <div class="role-icon">🏠</div>
+              <div class="role-title">Sælger</div>
+              <div class="role-sub">Sæt din bolig til salg — og søg nyt</div>
+            </div>
+            <div class="role-card" data-role="koeber" onclick="setRole('koeber')">
+              <div class="role-icon">🔍</div>
+              <div class="role-title">Køber</div>
+              <div class="role-sub">Søg og gem boliger til køb</div>
+            </div>
+            <div class="role-card" data-role="udlejer" onclick="setRole('udlejer')">
+              <div class="role-icon">🔑</div>
+              <div class="role-title">Udlejer</div>
+              <div class="role-sub">Opret lejebolig og find lejere</div>
+            </div>
+            <div class="role-card" data-role="lejer" onclick="setRole('lejer')">
+              <div class="role-icon">🏡</div>
+              <div class="role-title">Lejer</div>
+              <div class="role-sub">Find din næste lejebolig</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Stamoplysninger – altid synlige -->
           <div class="form-row">
             <div class="field">
               <label>Fornavn</label>
@@ -403,20 +462,55 @@
             <label>Telefonnummer</label>
             <input type="tel" id="s-phone" placeholder="+45 12 34 56 78" />
           </div>
-          <div class="divider"></div>
-          <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.85rem;">Vil du sælge en bolig? (valgfri)</div>
-          <div class="field">
-            <label>Boligens adresse</label>
-            <div class="address-wrap">
-              <input type="text" id="s-address" placeholder="Eksempelvej 12, 5000 Odense" autocomplete="off" />
-              <div class="address-suggestions" id="s-address-suggestions"></div>
+
+          <!-- Sælger sektion -->
+          <div id="section-saelger">
+            <div class="divider"></div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.85rem;">Din bolig til salg (valgfri)</div>
+            <div class="field">
+              <label>Boligens adresse</label>
+              <div class="address-wrap">
+                <input type="text" id="s-address" placeholder="Eksempelvej 12, 5000 Odense" autocomplete="off" />
+                <div class="address-suggestions" id="s-address-suggestions"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label>Boligtype</label>
+                <select id="s-type">
+                  <option value="">Vælg type</option>
+                  <option>Villa</option>
+                  <option>Rækkehus</option>
+                  <option>Lejlighed</option>
+                  <option>Fritidshus</option>
+                  <option>Andet</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Forventet salgspris</label>
+                <input type="text" id="s-price" placeholder="f.eks. 2.500.000 kr." />
+              </div>
             </div>
           </div>
-          <div class="form-row">
+
+          <!-- Køber sektion -->
+          <div id="section-koeber" style="display:none;">
+            <div class="divider"></div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.85rem;">Hvad søger du? (valgfri)</div>
+            <div class="form-row">
+              <div class="field">
+                <label>Foretrukket område</label>
+                <input type="text" id="k-area" placeholder="f.eks. Odense, Aarhus..." />
+              </div>
+              <div class="field">
+                <label>Max budget</label>
+                <input type="text" id="k-budget" placeholder="f.eks. 3.000.000 kr." />
+              </div>
+            </div>
             <div class="field">
               <label>Boligtype</label>
-              <select id="s-type">
-                <option value="">Vælg type</option>
+              <select id="k-type">
+                <option value="">Ligegyldigt</option>
                 <option>Villa</option>
                 <option>Rækkehus</option>
                 <option>Lejlighed</option>
@@ -424,20 +518,76 @@
                 <option>Andet</option>
               </select>
             </div>
+          </div>
+
+          <!-- Udlejer sektion -->
+          <div id="section-udlejer" style="display:none;">
+            <div class="divider"></div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.85rem;">Din lejebolig (valgfri)</div>
             <div class="field">
-              <label>Forventet salgspris</label>
-              <input type="text" id="s-price" placeholder="f.eks. 2.500.000 kr." />
+              <label>Boligens adresse</label>
+              <div class="address-wrap">
+                <input type="text" id="u-address" placeholder="Eksempelvej 12, 5000 Odense" autocomplete="off" />
+                <div class="address-suggestions" id="u-address-suggestions"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label>Boligtype</label>
+                <select id="u-type">
+                  <option value="">Vælg type</option>
+                  <option>Lejlighed</option>
+                  <option>Værelse</option>
+                  <option>Villa</option>
+                  <option>Rækkehus</option>
+                  <option>Andet</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Månedlig leje</label>
+                <input type="text" id="u-rent" placeholder="f.eks. 7.500 kr./md" />
+              </div>
             </div>
           </div>
-          <div class="divider"></div>
-          <div class="terms-box">
-            <strong>Formidlingsaftale</strong><br>
-            BoligDirekte formidler kontakt mellem sælger og køber. Ved oprettelse accepterer du, at BoligDirekte modtager et honorar på <strong>0,5% af den endelige salgspris</strong>, hvis en bolig sælges til en køber der er kommet i kontakt med dig via platformen. Honoraret forfalder ved underskrift af købsaftale. Aftalen er gældende i <strong>12 måneder</strong> fra første registrerede kontakt mellem parterne.
+
+          <!-- Lejer sektion -->
+          <div id="section-lejer" style="display:none;">
+            <div class="divider"></div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.85rem;">Hvad søger du? (valgfri)</div>
+            <div class="form-row">
+              <div class="field">
+                <label>Foretrukket område</label>
+                <input type="text" id="l-area" placeholder="f.eks. Odense, Aarhus..." />
+              </div>
+              <div class="field">
+                <label>Max husleje</label>
+                <input type="text" id="l-budget" placeholder="f.eks. 8.000 kr./md" />
+              </div>
+            </div>
+            <div class="field">
+              <label>Boligtype</label>
+              <select id="l-type">
+                <option value="">Ligegyldigt</option>
+                <option>Lejlighed</option>
+                <option>Værelse</option>
+                <option>Villa</option>
+                <option>Rækkehus</option>
+                <option>Andet</option>
+              </select>
+            </div>
           </div>
-          <label class="terms-check" id="s-terms-label">
-            <input type="checkbox" id="s-terms" />
-            <span>Jeg har læst og accepterer ovenstående formidlingsaftale, herunder at betale <strong>0,5% af salgsprisen</strong> til BoligDirekte ved salg via platformen.</span>
-          </label>
+
+          <div class="divider"></div>
+          <div id="terms-wrap" style="display:none;">
+            <div class="terms-box">
+              <strong>Formidlingsaftale</strong><br>
+              BoligDirekte formidler kontakt mellem sælger og køber. Hvis en bolig sælges til en køber der er kommet i kontakt med sælger via platformen, modtager BoligDirekte et honorar på <strong>0,5% af den endelige salgspris</strong> — betalt af sælger. Honoraret forfalder ved underskrift af købsaftale. Aftalen er gældende i <strong>12 måneder</strong> fra første registrerede kontakt mellem parterne. <strong>Det er ikke tilladt at omgå platformen</strong> ved at indgå aftaler direkte for at undgå formidlingshonoraret.
+            </div>
+            <label class="terms-check" id="s-terms-label">
+              <input type="checkbox" id="s-terms" />
+              <span id="s-terms-text">Jeg har læst og accepterer ovenstående formidlingsaftale, herunder at betale <strong>0,5% af salgsprisen</strong> til BoligDirekte ved salg via platformen.</span>
+            </label>
+          </div>
           <button class="submit-btn" onclick="submitForm()">Opret konto →</button>
           <p class="form-note">Gratis at oprette · 0,5% kun ved salg · Ingen skjulte gebyrer</p>
         </div>
@@ -514,36 +664,63 @@
       document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
     });
 
-    // Address autocomplete via DAWA
-    let dawaTimer = null;
+    // Rolle-vælger
+    let currentRole = 'saelger';
+    window.setRole = function(role) {
+      currentRole = role;
+      document.querySelectorAll('.role-card').forEach(c => c.classList.toggle('active', c.dataset.role === role));
+      document.getElementById('section-saelger').style.display = role === 'saelger' ? '' : 'none';
+      document.getElementById('section-koeber').style.display  = role === 'koeber'  ? '' : 'none';
+      document.getElementById('section-udlejer').style.display = role === 'udlejer' ? '' : 'none';
+      document.getElementById('section-lejer').style.display   = role === 'lejer'   ? '' : 'none';
+      // Formidlingsaftale synlig for sælger og køber
+      document.getElementById('terms-wrap').style.display = (role === 'saelger' || role === 'koeber') ? '' : 'none';
+      if (role === 'saelger') {
+        document.getElementById('s-terms-text').innerHTML = 'Jeg har læst og accepterer ovenstående formidlingsaftale, herunder at betale <strong>0,5% af salgsprisen</strong> til BoligDirekte ved salg via platformen.';
+      } else if (role === 'koeber') {
+        document.getElementById('s-terms-text').innerHTML = 'Jeg har læst og accepterer ovenstående formidlingsaftale, og er indforstået med at handler indgået med sælgere fundet via BoligDirekte ikke må omgå platformen.';
+      }
+      // Nulstil checkbox ved rolleskift
+      document.getElementById('s-terms').checked = false;
+      document.getElementById('s-terms-label').classList.remove('error');
+    };
+
+    // Address autocomplete hjælpefunktion
+    function bindDawa(inputId, boxId) {
+      const inp = document.getElementById(inputId);
+      const box = document.getElementById(boxId);
+      if (!inp || !box) return;
+      let timer = null;
+      inp.addEventListener('input', () => {
+        clearTimeout(timer);
+        const q = inp.value.trim();
+        if (q.length < 2) { box.classList.remove('open'); return; }
+        timer = setTimeout(async () => {
+          try {
+            const res  = await fetch(`https://api.dataforsyningen.dk/autocomplete?q=${encodeURIComponent(q)}&type=adresse&per_side=6`);
+            const data = await res.json();
+            box.innerHTML = '';
+            if (!data.length) { box.classList.remove('open'); return; }
+            data.forEach(item => {
+              const div = document.createElement('div');
+              div.className = 'suggestion-item';
+              div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${item.tekst}`;
+              div.addEventListener('mousedown', e => { e.preventDefault(); inp.value = item.tekst; box.classList.remove('open'); });
+              box.appendChild(div);
+            });
+            box.classList.add('open');
+          } catch(e) { box.classList.remove('open'); }
+        }, 200);
+      });
+      inp.addEventListener('blur', () => setTimeout(() => box.classList.remove('open'), 150));
+    }
+
+    bindDawa('s-address', 's-address-suggestions');
+    bindDawa('u-address', 'u-address-suggestions');
+
+    // Legacy reference (kept for compat)
     const addressInput = document.getElementById('s-address');
     const suggestionBox = document.getElementById('s-address-suggestions');
-
-    addressInput.addEventListener('input', () => {
-      clearTimeout(dawaTimer);
-      const q = addressInput.value.trim();
-      if (q.length < 2) { suggestionBox.classList.remove('open'); return; }
-      dawaTimer = setTimeout(async () => {
-        try {
-          const res = await fetch(`https://api.dataforsyningen.dk/autocomplete?q=${encodeURIComponent(q)}&type=adresse&per_side=6`);
-          const data = await res.json();
-          suggestionBox.innerHTML = '';
-          if (!data.length) { suggestionBox.classList.remove('open'); return; }
-          data.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'suggestion-item';
-            div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${item.tekst}`;
-            div.addEventListener('mousedown', (e) => {
-              e.preventDefault();
-              addressInput.value = item.tekst;
-              suggestionBox.classList.remove('open');
-            });
-            suggestionBox.appendChild(div);
-          });
-          suggestionBox.classList.add('open');
-        } catch(e) { suggestionBox.classList.remove('open'); }
-      }, 200);
-    });
 
     addressInput.addEventListener('blur', () => {
       setTimeout(() => suggestionBox.classList.remove('open'), 150);
@@ -572,13 +749,14 @@
         }
       });
 
-      // Terms validation
-      const termsEl    = document.getElementById('s-terms');
-      const termsLabel = document.getElementById('s-terms-label');
-      if (!termsEl.checked) {
-        termsLabel.classList.add('error');
-        termsEl.addEventListener('change', () => termsLabel.classList.remove('error'), { once: true });
-        valid = false;
+      if (currentRole === 'saelger' || currentRole === 'koeber') {
+        const termsEl    = document.getElementById('s-terms');
+        const termsLabel = document.getElementById('s-terms-label');
+        if (!termsEl.checked) {
+          termsLabel.classList.add('error');
+          termsEl.addEventListener('change', () => termsLabel.classList.remove('error'), { once: true });
+          valid = false;
+        }
       }
 
       if (!valid) return;
@@ -588,39 +766,55 @@
       btn.disabled = true;
 
       try {
-        const email    = document.getElementById('s-email').value.trim();
-        const password = document.getElementById('s-password').value;
-        const fornavn  = document.getElementById('s-fname').value.trim();
+        const email     = document.getElementById('s-email').value.trim();
+        const password  = document.getElementById('s-password').value;
+        const fornavn   = document.getElementById('s-fname').value.trim();
         const efternavn = document.getElementById('s-lname').value.trim();
-        const telefon  = document.getElementById('s-phone').value.trim();
-        const adresse  = document.getElementById('s-address').value.trim();
-        const boligtype = document.getElementById('s-type').value;
-        const salgspris = document.getElementById('s-price').value.trim();
+        const telefon   = document.getElementById('s-phone').value.trim();
 
         const cred = await createUserWithEmailAndPassword(auth, email, password);
         const uid  = cred.user.uid;
+        const base = { fornavn, efternavn, email, telefon, oprettet: serverTimestamp(), termsAccepted: true, termsAcceptedAt: serverTimestamp(), termsVersion: '1.0' };
 
-        // Create saelgere doc (always — address/type/price optional, filled later)
-        await setDoc(doc(db, 'saelgere', uid), {
-          fornavn, efternavn, email, telefon,
-          adresse, boligtype, salgspris,
-          rolle:           'saelger',
-          serialNr:        adresse ? genSerialNr() : '',
-          oprettet:        serverTimestamp(),
-          termsAccepted:   true,
-          termsAcceptedAt: serverTimestamp(),
-          termsVersion:    '1.0'
-        });
+        if (currentRole === 'saelger') {
+          const adresse   = document.getElementById('s-address').value.trim();
+          const boligtype = document.getElementById('s-type').value;
+          const salgspris = document.getElementById('s-price').value.trim();
+          // Sælger-doc
+          await setDoc(doc(db, 'saelgere', uid), {
+            ...base, adresse, boligtype, salgspris,
+            rolle: 'saelger', serialNr: adresse ? genSerialNr() : ''
+          });
+          // Køber-doc automatisk med — sælger kan se boliger til køb
+          await setDoc(doc(db, 'koebere', uid), {
+            ...base, omraade: '', boligtype: '', budget: '', rolle: 'koeber'
+          });
 
-        // Also create koebere doc so buyer features are immediately available
-        await setDoc(doc(db, 'koebere', uid), {
-          fornavn, efternavn, email, telefon,
-          omraade:   '',
-          boligtype: '',
-          budget:    '',
-          rolle:     'koeber',
-          oprettet:  serverTimestamp()
-        });
+        } else if (currentRole === 'koeber') {
+          const omraade   = document.getElementById('k-area').value.trim();
+          const budget    = document.getElementById('k-budget').value.trim();
+          const boligtype = document.getElementById('k-type').value;
+          await setDoc(doc(db, 'koebere', uid), {
+            ...base, omraade, budget, boligtype, rolle: 'koeber'
+          });
+
+        } else if (currentRole === 'udlejer') {
+          const adresse   = document.getElementById('u-address').value.trim();
+          const boligtype = document.getElementById('u-type').value;
+          const leje      = document.getElementById('u-rent').value.trim();
+          await setDoc(doc(db, 'udlejere', uid), {
+            ...base, adresse, boligtype, maanedligLeje: leje,
+            rolle: 'udlejer', serialNr: adresse ? genSerialNr() : ''
+          });
+
+        } else if (currentRole === 'lejer') {
+          const omraade   = document.getElementById('l-area').value.trim();
+          const budget    = document.getElementById('l-budget').value.trim();
+          const boligtype = document.getElementById('l-type').value;
+          await setDoc(doc(db, 'lejere', uid), {
+            ...base, omraade, budget, boligtype, rolle: 'lejer'
+          });
+        }
 
         document.getElementById('main-form').style.display = 'none';
         document.getElementById('success-screen').style.display = 'block';

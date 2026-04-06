@@ -238,6 +238,7 @@
     import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
+
     const firebaseConfig = {
       apiKey: "AIzaSyAH0mxBKo3iFUyB5ZKnTvdYEneXPyuvu5I",
       authDomain: "boligside-3dbfa.firebaseapp.com",
@@ -295,16 +296,27 @@
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
         const uid  = cred.user.uid;
-        const [sellerSnap, buyerSnap] = await Promise.all([
+        const [sellerSnap, buyerSnap, udlejerSnap, lejerSnap] = await Promise.all([
           getDoc(doc(db, 'saelgere', uid)),
-          getDoc(doc(db, 'koebere',  uid))
+          getDoc(doc(db, 'koebere',  uid)),
+          getDoc(doc(db, 'udlejere', uid)),
+          getDoc(doc(db, 'lejere',   uid))
         ]);
         const roles = [];
-        if (sellerSnap.exists()) roles.push('saelger');
-        if (buyerSnap.exists())  roles.push('koeber');
+        if (sellerSnap.exists())  roles.push('saelger');
+        if (buyerSnap.exists())   roles.push('koeber');
+        if (udlejerSnap.exists()) roles.push('udlejer');
+        if (lejerSnap.exists())   roles.push('lejer');
         localStorage.setItem('bd_roles', JSON.stringify(roles));
         localStorage.setItem('bd_role',  roles[0] || 'saelger');
-        window.location.href = 'dashboard.html';
+        const params   = new URLSearchParams(window.location.search);
+        const opslagId = params.get('opslag');
+        const mode     = params.get('mode');
+        if (opslagId) {
+          window.location.href = 'dashboard.html?opslag=' + opslagId;
+        } else {
+          window.location.href = 'dashboard.html';
+        }
       } catch (err) {
         let msg = 'Noget gik galt — prøv igen.';
         if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {

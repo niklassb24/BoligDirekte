@@ -235,10 +235,9 @@
     nav { display: flex; align-items: center; justify-content: space-between; }
     .nav-center { position: absolute; left: 50%; transform: translateX(-50%); }
     .nav-mode-btns { display: flex; align-items: center; gap: 0.5rem; }
-    .nav-mode-btn { background: transparent; border: 1.5px solid var(--border); padding: 0.5rem 1.4rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text-main); cursor: pointer; transition: all 0.18s; white-space: nowrap; letter-spacing: 0.01em; }
-    .nav-mode-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(232,146,10,0.06); }
-    .nav-mode-btn.active { background: var(--amber); color: #fff; border-color: var(--amber); box-shadow: 0 2px 10px rgba(232,146,10,0.28); }
-    [data-theme="dark"] .nav-mode-btn.active { color: #050a18; }
+    .nav-mode-btn, .nav-mode-btn.active { background: transparent; border: 2px solid #0F1E3D; padding: 0.5rem 1.4rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--amber); cursor: pointer; transition: all 0.18s; white-space: nowrap; letter-spacing: 0.01em; box-shadow: none; }
+    .nav-mode-btn:hover, .nav-mode-btn.active:hover { border-color: var(--amber); background: rgba(232,146,10,0.06); }
+    [data-theme="dark"] .nav-mode-btn, [data-theme="dark"] .nav-mode-btn.active { border-color: rgba(255,255,255,0.22); }
     .nav-mode-btn:hover:not(.active) { color: var(--text-main); }
 
     .nav-btn {
@@ -256,6 +255,8 @@
     .nav-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
     .nav-btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border); }
     .nav-btn-outline:hover { background: var(--border); transform: translateY(-1px); }
+    .nav-btn-logout { background: transparent; color: var(--text-muted); border: 1px solid var(--border); display: none; }
+    .nav-btn-logout:hover { border-color: #DC2626; color: #DC2626; transform: translateY(-1px); }
 
     /* MODE SWITCH */
     .mode-switch {
@@ -1540,7 +1541,8 @@
         <span class="toggle-label">Mørk</span>
       </button>
       <button class="nav-btn nav-btn-outline" id="nav-login-btn" onclick="window.location.href='login.html'">Log ind</button>
-      <button class="nav-btn" onclick="window.location.href='tilmeld.html'">Tilmeld dig</button>
+      <button class="nav-btn" id="nav-tilmeld-btn" onclick="window.location.href='tilmeld.html'">Tilmeld dig</button>
+      <button class="nav-btn nav-btn-logout" id="nav-logout-btn" onclick="doLogout()">Log ud</button>
     </div>
   </nav>
 
@@ -2580,6 +2582,12 @@
       if (!center || !btns) return;
       if (!user) { center.style.display = 'none'; return; }
       center.style.display = '';
+      btns.innerHTML = '';
+      const btn = document.createElement('button');
+      btn.className = 'nav-mode-btn active';
+      btn.textContent = 'Gå til dashboard →';
+      btn.addEventListener('click', () => window.location.href = 'dashboard.html');
+      btns.appendChild(btn); return;
       const items = mode === 'leje'
         ? [{ label: 'Leje',   action: () => window.location.href = 'dashboard.html?tab=koeber' },
            { label: 'Udleje', action: () => window.location.href = 'dashboard.html?tab=saelger' }]
@@ -2647,7 +2655,7 @@
 
   <script type="module">
     import { initializeApp }                            from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged }              from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut }     from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
     import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -2666,14 +2674,26 @@
     // ── AUTH STATE: vis navn + nav-center knapper hvis logget ind ──
     onAuthStateChanged(auth, user => {
       window._currentUser = user;
-      const loginBtn = document.getElementById('nav-login-btn');
-      if (loginBtn && user) {
+      const loginBtn   = document.getElementById('nav-login-btn');
+      const tilmeldBtn = document.getElementById('nav-tilmeld-btn');
+      const logoutBtn  = document.getElementById('nav-logout-btn');
+      if (user) {
         const name = user.displayName || user.email.split('@')[0];
-        loginBtn.textContent = '👤 ' + name;
-        loginBtn.onclick = () => window.location.href = 'dashboard.html';
+        if (loginBtn)   { loginBtn.textContent = '👤 ' + name; loginBtn.onclick = () => window.location.href = 'dashboard.html'; }
+        if (tilmeldBtn) tilmeldBtn.style.display = 'none';
+        if (logoutBtn)  logoutBtn.style.display = 'inline-flex';
+      } else {
+        if (loginBtn)   { loginBtn.textContent = 'Log ind'; loginBtn.onclick = () => window.location.href = 'login.html'; }
+        if (tilmeldBtn) tilmeldBtn.style.display = '';
+        if (logoutBtn)  logoutBtn.style.display = 'none';
       }
       updateNavCenter(user, window._currentMode || 'salg');
     });
+
+    window.doLogout = async function() {
+      await signOut(auth);
+      window.location.reload();
+    };
 
     // ── LIVE LISTINGS FRA FIRESTORE ──
     const typeImages = {
