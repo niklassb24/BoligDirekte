@@ -1955,6 +1955,22 @@
     </div>
   </div>
 
+  <!-- SLET BOLIG BEKRÆFTELSE -->
+  <div class="modal-overlay" id="slet-bolig-overlay" onclick="if(event.target===this)lukSletBoligModal()" style="display:none;align-items:center;justify-content:center;">
+    <div class="modal" style="max-width:400px;text-align:center;">
+      <div style="width:52px;height:52px;border-radius:14px;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.18);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </div>
+      <h2 style="font-size:1.1rem;font-weight:700;color:var(--h1-color);margin-bottom:0.5rem;">Slet opslag?</h2>
+      <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:1.5rem;">Opslaget <strong id="slet-bolig-adresse" style="color:var(--text-main);"></strong> slettes permanent og kan ikke gendannes.</p>
+      <div style="display:flex;gap:0.75rem;">
+        <button class="btn-secondary" style="flex:1;" onclick="lukSletBoligModal()">Annuller</button>
+        <button id="slet-bolig-confirm-btn" style="flex:1;background:#DC2626;color:#fff;border:none;padding:0.75rem;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.9rem;cursor:pointer;" onclick="bekræftSletBolig()">Slet opslag</button>
+      </div>
+      <div id="slet-bolig-error" style="display:none;margin-top:0.75rem;font-size:0.84rem;color:#DC2626;"></div>
+    </div>
+  </div>
+
   <!-- BETAL KONTAKT MODAL -->
   <div class="betal-modal-overlay" id="betal-modal-overlay" onclick="if(event.target===this)closeBetaModal()">
     <div class="betal-modal">
@@ -3869,11 +3885,55 @@
           </div>
           <div style="display:flex;align-items:center;gap:0.5rem;">
             ${isActive ? '<span style="font-size:0.72rem;font-weight:600;color:var(--amber);background:rgba(232,146,10,0.1);border:1px solid rgba(232,146,10,0.25);padding:0.2rem 0.6rem;border-radius:100px;">Aktiv</span>' : `<button onclick="event.stopPropagation();selectBolig('${b.id}')" style="font-size:0.78rem;font-weight:600;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--border);padding:0.3rem 0.75rem;border-radius:8px;cursor:pointer;">Vælg</button>`}
+            <button onclick="event.stopPropagation();sletBolig('${b.id}')" style="font-size:0.78rem;font-weight:600;color:#DC2626;background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);padding:0.3rem 0.75rem;border-radius:8px;cursor:pointer;">Slet</button>
           </div>`;
         row.onclick = () => selectBolig(b.id);
         liste.appendChild(row);
       });
     }
+
+    let _sletBoligTarget = null;
+
+    window.sletBolig = function(boligId) {
+      const b = window._mineBoligerList?.find(x => x.id === boligId);
+      _sletBoligTarget = boligId;
+      document.getElementById('slet-bolig-adresse').textContent = b?.adresse || 'dette opslag';
+      document.getElementById('slet-bolig-error').style.display = 'none';
+      const btn = document.getElementById('slet-bolig-confirm-btn');
+      btn.textContent = 'Slet opslag'; btn.disabled = false;
+      document.getElementById('slet-bolig-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.lukSletBoligModal = function() {
+      document.getElementById('slet-bolig-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    window.bekræftSletBolig = async function() {
+      if (!_sletBoligTarget) return;
+      const btn = document.getElementById('slet-bolig-confirm-btn');
+      btn.textContent = 'Sletter...'; btn.disabled = true;
+      try {
+        await deleteDoc(doc(db, 'saelgere', _sletBoligTarget));
+        window._mineBoligerList = (window._mineBoligerList || []).filter(b => b.id !== _sletBoligTarget);
+        lukSletBoligModal();
+        if (window._currentBoligId === _sletBoligTarget) {
+          if (window._mineBoligerList.length > 0) {
+            window.selectBolig(window._mineBoligerList[0].id);
+          } else {
+            const roles = JSON.parse(localStorage.getItem('bd_roles') || '[]').filter(r => r !== 'saelger');
+            localStorage.setItem('bd_roles', JSON.stringify(roles));
+            window.location.reload();
+          }
+        }
+        renderMineBoligerListe();
+      } catch(e) {
+        document.getElementById('slet-bolig-error').textContent = 'Noget gik galt — prøv igen.';
+        document.getElementById('slet-bolig-error').style.display = 'block';
+        btn.textContent = 'Slet opslag'; btn.disabled = false;
+      }
+    };
 
     window.selectBolig = function(boligId) {
       const b = window._mineBoligerList?.find(x => x.id === boligId);
@@ -4362,6 +4422,14 @@
         }
         btn.textContent = 'Opretter...'; btn.disabled = true;
         try {
+          // Tjek om adressen allerede er oprettet af denne bruger
+          const dupCheck = (window._mineBoligerList || []).find(b => b.adresse?.toLowerCase().trim() === adresse.toLowerCase().trim());
+          if (dupCheck) {
+            errorEl.textContent = 'Du har allerede et opslag med denne adresse.';
+            errorEl.style.display = 'block';
+            btn.textContent = 'Opret mig som sælger →'; btn.disabled = false;
+            return;
+          }
           const newBoligData = { ...base, userId: currentUser.uid, adresse, boligtype: document.getElementById('m-stype').value, salgspris: document.getElementById('m-pris').value.trim(), rolle: 'saelger', termsAccepted: true, termsAcceptedAt: serverTimestamp(), termsVersion: '1.0' };
           const boligRef = await addDoc(collection(db, 'saelgere'), newBoligData);
           window._currentBoligId = boligRef.id;
@@ -4429,8 +4497,40 @@
     bindModalDawa('m-adresse',  'm-adresse-suggestions');
     bindModalDawa('mu-adresse', 'mu-adresse-suggestions');
 
+    // Auto-formatér prisfelter med punktum som tusindtalsseparator
+    function bindPrisFormat(inputId) {
+      const inp = document.getElementById(inputId);
+      if (!inp) return;
+      inp.addEventListener('input', () => {
+        const pos   = inp.selectionStart;
+        const raw   = inp.value.replace(/[^\d]/g, '');
+        if (!raw) { inp.value = ''; return; }
+        const formatted = parseInt(raw, 10).toLocaleString('da-DK').replace(/\./g, '.') + ' kr.';
+        inp.value = formatted;
+        // Hold cursor sidst i tallene (før " kr.")
+        const newPos = formatted.length - 4;
+        inp.setSelectionRange(newPos, newPos);
+      });
+      inp.addEventListener('focus', () => {
+        // Fjern " kr." ved fokus så det er nemt at redigere
+        inp.value = inp.value.replace(/\s*kr\./i, '').trim();
+      });
+      inp.addEventListener('blur', () => {
+        const raw = inp.value.replace(/[^\d]/g, '');
+        if (raw) inp.value = parseInt(raw, 10).toLocaleString('da-DK') + ' kr.';
+      });
+    }
+    bindPrisFormat('m-pris');
+    bindPrisFormat('e-salgspris');
+
     onAuthStateChanged(auth, async user => {
       if (!user) { window.location.href = 'login.html'; return; }
+
+      // Migration: flyt gammelt opslag (doc ID = uid) til ny struktur med userId-felt
+      const oldSellerDoc = await getDoc(doc(db, 'saelgere', user.uid));
+      if (oldSellerDoc.exists() && !oldSellerDoc.data().userId) {
+        await updateDoc(doc(db, 'saelgere', user.uid), { userId: user.uid }).catch(() => {});
+      }
 
       const [sellerSnap, buyerSnap, udlejerSnap, lejerSnap] = await Promise.all([
         getDocs(query(collection(db, 'saelgere'), where('userId', '==', user.uid))),
