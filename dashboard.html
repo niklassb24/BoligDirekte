@@ -705,6 +705,7 @@
             <div><div class="detail-label">Boligtype</div><div class="detail-value" id="s-type">—</div></div>
             <div><div class="detail-label">Forventet pris</div><div class="detail-value" id="s-pris">—</div></div>
             <div><div class="detail-label">Telefon</div><div class="detail-value" id="s-telefon">—</div></div>
+            <div id="s-serial-wrap" style="display:none;"><div class="detail-label">Opslags-ID</div><div class="detail-value" id="s-serial">—</div></div>
           </div>
           <div id="s-oversigt-extra" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--divider);">
             <div class="details-grid" id="s-oversigt-extra-grid"></div>
@@ -3660,8 +3661,21 @@
         if (rolle === 'saelger') {
           const boligerSnap = await getDocs(query(collection(db, 'saelgere'), where('userId', '==', currentUser.uid)));
           await Promise.all(boligerSnap.docs.map(d => deleteDoc(d.ref)));
-        } else {
-          await deleteDoc(doc(db, rolleCollections[rolle], currentUser.uid));
+          // Slet alle favoritter hvor denne bruger er sælger
+          const favSnap = await getDocs(query(collection(db, 'favoritter'), where('sellerUID', '==', currentUser.uid)));
+          await Promise.all(favSnap.docs.map(d => deleteDoc(d.ref)));
+        } else if (rolle === 'koeber') {
+          await deleteDoc(doc(db, 'koebere', currentUser.uid));
+          // Slet alle favoritter oprettet af denne køber
+          const favSnap = await getDocs(query(collection(db, 'favoritter'), where('buyerUID', '==', currentUser.uid)));
+          await Promise.all(favSnap.docs.map(d => deleteDoc(d.ref)));
+        } else if (rolle === 'lejer') {
+          await deleteDoc(doc(db, 'lejere', currentUser.uid));
+          // Slet lejer-favoritter
+          const lejeFavSnap = await getDocs(query(collection(db, 'leje-favoritter'), where('lejerUID', '==', currentUser.uid)));
+          await Promise.all(lejeFavSnap.docs.map(d => deleteDoc(d.ref)));
+        } else if (rolle === 'udlejer') {
+          await deleteDoc(doc(db, 'udlejere', currentUser.uid));
         }
         // Opdater localStorage
         const roles = JSON.parse(localStorage.getItem('bd_roles') || '[]').filter(r => r !== rolle);
@@ -4192,6 +4206,10 @@
       if (el('s-type'))     el('s-type').textContent     = d.boligtype || '—';
       if (el('s-pris'))     el('s-pris').textContent     = fmt(d.salgspris);
       if (el('s-telefon'))  el('s-telefon').textContent  = d.telefon   || '—';
+      if (el('s-serial') && el('s-serial-wrap')) {
+        if (d.serialNr) { el('s-serial').textContent = d.serialNr; el('s-serial-wrap').style.display = ''; }
+        else el('s-serial-wrap').style.display = 'none';
+      }
       // Oversigt-kort — ekstra felter
       const extraGrid = el('s-oversigt-extra-grid');
       const extraWrap = el('s-oversigt-extra');
