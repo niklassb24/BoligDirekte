@@ -1099,6 +1099,65 @@
       max-width: 520px;
     }
 
+    /* ADVOKAT SECTION */
+    .advokat-section { padding: 6rem 0; background: var(--comp-bg); }
+    .advokat-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 3.5rem;
+      box-shadow: var(--card-shadow);
+    }
+    .advokat-list {
+      list-style: none;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .advokat-list li {
+      font-size: 0.97rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .advokat-badge {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      min-width: 220px;
+    }
+    .advokat-badge-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 1rem;
+    }
+    .advokat-badge-price {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 0.75rem;
+    }
+    .advokat-badge-sub {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .advokat-box { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+      .advokat-badge { min-width: unset; }
+    }
+
     /* HOW IT WORKS */
     .how { background: transparent; }
 
@@ -2085,6 +2144,32 @@
     </div>
   </section>
 
+
+  <!-- ADVOKAT PARTNER -->
+  <section class="advokat-section">
+    <div class="container">
+      <div class="advokat-box reveal">
+        <div class="advokat-left">
+          <div class="section-label">Juridisk tryghed</div>
+          <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);">Advokat inkluderet i handlen</h2>
+          <p class="section-sub">Vi samarbejder med en godkendt advokat der specialiserer sig i bolighandler — og tilbyder fast pris til alle BoligDirekte-kunder. Du og køber får hver jeres uafhængige rådgivning til en fast, lav pris.</p>
+          <ul class="advokat-list">
+            <li><span class="check">✓</span> Gennemgang af købsaftale</li>
+            <li><span class="check">✓</span> Tjek for gæld og servitutter</li>
+            <li><span class="check">✓</span> Sikker tinglysning af skøde</li>
+            <li><span class="check">✓</span> Fast pris — ingen overraskelser</li>
+          </ul>
+        </div>
+        <div class="advokat-right">
+          <div class="advokat-badge">
+            <div class="advokat-badge-label">Fast pris via BoligDirekte</div>
+            <div class="advokat-badge-price">Aftales ved oprettelse</div>
+            <div class="advokat-badge-sub">Gælder for både køber og sælger — hver for sig</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- FOOTER -->
   <footer>
