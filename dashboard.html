@@ -618,8 +618,6 @@
     .cal-day.disabled { opacity: 0.28; cursor: not-allowed; background: transparent; border-color: transparent; }
     .cal-day.weekend-day { color: var(--text-muted); opacity: 0.38; cursor: not-allowed; background: transparent; }
     .cal-day.filler { visibility: hidden; cursor: default; background: transparent; }
-    /* Tidsslots optaget */
-    .time-slot.optaget { background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.2); color: rgba(220,38,38,0.5); cursor: not-allowed; text-decoration: line-through; }
     /* Tidsslots */
     .time-slots-wrap { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--divider); }
     .time-slots-label { font-size: 0.8rem; font-weight: 600; color: var(--label-color); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
@@ -4967,24 +4965,6 @@
     const _MÅNEDER_K = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
     const _UGEDAGE   = ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'];
 
-    // Generer deterministisk "optaget" slots baseret på dato — ser realistisk ud
-    function getOptagetSlots(date) {
-      const seed = date.getFullYear() * 10000 + (date.getMonth()+1) * 100 + date.getDate();
-      const slots = [];
-      // 2-4 optaget slots per dag baseret på seed
-      const allSlots = [];
-      for (let h = 8; h <= 15; h++) { allSlots.push(h+':00'); allSlots.push(h+':30'); }
-      allSlots.push('16:00');
-      let s = seed;
-      const antal = 2 + (s % 3); // 2, 3 eller 4
-      const brugte = new Set();
-      for (let i = 0; i < antal; i++) {
-        s = (s * 1664525 + 1013904223) & 0xffffffff;
-        const idx = Math.abs(s) % allSlots.length;
-        brugte.add(allSlots[idx]);
-      }
-      return brugte;
-    }
 
     window.åbnFotoModal = function() {
       const now = new Date();
@@ -5051,18 +5031,16 @@
       renderKal();
       document.getElementById('time-slots-label').textContent =
         _UGEDAGE[date.getDay()] + ' ' + date.getDate() + '. ' + _MÅNEDER_K[date.getMonth()];
-      const optagetSlots = getOptagetSlots(date);
       const grid = document.getElementById('time-slots-grid');
       grid.innerHTML = '';
       for (let h = 8; h <= 16; h++) {
         ['00','30'].forEach(m => {
           if (h === 16 && m === '30') return;
-          const label   = h + ':' + m;
-          const optaget = optagetSlots.has(label);
+          const label = h + ':' + m;
           const btn = document.createElement('div');
-          btn.className = 'time-slot' + (optaget ? ' optaget' : '');
+          btn.className = 'time-slot';
           btn.textContent = label;
-          if (!optaget) btn.onclick = () => vælgTid(label, btn);
+          btn.onclick = () => vælgTid(label, btn);
           grid.appendChild(btn);
         });
       }
@@ -5072,7 +5050,7 @@
 
     function vælgTid(tid, btn) {
       _calSelTid = tid;
-      document.querySelectorAll('.time-slot:not(.optaget)').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       const d = _calSelDato;
       const tekst = _UGEDAGE[d.getDay()] + ' d. ' + d.getDate() + '. ' + _MÅNEDER_L[d.getMonth()] + ' ' + d.getFullYear() + ' kl. ' + tid;
