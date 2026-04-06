@@ -2764,6 +2764,7 @@
         card.dataset.mode    = 'salg';
         card.dataset.id      = id;
         if (d.annoncering === true) card.dataset.premium = 'true';
+        const serial = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.3rem;">${d.serialNr}</div>` : '';
         card.innerHTML = `
           <div class="listing-card-img" style="background-image:url('${img}');background-size:cover;background-position:center">
             <div class="prop-img-overlay"></div>
@@ -2773,6 +2774,7 @@
           <div class="listing-card-body">
             <div class="listing-tag">Til salg</div>
             <div class="listing-addr">${d.adresse}</div>
+            ${serial}
             <div class="listing-meta"><span>${emoji} ${type}</span></div>
             <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
           </div>`;

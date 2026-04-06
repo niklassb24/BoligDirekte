@@ -3372,7 +3372,7 @@
       document.getElementById('lv-adresse').textContent     = d.adresse   || 'Adresse ikke angivet';
       document.getElementById('lv-type').textContent        = d.boligtype || 'Bolig';
       document.getElementById('lv-pris').textContent        = d.salgspris || '—';
-      document.getElementById('lv-serial').textContent      = '';
+      document.getElementById('lv-serial').textContent      = d.serialNr  ? 'Opslags-ID: ' + d.serialNr : '';
       document.getElementById('listing-nav-label').textContent = d.adresse || '';
       document.getElementById('lv-avatar').textContent      = initials;
       document.getElementById('lv-seller-name').textContent = name;
@@ -3719,7 +3719,8 @@
           const meta    = [d.areal ? d.areal+' m²' : '', d.rum ? d.rum+' rum' : '', d.byggeaar ? 'Bygget '+d.byggeaar : ''].filter(Boolean).join(' · ') || '&nbsp;';
           const isFavCls = window._myFavoritter.has(s.id) ? ' active' : '';
           const heartHtml = `<button class="heart-btn${isFavCls}" data-fav-uid="${s.id}" onclick="event.stopPropagation();toggleFavorit('${s.id}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
-          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div><div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
+          const serialTag = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.5rem;">${d.serialNr}</div>` : '';
+          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${serialTag}<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
         });
         if (serialUpdates.length) await Promise.all(serialUpdates).catch(() => {});
       // Auto-åbn opslag fra URL-param (?opslag=DOCID) — kun én gang ved page load
