@@ -1494,7 +1494,14 @@
     @media (max-width: 1000px) { .hero-cards { display: none; } }
 
     @media (max-width: 640px) {
-      .hero-form { flex-direction: column; }
+      .hero { padding: 3rem 1rem 2rem; overflow-x: hidden; }
+      .hero-content { padding: 0; }
+      .hero-form { flex-direction: column; width: 100%; max-width: 100%; }
+      .search-wrap { max-width: 100%; padding: 0; }
+      .hero-search-wrap { border-radius: 0; padding: 0.65rem 1rem; }
+      .hero-divider { display: none; }
+      .hero-filter-btn { height: 44px; border-top: 1px solid var(--input-border); justify-content: center; padding: 0 1rem; width: 100%; }
+      .hero-search-btn { width: 100%; justify-content: center; padding: 0.75rem 1rem; border-radius: 0 0 10px 10px; }
       .comp-row { grid-template-columns: 1.5fr 1fr 1fr; }
       .comp-cell { padding: 0.9rem 0.75rem; font-size: 0.8rem; }
       .stats-inner { gap: 2rem; }
@@ -1507,6 +1514,17 @@
       .theme-toggle { padding: 0.3rem 0.5rem; }
       .nav-btn { padding: 0.55rem 0.9rem; font-size: 0.82rem; }
       .nav-right { gap: 0.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0.85rem 1rem; flex-wrap: nowrap; overflow: hidden; }
+      .logo { font-size: 1.15rem; }
+      .hero-badge { font-size: 0.7rem; padding: 0.3rem 0.75rem; white-space: nowrap; }
+      /* Skjul nav-center "Gå til dashboard" — den passer ikke i nav på mobil */
+      .nav-center { display: none !important; }
+      /* Gør nav-knapper mere kompakte */
+      .nav-btn { padding: 0.45rem 0.7rem; font-size: 0.8rem; white-space: nowrap; }
+      .nav-right { gap: 0.35rem; flex-shrink: 0; }
     }
   </style>
 </head>
@@ -2339,7 +2357,7 @@
       }, instant ? 0 : 180);
     }
 
-    switchMode('salg', true);
+    switchMode(localStorage.getItem('bd_front_mode') || 'salg', true);
 
     // ── LISTINGS ──
     const pageSections = ['.how', '.comparison', '.calculator', '.signup'];
@@ -2678,8 +2696,9 @@
       const tilmeldBtn = document.getElementById('nav-tilmeld-btn');
       const logoutBtn  = document.getElementById('nav-logout-btn');
       if (user) {
-        const name = user.displayName || user.email.split('@')[0];
-        if (loginBtn)   { loginBtn.textContent = '👤 ' + name; loginBtn.onclick = () => window.location.href = 'dashboard.html'; }
+        const name    = user.displayName || user.email.split('@')[0];
+        const isMobil = window.innerWidth <= 480;
+        if (loginBtn)   { loginBtn.textContent = isMobil ? '👤' : '👤 ' + name; loginBtn.onclick = () => window.location.href = 'dashboard.html'; }
         if (tilmeldBtn) tilmeldBtn.style.display = 'none';
         if (logoutBtn)  logoutBtn.style.display = 'inline-flex';
       } else {
@@ -2705,28 +2724,26 @@
     const defaultImg = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=340&fit=crop&auto=format';
     const typeEmoji  = { 'Villa':'🏠', 'Rækkehus':'🏘', 'Lejlighed':'🏢', 'Fritidshus':'🏡' };
 
+    const heroImgs = {
+      'Villa':      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=260&fit=crop&auto=format',
+      'Rækkehus':   'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=260&fit=crop&auto=format',
+      'Lejlighed':  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop&auto=format',
+      'Fritidshus': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop&auto=format',
+    };
+
+    // ── SALG-opslag ──
     try {
       const snap = await getDocs(query(collection(db, 'saelgere'), orderBy('oprettet', 'desc')));
       const grid = document.getElementById('listings-grid');
-      let liveCount = 0;
 
-      // Hero-kort: erstat hardkodede kort med betalte annoncer
       const allHeroCards = [...document.querySelectorAll('#cards-salg .prop-card')];
       let heroReplaceIdx = 0;
-
-      const heroImgs = {
-        'Villa':      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=260&fit=crop&auto=format',
-        'Rækkehus':   'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=260&fit=crop&auto=format',
-        'Lejlighed':  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop&auto=format',
-        'Fritidshus': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop&auto=format',
-      };
 
       snap.forEach(docSnap => {
         const d = docSnap.data();
         if (!d.adresse) return;
         if (d.status === 'nede') return;
 
-        // Erstat næste hardkodede hero-kort med det betalte opslag
         if (d.annoncering === true && heroReplaceIdx < allHeroCards.length) {
           const target = allHeroCards[heroReplaceIdx++];
           const hImg   = heroImgs[d.boligtype] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=260&fit=crop&auto=format';
@@ -2748,21 +2765,18 @@
             else window.location.href = 'login.html?opslag=' + docSnap.id;
           };
         }
-        liveCount++;
 
         const id    = 'live-' + docSnap.id;
         const img   = typeImages[d.boligtype] || defaultImg;
         const emoji = typeEmoji[d.boligtype] || '🏠';
         const type  = d.boligtype || 'Bolig';
         const raw   = (d.salgspris || '').toString().replace(/[^\d]/g, '');
-        const price = raw
-          ? parseInt(raw).toLocaleString('da-DK') + ' kr.'
-          : d.salgspris || 'Kontakt for pris';
+        const price = raw ? parseInt(raw).toLocaleString('da-DK') + ' kr.' : d.salgspris || 'Kontakt for pris';
 
         const card = document.createElement('div');
         card.className = 'listing-card';
-        card.dataset.mode    = 'salg';
-        card.dataset.id      = id;
+        card.dataset.mode = 'salg';
+        card.dataset.id   = id;
         if (d.annoncering === true) card.dataset.premium = 'true';
         const serial = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.3rem;">${d.serialNr}</div>` : '';
         card.innerHTML = `
@@ -2778,10 +2792,75 @@
             <div class="listing-meta"><span>${emoji} ${type}</span></div>
             <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
           </div>`;
-        grid.prepend(card); // Live opslag øverst
+        grid.prepend(card);
       });
     } catch (e) {
-      console.warn('Kunne ikke hente live opslag:', e);
+      console.warn('Kunne ikke hente salg-opslag:', e);
+    }
+
+    // ── LEJE-opslag ──
+    try {
+      const snapU = await getDocs(collection(db, 'udlejere'));
+      const grid  = document.getElementById('listings-grid');
+
+      const allLejeHeroCards = [...document.querySelectorAll('#cards-leje .prop-card')];
+      let lejeHeroIdx = 0;
+
+      snapU.forEach(docSnap => {
+        const d = docSnap.data();
+        if (!d.adresse) return;
+        if (d.status === 'nede') return;
+
+        // Erstat hero-kort i leje-sektionen med betalte udlejer-annoncer
+        if (d.annoncering === true && lejeHeroIdx < allLejeHeroCards.length) {
+          const target = allLejeHeroCards[lejeHeroIdx++];
+          const hImg   = heroImgs[d.boligtype] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop&auto=format';
+          const hPrice = d.maanedligLeje ? d.maanedligLeje + (d.maanedligLeje.toString().includes('kr') ? '/md.' : ' kr./md.') : '—';
+          target.style.cursor = 'pointer';
+          target.innerHTML = `
+            <div class="prop-card-img" style="background-image:url('${hImg}');background-size:cover;background-position:center">
+              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
+              <div class="prop-price-badge">${hPrice}</div>
+            </div>
+            <div class="prop-card-body">
+              <div class="prop-tag leje-tag">Til leje</div>
+              <div class="prop-card-addr">${d.adresse}</div>
+              <div class="prop-card-meta"><span>${d.boligtype || 'Bolig'}</span>${d.areal ? `<span>${d.areal} m²</span>` : ''}${d.rum ? `<span>${d.rum} vær.</span>` : ''}</div>
+            </div>`;
+          target.onclick = () => {
+            if (window._currentUser) window.location.href = 'dashboard.html?tab=lejer';
+            else window.location.href = 'login.html';
+          };
+        }
+
+        const id    = 'leje-' + docSnap.id;
+        const img   = typeImages[d.boligtype] || defaultImg;
+        const emoji = typeEmoji[d.boligtype] || '🏢';
+        const type  = d.boligtype || 'Bolig';
+        const rawL  = (d.maanedligLeje || '').toString().replace(/[^\d]/g, '');
+        const price = rawL ? parseInt(rawL).toLocaleString('da-DK') + ' kr./md.' : d.maanedligLeje || 'Kontakt for pris';
+
+        const card = document.createElement('div');
+        card.className = 'listing-card';
+        card.dataset.mode = 'leje';
+        card.dataset.id   = id;
+        if (d.annoncering === true) card.dataset.premium = 'true';
+        card.innerHTML = `
+          <div class="listing-card-img" style="background-image:url('${img}');background-size:cover;background-position:center">
+            <div class="prop-img-overlay"></div>
+            <div class="listing-price">${price}</div>
+            <span class="listing-live-badge">Aktiv</span>
+          </div>
+          <div class="listing-card-body">
+            <div class="listing-tag leje">Til leje</div>
+            <div class="listing-addr">${d.adresse}</div>
+            <div class="listing-meta"><span>${emoji} ${type}</span>${d.areal ? `<span>${d.areal} m²</span>` : ''}${d.rum ? `<span>${d.rum} vær.</span>` : ''}</div>
+            <button class="listing-btn" onclick="window.location.href=(window._currentUser?'dashboard.html?tab=lejer':'login.html')">Se opslag</button>
+          </div>`;
+        grid.prepend(card);
+      });
+    } catch (e) {
+      console.warn('Kunne ikke hente leje-opslag:', e);
     }
   </script>
 </body>
