@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoligDirekte — Roomie Nu</title>
+
+  <!--
+  ╔══════════════════════════════════════════════════════╗
+  ║  FIREBASE OPSÆTNING — GØR DETTE INDEN DU ÅBNER      ║
+  ║                                                      ║
+  ║  1. Firebase Console → Authentication                ║
+  ║     → Sign-in method → Google → Aktivér             ║
+  ║                                                      ║
+  ║  2. Firebase Console → Firestore Database            ║
+  ║     → Create database → Start in test mode          ║
+  ║                                                      ║
+  ║  3. Firebase Console → Storage                       ║
+  ║     → Get started → Start in test mode              ║
+  ╚══════════════════════════════════════════════════════╝
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+  <style>
+    /* ── VARIABLES ─────────────────────────────────────── */
+    :root {
+      --amber: #E8920A; --amber-h: #d4820a;
+      --navy: #0F1E3D;  --navy-2: #1a3160;
+
+      /* Background system — matches index.html hero exactly */
+      --page-bg:   #F9F8F5;
+      --grid-color: rgba(15,30,60,0.05);
+      --radial-1:  rgba(245,158,11,0.10);
+      --radial-2:  rgba(20,55,210,0.06);
+      --radial-3:  rgba(245,158,11,0.04);
+      --blob-a:    rgba(245,158,11,0.09);
+      --blob-b:    rgba(20,55,200,0.07);
+      --beam-h1:   rgba(232,146,10,0.50);
+      --beam-h2:   rgba(20,55,200,0.28);
+      --beam-h3:   rgba(232,146,10,0.22);
+      --beam-v1:   rgba(232,146,10,0.32);
+      --beam-v2:   rgba(20,55,200,0.18);
+      --vignette:  rgba(220,215,205,0.35);
+
+      --bg: #F9F8F5;
+      --card: #FFFFFF;
+      --card-shadow: 0 2px 16px rgba(15,30,60,0.07);
+      --text: #0F1E3D;
+      --muted: rgba(15,30,60,0.50);
+      --border: rgba(15,30,60,0.09);
+      --input-bg: #FFFFFF;
+      --input-border: rgba(15,30,60,0.12);
+      --nav-bg: rgba(255,255,255,0.93);
+      --nav-border: rgba(15,30,60,0.09);
+      --chip-bg: rgba(15,30,60,0.06);
+      --chip-active: #0F1E3D;
+      --msg-own: #E8920A;
+      --msg-other: rgba(15,30,60,0.08);
+      --msg-other-text: #0F1E3D;
+    }
+    [data-theme="dark"] {
+      --page-bg:   #070f28;
+      --grid-color: rgba(255,255,255,0.055);
+      --radial-1:  rgba(245,158,11,0.11);
+      --radial-2:  rgba(20,55,210,0.22);
+      --radial-3:  rgba(245,158,11,0.05);
+      --blob-a:    rgba(245,158,11,0.14);
+      --blob-b:    rgba(25,70,220,0.19);
+      --beam-h1:   rgba(245,158,11,0.70);
+      --beam-h2:   rgba(100,150,255,0.60);
+      --beam-h3:   rgba(245,158,11,0.40);
+      --beam-v1:   rgba(245,158,11,0.50);
+      --beam-v2:   rgba(100,150,255,0.45);
+      --vignette:  rgba(5,8,18,0.65);
+
+      --bg: #070f28;
+      --card: rgba(255,255,255,0.04);
+      --card-shadow: 0 2px 20px rgba(0,0,0,0.35);
+      --text: #FFFFFF;
+      --muted: rgba(255,255,255,0.42);
+      --border: rgba(255,255,255,0.08);
+      --input-bg: rgba(255,255,255,0.07);
+      --input-border: rgba(255,255,255,0.12);
+      --nav-bg: rgba(7,15,40,0.92);
+      --nav-border: rgba(255,255,255,0.07);
+      --chip-bg: rgba(255,255,255,0.08);
+      --chip-active: #E8920A;
+      --msg-other: rgba(255,255,255,0.09);
+      --msg-other-text: #FFFFFF;
+    }
+
+    /* ── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--page-bg); transition: background 0.4s; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: color .3s;
+    }
+
+    /* ── TOP NAV ───────────────────────────────────────── */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--nav-bg); border-bottom: 1px solid var(--nav-border);
+      backdrop-filter: blur(14px); display: flex;
+      align-items: center; justify-content: space-between;
+      padding: 0 1.25rem; z-index: 100;
+    }
+    .logo {
+      font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 700;
+      color: var(--text); text-decoration: none; letter-spacing: -.02em;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .logo span { color: var(--amber); }
+    .logo-tag {
+      font-family: 'DM Sans', sans-serif; font-size: .68rem; font-weight: 700;
+      color: var(--amber); background: rgba(232,146,10,.12);
+      border: 1px solid rgba(232,146,10,.25); padding: .15rem .55rem;
+      border-radius: 100px; text-transform: uppercase; letter-spacing: .08em;
+    }
+    .nav-right { display: flex; align-items: center; gap: .6rem; }
+    .btn-theme {
+      display: flex; align-items: center; gap: .4rem;
+      background: var(--input-bg); border: 1px solid var(--nav-border);
+      border-radius: 100px; padding: .3rem .75rem; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 500;
+      color: var(--muted); transition: all .3s; white-space: nowrap;
+    }
+    .btn-theme:hover { border-color: var(--amber); color: var(--text); }
+    .btn-theme svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform .4s; }
+    [data-theme="dark"] .btn-theme .icon-moon { display: none; }
+    [data-theme="dark"] .btn-theme .icon-sun  { display: block; }
+    .btn-theme .icon-sun { display: none; }
+    .toggle-label { }
+    @media (max-width: 480px) { .toggle-label { display: none; } .btn-theme { padding: .3rem .5rem; } }
+    .btn-nav-auth {
+      background: var(--navy); color: #fff; border: none; border-radius: 10px;
+      padding: .5rem 1rem; font-family: 'DM Sans', sans-serif; font-size: .85rem;
+      font-weight: 600; cursor: pointer; transition: opacity .2s;
+    }
+    .btn-nav-auth:hover { opacity: .85; }
+    [data-theme="dark"] .btn-nav-auth { background: var(--amber); }
+    .nav-user-photo {
+      width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--amber); cursor: pointer;
+    }
+
+    /* ── MAIN ──────────────────────────────────────────── */
+    .main { padding-top: 60px; padding-bottom: 68px; min-height: 100vh; position: relative; z-index: 2; }
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── FILTER BAR ────────────────────────────────────── */
+    .filter-bar {
+      padding: .85rem 1.25rem; background: var(--nav-bg);
+      border-bottom: 1px solid var(--border); backdrop-filter: blur(8px);
+      position: sticky; top: 60px; z-index: 90;
+    }
+    .search-row { display: flex; gap: .5rem; margin-bottom: .65rem; }
+    .search-input {
+      flex: 1; padding: .6rem 1rem; border: 1px solid var(--input-border);
+      border-radius: 10px; background: var(--input-bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .9rem; outline: none;
+      transition: border-color .2s;
+    }
+    .search-input:focus { border-color: var(--amber); }
+    .search-input::placeholder { color: var(--muted); }
+    .radius-select {
+      padding: .6rem .75rem; border: 1px solid var(--input-border);
+      border-radius: 10px; background: var(--input-bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; outline: none;
+      cursor: pointer; min-width: 128px;
+    }
+    .filter-chips { display: flex; gap: .45rem; flex-wrap: wrap; align-items: center; }
+    .chip {
+      padding: .32rem .82rem; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--chip-bg);
+      color: var(--muted); font-size: .8rem; font-weight: 500; cursor: pointer;
+      transition: all .18s; font-family: 'DM Sans', sans-serif;
+    }
+    .chip:hover { border-color: var(--amber); color: var(--amber); }
+    .chip.active { background: var(--chip-active); color: #fff; border-color: transparent; }
+    [data-theme="dark"] .chip.active { background: var(--amber); }
+    .price-input {
+      padding: .32rem .75rem; border-radius: 100px;
+      border: 1px solid var(--border); background: var(--input-bg);
+      color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .8rem;
+      width: 115px; outline: none; transition: border-color .2s;
+    }
+    .price-input:focus { border-color: var(--amber); }
+    .price-input::placeholder { color: var(--muted); }
+
+    /* ── LISTINGS GRID ─────────────────────────────────── */
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem; padding: 1.25rem;
+    }
+    @media (max-width: 520px) {
+      .listings-grid { grid-template-columns: 1fr 1fr; gap: .65rem; padding: .75rem; }
+    }
+
+    /* ── LISTING CARD ──────────────────────────────────── */
+    .listing-card {
+      background: var(--card); border-radius: 16px; box-shadow: var(--card-shadow);
+      overflow: hidden; border: 1px solid var(--border);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .listing-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(15,30,60,0.13); }
+    .card-photo-wrap {
+      position: relative; width: 100%; padding-top: 100%; overflow: hidden;
+    }
+    .card-photo-wrap img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    }
+    .card-avatar {
+      position: absolute; inset: 0; display: flex; align-items: center;
+      justify-content: center; font-family: 'Fraunces', serif; font-size: 3rem;
+      font-weight: 700; color: rgba(255,255,255,.9);
+    }
+    .type-badge {
+      position: absolute; bottom: .65rem; left: .65rem;
+      padding: .22rem .6rem; border-radius: 100px;
+      font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .type-badge.søger { background: rgba(15,30,61,.82); color: #fff; }
+    .type-badge.har   { background: rgba(232,146,10,.88); color: #fff; }
+    .card-body { padding: .85rem .95rem; }
+    .card-top-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .25rem; }
+    .card-name { font-weight: 600; font-size: .92rem; color: var(--text); }
+    .card-price { font-size: .78rem; font-weight: 700; color: var(--amber); }
+    .card-city { font-size: .78rem; color: var(--muted); margin-bottom: .45rem; }
+    .card-bio {
+      font-size: .8rem; color: var(--muted); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden; margin-bottom: .7rem;
+    }
+    .card-movein { font-size: .74rem; color: var(--muted); margin-bottom: .55rem; }
+    .btn-write {
+      width: 100%; padding: .55rem; background: var(--amber); color: #fff;
+      border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: .85rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
+    }
+    .btn-write:hover { opacity: .85; }
+
+    /* ── CHAT LAYOUT ───────────────────────────────────── */
+    #view-chat .chat-layout {
+      display: flex; height: calc(100vh - 60px - 68px);
+    }
+    .chat-list-panel {
+      width: 300px; flex-shrink: 0;
+      border-right: 1px solid var(--border); overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    .chat-list-header {
+      padding: 1rem 1.25rem; font-family: 'Fraunces', serif; font-size: 1.2rem;
+      font-weight: 700; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    #chat-list-content { flex: 1; overflow-y: auto; }
+
+    @media (max-width: 620px) {
+      .chat-list-panel { width: 100%; border-right: none; }
+      .chat-list-panel.mob-hidden { display: none; }
+      .chat-window-panel.mob-hidden { display: none; }
+    }
+
+    .chat-row {
+      display: flex; align-items: center; gap: .8rem;
+      padding: .8rem 1.25rem; cursor: pointer;
+      border-bottom: 1px solid var(--border); transition: background .15s;
+    }
+    .chat-row:hover { background: rgba(232,146,10,.05); }
+    .chat-row.active { background: rgba(232,146,10,.09); }
+    .chat-row-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.1rem; color: #fff;
+      overflow: hidden;
+    }
+    .chat-row-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-row-info { flex: 1; min-width: 0; }
+    .chat-row-name { font-weight: 600; font-size: .88rem; margin-bottom: .15rem; }
+    .chat-row-preview { font-size: .78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-row-meta { display: flex; flex-direction: column; align-items: flex-end; gap: .25rem; flex-shrink: 0; }
+    .chat-row-time { font-size: .7rem; color: var(--muted); }
+    .unread-badge {
+      background: #E53E3E; color: #fff; border-radius: 100px;
+      font-size: .68rem; font-weight: 700; padding: .05rem .4rem; min-width: 17px; text-align: center;
+    }
+
+    /* ── CHAT WINDOW ───────────────────────────────────── */
+    .chat-window-panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .chat-w-header {
+      padding: .8rem 1.25rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: .75rem;
+      background: var(--nav-bg); flex-shrink: 0;
+    }
+    .btn-back {
+      background: none; border: none; cursor: pointer; color: var(--text);
+      font-size: 1.3rem; display: none; padding: .2rem .4rem .2rem 0;
+    }
+    @media (max-width: 620px) { .btn-back { display: flex; } }
+    .chat-w-avatar {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-weight: 700; color: #fff; font-size: .95rem;
+      overflow: hidden;
+    }
+    .chat-w-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-w-name { font-weight: 600; font-size: .95rem; }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 1rem 1.25rem;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .msg-wrap { display: flex; flex-direction: column; }
+    .msg-wrap.own { align-items: flex-end; }
+    .msg-wrap.other { align-items: flex-start; }
+    .msg-bubble {
+      max-width: 72%; padding: .6rem .9rem; border-radius: 16px;
+      font-size: .88rem; line-height: 1.5; word-break: break-word;
+    }
+    .msg-bubble.own { background: var(--msg-own); color: #fff; border-bottom-right-radius: 4px; }
+    .msg-bubble.other { background: var(--msg-other); color: var(--msg-other-text); border-bottom-left-radius: 4px; }
+    .msg-time { font-size: .66rem; color: var(--muted); margin-top: .18rem; }
+
+    .chat-input-row {
+      padding: .75rem 1.25rem; border-top: 1px solid var(--border);
+      display: flex; gap: .65rem; align-items: flex-end; flex-shrink: 0;
+      background: var(--nav-bg);
+    }
+    .chat-textarea {
+      flex: 1; padding: .65rem 1rem; border: 1px solid var(--input-border);
+      border-radius: 22px; background: var(--input-bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .88rem; outline: none;
+      resize: none; max-height: 100px; overflow-y: auto; line-height: 1.4;
+      transition: border-color .2s;
+    }
+    .chat-textarea:focus { border-color: var(--amber); }
+    .chat-textarea::placeholder { color: var(--muted); }
+    .btn-send {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--amber);
+      border: none; color: #fff; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+      transition: opacity .2s;
+    }
+    .btn-send:hover { opacity: .85; }
+
+    .chat-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; color: var(--muted); gap: .5rem;
+    }
+    .chat-empty-icon { font-size: 2.8rem; opacity: .3; }
+    .chat-empty p { font-size: .9rem; }
+
+    /* ── PROFILE ───────────────────────────────────────── */
+    .profile-wrap { max-width: 540px; margin: 0 auto; padding: 2rem 1.25rem; }
+    .profile-title { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    .photo-area {
+      width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 1.5rem;
+      background: rgba(232,146,10,.1); border: 2px dashed var(--amber);
+      position: relative; overflow: hidden; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .photo-area:hover { background: rgba(232,146,10,.18); }
+    .photo-area img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .photo-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .photo-icon { font-size: 1.4rem; pointer-events: none; }
+    .photo-label { font-size: .68rem; color: var(--amber); font-weight: 600; pointer-events: none; }
+
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: .78rem; font-weight: 600; color: var(--muted); margin-bottom: .38rem; text-transform: uppercase; letter-spacing: .05em; }
+    .form-input, .form-textarea {
+      width: 100%; padding: .68rem 1rem; border: 1px solid var(--input-border);
+      border-radius: 12px; background: var(--input-bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .9rem; outline: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--amber); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); }
+    .form-textarea { resize: vertical; min-height: 96px; }
+
+    .type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .type-btn {
+      padding: .72rem; border: 2px solid var(--border); border-radius: 12px;
+      background: var(--input-bg); color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: .85rem; font-weight: 500; cursor: pointer; text-align: center;
+      transition: all .18s;
+    }
+    .type-btn:hover { border-color: var(--amber); }
+    .type-btn.active { border-color: var(--amber); background: rgba(232,146,10,.08); color: var(--amber); font-weight: 700; }
+
+    .btn-primary {
+      width: 100%; padding: .82rem; background: var(--navy); color: #fff;
+      border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
+      margin-top: .5rem;
+    }
+    .btn-primary:hover { opacity: .85; }
+    [data-theme="dark"] .btn-primary { background: var(--amber); }
+    .btn-secondary {
+      width: 100%; padding: .78rem; background: transparent;
+      color: var(--muted); border: 1px solid var(--border); border-radius: 14px;
+      font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 500;
+      cursor: pointer; transition: all .18s; margin-top: .5rem;
+    }
+    .btn-secondary:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ── PROFILE DISPLAY ───────────────────────────────── */
+    .profile-card {
+      background: var(--card); border-radius: 20px; padding: 2rem;
+      box-shadow: var(--card-shadow); border: 1px solid var(--border); text-align: center;
+    }
+    .profile-card-photo {
+      width: 88px; height: 88px; border-radius: 50%; object-fit: cover;
+      margin: 0 auto .9rem; border: 3px solid var(--amber); display: block;
+    }
+    .profile-card-avatar {
+      width: 88px; height: 88px; border-radius: 50%; margin: 0 auto .9rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: #fff;
+      border: 3px solid var(--amber);
+    }
+    .profile-card-name { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 700; }
+    .profile-card-type {
+      display: inline-block; margin: .5rem auto; padding: .28rem .75rem;
+      border-radius: 100px; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .profile-card-type.søger { background: rgba(15,30,61,.08); color: var(--navy); }
+    .profile-card-type.har { background: rgba(232,146,10,.1); color: var(--amber); }
+    [data-theme="dark"] .profile-card-type.søger { background: rgba(255,255,255,.1); color: rgba(255,255,255,.8); }
+    .profile-stats { display: flex; justify-content: center; gap: 1.5rem; margin: 1rem 0; flex-wrap: wrap; }
+    .p-stat strong { display: block; font-size: 1rem; color: var(--text); }
+    .p-stat span { font-size: .78rem; color: var(--muted); }
+    .profile-bio-text { font-size: .88rem; color: var(--muted); line-height: 1.7; margin: 1rem 0; text-align: left; font-style: italic; }
+
+    .active-toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 1rem; background: rgba(232,146,10,.06);
+      border: 1px solid rgba(232,146,10,.15); border-radius: 12px; margin: 1rem 0;
+    }
+    .atl { font-size: .88rem; font-weight: 600; }
+    .ats { font-size: .75rem; color: var(--muted); }
+    .sw { position: relative; width: 44px; height: 25px; flex-shrink: 0; }
+    .sw input { opacity: 0; width: 0; height: 0; }
+    .sw-track {
+      position: absolute; inset: 0; background: var(--border);
+      border-radius: 25px; cursor: pointer; transition: background .2s;
+    }
+    .sw-track::before {
+      content: ''; position: absolute; height: 19px; width: 19px;
+      left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .2s;
+    }
+    .sw input:checked + .sw-track { background: var(--amber); }
+    .sw input:checked + .sw-track::before { transform: translateX(19px); }
+
+    /* ── LOGIN SCREEN ──────────────────────────────────── */
+    .login-screen {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 55vh; padding: 2rem; text-align: center;
+    }
+    .login-icon { font-size: 2.8rem; margin-bottom: .75rem; }
+    .login-title { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; margin-bottom: .4rem; }
+    .login-sub { color: var(--muted); font-size: .88rem; margin-bottom: 1.75rem; max-width: 290px; }
+    .btn-google {
+      display: inline-flex; align-items: center; gap: .7rem;
+      padding: .8rem 1.4rem; background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: .92rem; font-weight: 600; color: var(--text);
+      box-shadow: var(--card-shadow); transition: all .2s;
+    }
+    .btn-google:hover { border-color: var(--amber); transform: translateY(-1px); }
+
+    /* ── MODAL ─────────────────────────────────────────── */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200;
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--card); border-radius: 20px; padding: 2rem;
+      max-width: 380px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.22);
+    }
+    .modal-title { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: .4rem; }
+    .modal-sub { color: var(--muted); font-size: .87rem; margin-bottom: 1.4rem; }
+
+    /* ── TOAST ─────────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 78px; left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--navy); color: #fff; padding: .65rem 1.2rem;
+      border-radius: 12px; font-size: .85rem; font-weight: 500;
+      opacity: 0; transition: all .28s; z-index: 300; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    [data-theme="dark"] .toast { background: var(--amber); }
+
+    /* ── STATES ────────────────────────────────────────── */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center;
+      padding: 3rem 1rem; color: var(--muted);
+    }
+    .empty-icon { font-size: 2.8rem; opacity: .3; margin-bottom: .6rem; }
+    .spinner { grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--muted); font-size: .9rem; }
+
+    /* ── BOTTOM NAV ────────────────────────────────────── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 68px;
+      background: var(--nav-bg); border-top: 1px solid var(--nav-border);
+      backdrop-filter: blur(14px); display: flex; z-index: 100;
+    }
+    .bnav-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: .22rem; background: none; border: none;
+      cursor: pointer; color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: .7rem; font-weight: 500; transition: color .18s; position: relative;
+    }
+    .bnav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .bnav-btn.active { color: var(--amber); }
+    .nav-badge {
+      position: absolute; top: 9px; right: calc(50% - 20px);
+      background: #E53E3E; color: #fff; border-radius: 100px;
+      font-size: .62rem; font-weight: 700; padding: .05rem .36rem; min-width: 15px; text-align: center;
+    }
+
+    /* ── GOOGLE SVG SHORTHAND ──────────────────────────── */
+    .g-logo path:nth-child(1) { fill: #4285F4; }
+    .g-logo path:nth-child(2) { fill: #34A853; }
+    .g-logo path:nth-child(3) { fill: #FBBC05; }
+    .g-logo path:nth-child(4) { fill: #EA4335; }
+
+    /* ── DESKTOP NAV LINKS ────────────────────────────── */
+    .nav-links { display: none; align-items: center; gap: .1rem; position: absolute; left: 50%; transform: translateX(-50%); }
+    .nav-link {
+      position: relative; background: none; border: none; cursor: pointer;
+      color: var(--muted); font-family: 'DM Sans', sans-serif;
+      font-size: .88rem; font-weight: 500;
+      padding: .42rem .9rem; border-radius: 9px;
+      transition: color .18s, background .18s;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(15,30,60,.06); }
+    [data-theme="dark"] .nav-link:hover { background: rgba(255,255,255,.07); }
+    .nav-link.active { color: var(--amber); font-weight: 600; }
+    .nav-link-badge {
+      display: inline-block; background: #E53E3E; color: #fff;
+      border-radius: 100px; font-size: .6rem; font-weight: 700;
+      padding: .05rem .38rem; min-width: 15px; text-align: center;
+      margin-left: .3rem; vertical-align: middle;
+    }
+
+    /* ── DESKTOP OVERRIDES ────────────────────────────── */
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+      .bottom-nav { display: none; }
+      .main { padding-bottom: 0; }
+
+      /* Filter bar — single horizontal row */
+      .filter-bar {
+        display: flex; align-items: center; gap: 1.25rem; padding: .8rem 2.5rem;
+      }
+      .search-row { margin-bottom: 0; width: 400px; flex-shrink: 0; }
+      .filter-chips { flex: 1; flex-wrap: nowrap; }
+      .price-input { width: 130px; }
+
+      /* Listings — wider grid, centered */
+      .listings-grid {
+        max-width: 1440px; margin: 0 auto;
+        padding: 2rem 2.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 1.25rem;
+      }
+
+      /* Chat — full height without bottom nav */
+      #view-chat .chat-layout { height: calc(100vh - 60px); }
+      .chat-list-panel { width: 320px; }
+
+      /* Profile — wider, centered */
+      .profile-wrap { max-width: 720px; padding: 3rem 2rem; }
+      .profile-card { padding: 2.5rem 3rem; }
+
+      /* Profile form 2-column */
+      .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+      .form-grid-2 .form-group { margin-bottom: 1rem; }
+      .form-grid-full { grid-column: 1 / -1; }
+
+      /* Fac grid more columns */
+      .fac-grid { grid-template-columns: 1fr 1fr 1fr; }
+
+      /* Room photos 5 across */
+      .room-photos-wrap { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    @media (min-width: 1100px) {
+      .listings-grid { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+    }
+
+    /* ── AUTOCOMPLETE ──────────────────────────────────── */
+    .ac-wrap { position: relative; }
+    .drop-list {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 160;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: 0 8px 28px rgba(15,30,60,0.14);
+      overflow: hidden; display: none; max-height: 280px; overflow-y: auto;
+    }
+    .drop-item {
+      display: flex; align-items: center; gap: .65rem;
+      padding: .65rem 1rem; cursor: pointer;
+      border-bottom: 1px solid var(--border); transition: background .13s;
+    }
+    .drop-item:last-child { border-bottom: none; }
+    .drop-item:hover, .drop-item.focused { background: #fdf6ec; }
+    [data-theme="dark"] .drop-item:hover, [data-theme="dark"] .drop-item.focused { background: #1a2d55; }
+    .dd-icon { font-size: .88rem; flex-shrink: 0; }
+    .dd-text { flex: 1; min-width: 0; }
+    .dd-main { font-size: .85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dd-main em { font-style: normal; color: var(--amber); font-weight: 600; }
+    .dd-sub { font-size: .76rem; color: var(--muted); margin-top: .08rem; }
+    .dd-empty { padding: .75rem 1rem; font-size: .85rem; color: var(--muted); }
+
+    /* ── CALENDAR ──────────────────────────────────────── */
+    .date-wrap { position: relative; }
+    .cal-popup {
+      position: absolute; top: calc(100% + 4px); left: 0; z-index: 160;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: 0 8px 32px rgba(15,30,60,0.15);
+      padding: 1rem; width: 272px; display: none;
+    }
+    .cal-popup.open { display: block; }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .8rem; }
+    .cal-head-month { font-family: 'Fraunces', serif; font-size: .98rem; font-weight: 700; }
+    .cal-nav {
+      background: none; border: none; cursor: pointer; color: var(--text);
+      font-size: 1.2rem; padding: .25rem .55rem; border-radius: 8px;
+      transition: background .15s; line-height: 1;
+    }
+    .cal-nav:hover { background: rgba(232,146,10,.12); color: var(--amber); }
+    .cal-dow { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: .35rem; }
+    .cal-dow span { text-align: center; font-size: .7rem; font-weight: 600; color: var(--muted); padding: .2rem 0; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+    .cal-cell {
+      text-align: center; padding: .38rem .15rem; border-radius: 8px;
+      font-size: .82rem; cursor: pointer; color: var(--text); transition: background .14s, color .14s;
+      user-select: none;
+    }
+    .cal-cell:hover:not(.cal-empty):not(.cal-past) { background: rgba(232,146,10,.13); color: var(--amber); }
+    .cal-cell.cal-today { font-weight: 700; color: var(--amber); }
+    .cal-cell.cal-sel { background: var(--amber) !important; color: #fff !important; font-weight: 700; border-radius: 8px; }
+    .cal-cell.cal-past { color: var(--muted); opacity: .45; cursor: default; }
+    .cal-cell.cal-empty { cursor: default; }
+    .cal-input-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); font-size: .9rem; }
+
+    /* ── FACILITETER ───────────────────────────────────── */
+    .fac-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .45rem;
+    }
+    .fac-item {
+      display: flex; align-items: center; gap: .5rem;
+      padding: .55rem .8rem; border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer; font-size: .84rem;
+      color: var(--text); transition: all .15s; user-select: none;
+      background: var(--input-bg);
+    }
+    .fac-item:hover { border-color: var(--amber); }
+    .fac-item.on { border-color: var(--amber); background: rgba(232,146,10,.09); color: var(--amber); font-weight: 600; }
+    .fac-item input { display: none; }
+
+    /* ── BOLIGBILLEDER ─────────────────────────────────── */
+    .room-photos-wrap {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: .5rem;
+    }
+    .rp-slot {
+      aspect-ratio: 1; border: 2px dashed var(--border); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; overflow: hidden;
+      background: var(--input-bg); transition: border-color .2s;
+    }
+    .rp-slot:hover { border-color: var(--amber); }
+    .rp-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .rp-slot .rp-icon { font-size: 1.6rem; opacity: .3; pointer-events: none; }
+    .rp-slot .rp-num { position: absolute; bottom: 4px; left: 6px; font-size: .65rem; font-weight: 700; color: rgba(255,255,255,.85); text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+    .rp-remove {
+      position: absolute; top: 4px; right: 4px; width: 22px; height: 22px;
+      border-radius: 50%; background: rgba(0,0,0,.55); border: none; color: #fff;
+      font-size: .78rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .rp-remove:hover { background: rgba(220,38,38,.8); }
+
+    /* Foto-tæller badge på kort */
+    .photo-count {
+      position: absolute; top: .65rem; right: .65rem;
+      background: rgba(0,0,0,.55); color: #fff; border-radius: 100px;
+      font-size: .68rem; font-weight: 700; padding: .18rem .5rem;
+    }
+
+    /* ── ANIMATED BACKGROUND — identical to index.html hero ── */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--page-bg);
+      transition: background 0.4s;
+    }
+    .page-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 55px 55px;
+      mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+    }
+    .page-radial {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 12% 22%, var(--radial-1) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 50% at 88% 78%, var(--radial-2) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 35% at 55% 50%, var(--radial-3) 0%, transparent 55%);
+    }
+    .blob-amber {
+      position: absolute;
+      top: -8%; left: 2%;
+      width: 600px; height: 480px;
+      background: var(--blob-a);
+      border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%;
+      filter: blur(100px);
+      animation: morph-a 14s ease-in-out infinite;
+    }
+    .blob-blue {
+      position: absolute;
+      bottom: -10%; right: 0%;
+      width: 620px; height: 500px;
+      background: var(--blob-b);
+      border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%;
+      filter: blur(120px);
+      animation: morph-b 18s ease-in-out infinite;
+    }
+    .beam { position: absolute; pointer-events: none; }
+    .beam-h1 {
+      top: 19%; height: 2px; width: 340px;
+      background: linear-gradient(to right, transparent, var(--beam-h1) 50%, transparent);
+      filter: blur(1px);
+      animation: sweep-h 10s cubic-bezier(0.4,0,0.6,1) 0s infinite;
+    }
+    .beam-h2 {
+      top: 55%; height: 1px; width: 220px;
+      background: linear-gradient(to right, transparent, var(--beam-h2) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-h 13s cubic-bezier(0.4,0,0.6,1) 4s infinite;
+    }
+    .beam-h3 {
+      top: 80%; height: 1px; width: 180px;
+      background: linear-gradient(to right, transparent, var(--beam-h3) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-h 16s cubic-bezier(0.4,0,0.6,1) 9s infinite;
+    }
+    .beam-v1 {
+      left: 20%; width: 1px; height: 280px;
+      background: linear-gradient(to bottom, transparent, var(--beam-v1) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-v 12s cubic-bezier(0.4,0,0.6,1) 2s infinite;
+    }
+    .beam-v2 {
+      right: 25%; width: 1px; height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--beam-v2) 50%, transparent);
+      filter: blur(0.5px);
+      animation: sweep-v 15s cubic-bezier(0.4,0,0.6,1) 7s infinite;
+    }
+    .page-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 85% 70% at 50% 35%, transparent 50%, var(--vignette) 100%);
+    }
+    @keyframes morph-a {
+      0%   { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); }
+      25%  { border-radius: 50% 50% 38% 62% / 58% 42% 58% 42%; transform: translate(20px, 30px) scale(1.04); }
+      50%  { border-radius: 38% 62% 60% 40% / 42% 58% 42% 58%; transform: translate(-15px, 15px) scale(0.97); }
+      75%  { border-radius: 55% 45% 46% 54% / 54% 46% 54% 46%; transform: translate(25px, -20px) scale(1.02); }
+      100% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; transform: translate(0,0) scale(1); }
+    }
+    @keyframes morph-b {
+      0%   { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); }
+      30%  { border-radius: 60% 40% 55% 45% / 44% 56% 44% 56%; transform: translate(-30px, -25px) scale(1.05); }
+      60%  { border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; transform: translate(20px, 15px) scale(0.96); }
+      100% { border-radius: 45% 55% 40% 60% / 56% 44% 56% 44%; transform: translate(0,0) scale(1); }
+    }
+    @keyframes sweep-h {
+      0%   { left: -25%; opacity: 0; }
+      6%   { opacity: 1; }
+      94%  { opacity: 1; }
+      100% { left: 115%; opacity: 0; }
+    }
+    @keyframes sweep-v {
+      0%   { top: -25%; opacity: 0; }
+      6%   { opacity: 1; }
+      94%  { opacity: 1; }
+      100% { top: 115%; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="page-bg" aria-hidden="true">
+  <div class="page-radial"></div>
+  <div class="blob-amber"></div>
+  <div class="blob-blue"></div>
+  <div class="page-grid"></div>
+  <div class="beam beam-h1"></div>
+  <div class="beam beam-h2"></div>
+  <div class="beam beam-h3"></div>
+  <div class="beam beam-v1"></div>
+  <div class="beam beam-v2"></div>
+  <div class="page-vignette"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Login Modal -->
+<div class="modal-bg" id="modal-login" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Log ind for at skrive</div>
+    <div class="modal-sub">Du skal være logget ind for at sende beskeder til andre.</div>
+    <button class="btn-google" onclick="signInWithGoogle();closeModal()">
+      <svg class="g-logo" viewBox="0 0 24 24" width="20" height="20">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Fortsæt med Google
+    </button>
+    <button class="btn-secondary" onclick="closeModal()">Annuller</button>
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a href="index.html" class="logo">Bolig<span>Direkte</span><span class="logo-tag">Roomie Nu</span></a>
+  <div class="nav-links">
+    <button class="nav-link active" data-v="marketplace" onclick="showView('marketplace')">Opslag</button>
+    <button class="nav-link" data-v="chat" onclick="showView('chat')">
+      Chat<span class="nav-link-badge" id="chat-badge-top" style="display:none"></span>
+    </button>
+    <button class="nav-link" data-v="profile" onclick="showView('profile')">Profil</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-theme" onclick="toggleTheme()" aria-label="Skift tema">
+      <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <span class="toggle-label" id="toggle-label">Mørk</span>
+    </button>
+    <div id="auth-area"></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ── MARKETPLACE ──────────────────────────────────── -->
+  <div id="view-marketplace" class="view active">
+    <div class="filter-bar">
+      <div class="search-row">
+        <div class="ac-wrap" style="flex:1">
+          <input id="search-input" type="text" class="search-input" style="width:100%" placeholder="Søg by eller adresse..." autocomplete="off" oninput="searchAcFetch(this.value)" onblur="setTimeout(()=>hideDrop('drop-search'),150)">
+          <div class="drop-list" id="drop-search"></div>
+        </div>
+        <select id="radius-select" class="radius-select" onchange="filterListings()">
+          <option value="all">Hele Danmark</option>
+          <option value="1">1 km</option>
+          <option value="2">2 km</option>
+          <option value="5">5 km</option>
+          <option value="10">10 km</option>
+          <option value="25">25 km</option>
+        </select>
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-t="alle" onclick="setType(this)">Alle</button>
+        <button class="chip" data-t="søger" onclick="setType(this)">Søger værelse</button>
+        <button class="chip" data-t="har" onclick="setType(this)">Har ledigt værelse</button>
+        <input id="max-price" type="number" class="price-input" placeholder="Max kr/md" oninput="debouncedFilter()">
+      </div>
+    </div>
+    <div id="listings-grid" class="listings-grid">
+      <div class="spinner">Henter opslag...</div>
+    </div>
+  </div>
+
+  <!-- ── CHAT ────────────────────────────────────────── -->
+  <div id="view-chat" class="view">
+    <div class="chat-layout">
+      <!-- List panel -->
+      <div class="chat-list-panel" id="chat-list-panel">
+        <div class="chat-list-header">Beskeder</div>
+        <div id="chat-list-content"></div>
+      </div>
+      <!-- Window panel -->
+      <div class="chat-window-panel mob-hidden" id="chat-window-panel">
+        <!-- Empty state -->
+        <div class="chat-empty" id="chat-empty">
+          <div class="chat-empty-icon">💬</div>
+          <p>Vælg en samtale</p>
+        </div>
+        <!-- Active chat (hidden until a chat is opened) -->
+        <div id="chat-active" style="display:none;flex-direction:column;height:100%;">
+          <div class="chat-w-header">
+            <button class="btn-back" onclick="backToList()">←</button>
+            <div class="chat-w-avatar" id="chat-h-avatar"></div>
+            <div class="chat-w-name" id="chat-h-name"></div>
+          </div>
+          <div class="chat-messages" id="chat-messages"></div>
+          <div class="chat-input-row">
+            <textarea class="chat-textarea" id="chat-input" placeholder="Skriv en besked..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+            <button class="btn-send" onclick="sendMessage()">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROFILE ──────────────────────────────────────── -->
+  <div id="view-profile" class="view">
+    <div class="profile-wrap" id="profile-content"></div>
+  </div>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" data-v="marketplace" onclick="showView('marketplace')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    Opslag
+  </button>
+  <button class="bnav-btn" data-v="chat" onclick="showView('chat')">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Chat
+    <span class="nav-badge" id="chat-badge" style="display:none"></span>
+  </button>
+  <button class="bnav-btn" data-v="profile" onclick="showView('profile')">
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profil
+  </button>
+</nav>
+
+<script>
+/* ═══════════════════════════════════════
+   FIREBASE
+═══════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAH0mxBKo3iFUyB5ZKnTvdYEneXPyuvu5I",
+  authDomain: "boligside-3dbfa.firebaseapp.com",
+  projectId: "boligside-3dbfa",
+  storageBucket: "boligside-3dbfa.firebasestorage.app",
+  messagingSenderId: "938144668707",
+  appId: "1:938144668707:web:df10e4a5116ff9939fa596"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+const stor = firebase.storage();
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let me = null;          // Firebase user
+let myProfile = null;   // Firestore profile doc
+let currentView = 'marketplace';
+let currentChatId = null;
+let currentOtherId = null;
+let listingsMap = {};
+let allListings = [];
+let filterTimer = null;
+let unsub = { listings: null, chats: null, chat: null };
+
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
+auth.onAuthStateChanged(async user => {
+  me = user;
+  if (user) {
+    const doc = await db.collection('users').doc(user.uid).get();
+    myProfile = doc.exists ? doc.data() : null;
+    startGlobalChatListener();
+  } else {
+    myProfile = null;
+  }
+  renderAuthArea();
+  if (currentView === 'profile') renderProfile();
+  if (currentView === 'chat') initChatView();
+});
+
+function renderAuthArea() {
+  const el = document.getElementById('auth-area');
+  if (!me) {
+    el.innerHTML = `<button class="btn-nav-auth" onclick="signInWithGoogle()">Log ind</button>`;
+    return;
+  }
+  const src = myProfile?.photoURL || me.photoURL;
+  if (src) {
+    el.innerHTML = `<img src="${src}" class="nav-user-photo" onclick="showView('profile')" title="${h(me.displayName)}">`;
+  } else {
+    const c = color(me.uid);
+    el.innerHTML = `<div class="nav-user-photo" style="background:${c};display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.8rem;cursor:pointer;" onclick="showView('profile')">${(me.displayName||'?')[0]}</div>`;
+  }
+}
+
+function signInWithGoogle() {
+  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    .catch(e => toast('Kunne ikke logge ind: ' + e.message));
+}
+function doSignOut() {
+  auth.signOut().then(() => { myProfile = null; toast('Du er logget ud'); renderProfile(); });
+}
+
+/* ═══════════════════════════════════════
+   THEME
+═══════════════════════════════════════ */
+(function() {
+  const t = localStorage.getItem('r-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const lbl = document.getElementById('toggle-label');
+  if (lbl) lbl.textContent = t === 'dark' ? 'Lys' : 'Mørk';
+})();
+
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const nxt = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', nxt);
+  localStorage.setItem('r-theme', nxt);
+  const lbl = document.getElementById('toggle-label');
+  if (lbl) lbl.textContent = nxt === 'dark' ? 'Lys' : 'Mørk';
+}
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+function showView(v) {
+  currentView = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('.bnav-btn').forEach(b => b.classList.toggle('active', b.dataset.v === v));
+  document.querySelectorAll('.nav-link[data-v]').forEach(b => b.classList.toggle('active', b.dataset.v === v));
+  if (v === 'marketplace') loadMarketplace();
+  if (v === 'chat') initChatView();
+  if (v === 'profile') renderProfile();
+}
+
+/* ═══════════════════════════════════════
+   MODAL / TOAST
+═══════════════════════════════════════ */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal()  { document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('open')); }
+
+let toastTimer;
+function toast(msg, ms = 2600) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+}
+
+/* ═══════════════════════════════════════
+   DEMO LISTINGS (test-data)
+═══════════════════════════════════════ */
+const DEMO_LISTINGS = [
+  {
+    id: 'demo-1', name: 'Sofie', age: 23, type: 'søger',
+    city: 'Odense', address: 'Vestergade 12, Odense',
+    lat: 55.3959, lng: 10.3883,
+    price: 4200, moveIn: '1. maj 2026',
+    bio: 'Studerer sygepleje på UCL. Rolig, ordentlig og glad for at lave mad. Leder efter et hyggeligt værelse nær centrum.',
+    photoURL: null, active: true, facilities: [], roomPhotos: []
+  },
+  {
+    id: 'demo-2', name: 'Marcus', age: 26, type: 'har',
+    city: 'Aarhus', address: 'Frederiks Allé 54, Aarhus',
+    lat: 56.1529, lng: 10.2038,
+    price: 5500, moveIn: '15. april 2026',
+    bio: 'Udlejer et lyst 16m² værelse i min 3-værelses lejlighed tæt på Aarhus C. Internet og vask inkluderet. Delt køkken og bad.',
+    photoURL: null, active: true,
+    roomSize: 16,
+    facilities: ['internet', 'washing', 'shared-bath', 'shared-kit'],
+    roomPhotos: []
+  },
+  {
+    id: 'demo-3', name: 'Ida', age: 21, type: 'søger',
+    city: 'København', address: 'Nørrebrogade 80, København',
+    lat: 55.6894, lng: 12.5534,
+    price: 6000, moveIn: '1. juni 2026',
+    bio: 'Læser økonomi på KU. Søger værelse i Nørrebro eller Frederiksberg. Er ikke hjemme meget — stille og nem at bo med.',
+    photoURL: null, active: true, facilities: [], roomPhotos: []
+  },
+  {
+    id: 'demo-4', name: 'Thomas', age: 29, type: 'har',
+    city: 'Odense', address: 'Dalumvej 8, Odense',
+    lat: 55.3684, lng: 10.3636,
+    price: 3800, moveIn: 'Hurtigst muligt',
+    bio: 'Har et møbleret værelse på 14m² ledigt i mit rækkehus. Roligt kvarter, parkering til rådighed, hund i huset.',
+    photoURL: null, active: true,
+    roomSize: 14,
+    facilities: ['furnished', 'parking', 'pets', 'shared-bath', 'shared-kit', 'washing'],
+    roomPhotos: []
+  },
+  {
+    id: 'demo-5', name: 'Emma', age: 24, type: 'søger',
+    city: 'Aalborg', address: 'Boulevarden 13, Aalborg',
+    lat: 57.0488, lng: 9.9217,
+    price: 4500, moveIn: '1. maj 2026',
+    bio: 'Arbejder som grafisk designer i Aalborg C. Søger noget centralt, gerne med altan eller have. Er glad for kaffe og film.',
+    photoURL: null, active: true, facilities: [], roomPhotos: []
+  },
+  {
+    id: 'demo-6', name: 'Rasmus', age: 31, type: 'har',
+    city: 'København', address: 'Vesterbrogade 120, København',
+    lat: 55.6714, lng: 12.5466,
+    price: 7200, moveIn: '1. april 2026',
+    bio: 'Udlejer et stort lyst værelse på 20m² på Vesterbro. El og internet inkluderet. Moderne lejlighed med altan — perfekt til én person.',
+    photoURL: null, active: true,
+    roomSize: 20,
+    facilities: ['internet', 'electricity', 'balcony', 'shared-bath', 'shared-kit'],
+    roomPhotos: []
+  },
+];
+
+/* ═══════════════════════════════════════
+   MARKETPLACE
+═══════════════════════════════════════ */
+function loadMarketplace() {
+  // Auto-anvend søger-profil filter første gang (kun hvis ikke allerede sat)
+  if (myProfile?.type === 'søger' && myProfile?.lat && myProfile?.lng && myProfile?.preferredRadius) {
+    const radiusSel  = document.getElementById('radius-select');
+    const searchInp  = document.getElementById('search-input');
+    if (radiusSel && radiusSel.value === 'all') {
+      radiusSel.value = String(myProfile.preferredRadius);
+    }
+    if (searchInp && !searchInp.value) {
+      searchInp.value = myProfile.address || myProfile.city || '';
+      searchCoords = { lat: myProfile.lat, lng: myProfile.lng };
+    }
+  }
+
+  if (unsub.listings) unsub.listings();
+  document.getElementById('listings-grid').innerHTML = '<div class="spinner">Henter opslag...</div>';
+
+  unsub.listings = db.collection('users').where('active', '==', true)
+    .onSnapshot(snap => {
+      listingsMap = {};
+      const real = snap.docs
+        .map(d => { const obj = { id: d.id, ...d.data() }; listingsMap[d.id] = obj; return obj; });
+      // Merge demo listings (vis ikke demo hvis der er rigtige opslag nok)
+      const demos = DEMO_LISTINGS.filter(d => d.id !== me?.uid);
+      allListings = [...real, ...demos];
+      filterListings();
+    }, () => {
+      document.getElementById('listings-grid').innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Kunne ikke hente opslag</p></div>';
+    });
+}
+
+function setType(btn) {
+  document.querySelectorAll('.chip[data-t]').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  filterListings();
+}
+
+function debouncedFilter() {
+  clearTimeout(filterTimer);
+  filterTimer = setTimeout(filterListings, 380);
+}
+
+async function filterListings() {
+  let list = [...allListings];
+
+  const t = document.querySelector('.chip[data-t].active')?.dataset.t;
+  if (t && t !== 'alle') list = list.filter(l => l.type === t);
+
+  const max = parseInt(document.getElementById('max-price').value);
+  if (!isNaN(max) && max > 0) list = list.filter(l => !l.price || l.price <= max);
+
+  const q = document.getElementById('search-input').value.trim();
+  const r = document.getElementById('radius-select').value;
+  if (q && r !== 'all') {
+    const coords = searchCoords || await geocode(q);
+    if (coords) {
+      const km = parseInt(r);
+      list = list.filter(l => l.lat && l.lng && dist(coords.lat, coords.lng, l.lat, l.lng) <= km);
+    }
+  }
+
+  // Tekstsøgning (uden radius) — filtrer på by og navn
+  if (q && r === 'all') {
+    const ql = q.toLowerCase();
+    list = list.filter(l =>
+      (l.city || '').toLowerCase().includes(ql) ||
+      (l.name || '').toLowerCase().includes(ql) ||
+      (l.address || '').toLowerCase().includes(ql)
+    );
+  }
+
+  renderCards(list);
+}
+
+function renderCards(list) {
+  const grid = document.getElementById('listings-grid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🏠</div><p>Ingen opslag matcher din søgning</p></div>';
+    return;
+  }
+  grid.innerHTML = list.map(l => {
+    const c = color(l.id);
+    const init = (l.name || '?')[0].toUpperCase();
+    // Vis første boligbillede for "har ledigt værelse", ellers profilbillede
+    const cardPhoto = (l.type === 'har' && l.roomPhotos?.length) ? l.roomPhotos[0] : l.photoURL;
+    const photoCount = l.type === 'har' && l.roomPhotos?.length > 1 ? l.roomPhotos.length : 0;
+    // Vis max 3 faciliteter som badges
+    const facBadges = (l.facilities || []).slice(0,3).map(id => {
+      const f = FACILITIES.find(x => x.id === id);
+      return f ? `<span style="font-size:.7rem">${f.icon} ${f.label}</span>` : '';
+    }).join('');
+
+    return `
+    <div class="listing-card">
+      <div class="card-photo-wrap">
+        ${cardPhoto
+          ? `<img src="${h(cardPhoto)}" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+          : ''}
+        <div class="card-avatar" style="background:${c};${cardPhoto ? 'display:none' : ''}">${init}</div>
+        <span class="type-badge ${l.type}">${l.type === 'søger' ? 'Søger værelse' : 'Har ledigt værelse'}</span>
+        ${photoCount ? `<span class="photo-count">📷 ${photoCount}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-top-row">
+          <span class="card-name">${h(l.name || 'Anonym')}${l.age ? `, ${l.age}` : ''}</span>
+          <span class="card-price">${l.price ? Number(l.price).toLocaleString('da') + ' kr/md' : ''}</span>
+        </div>
+        <div class="card-city">📍 ${h(l.city || '')}${l.roomSize ? ` · ${l.roomSize} m²` : ''}</div>
+        ${facBadges ? `<div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.45rem;color:var(--muted)">${facBadges}</div>` : ''}
+        <p class="card-bio">${h(l.bio || '')}</p>
+        ${l.moveIn ? `<div class="card-movein">🗓 ${h(l.moveIn)}</div>` : ''}
+        ${l.id === me?.uid
+          ? `<button class="btn-write" style="background:var(--navy);opacity:.7;cursor:default" disabled>Dit opslag</button>`
+          : `<button class="btn-write" onclick="startChat('${l.id}')">Skriv besked</button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   GEO
+═══════════════════════════════════════ */
+async function geocode(address) {
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address + ', Danmark')}&format=json&limit=1`, { headers: { 'Accept-Language': 'da' } });
+    const d = await r.json();
+    if (d.length) return { lat: +d[0].lat, lng: +d[0].lon };
+  } catch(e) {}
+  return null;
+}
+
+function dist(lat1, lon1, lat2, lon2) {
+  const R = 6371, dLat = (lat2-lat1)*Math.PI/180, dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+/* ═══════════════════════════════════════
+   UDDANNELSESSTEDER
+═══════════════════════════════════════ */
+const EDUCATION_PLACES = [
+  // ── Universiteter ──────────────────────────────────────
+  { label: 'Københavns Universitet (KU)',          address: 'Nørregade 10, 1165 København K',              lat: 55.6787, lng: 12.5714 },
+  { label: 'Aarhus Universitet (AU)',              address: 'Nordre Ringgade 1, 8000 Aarhus C',            lat: 56.1685, lng: 10.2034 },
+  { label: 'Syddansk Universitet (SDU) Odense',   address: 'Campusvej 55, 5230 Odense M',                 lat: 55.3688, lng: 10.4270 },
+  { label: 'SDU Esbjerg',                          address: 'Niels Bohrs Vej 9, 6700 Esbjerg',             lat: 55.4762, lng: 8.4484  },
+  { label: 'SDU Kolding',                          address: 'Universitetsparken 1, 6000 Kolding',          lat: 55.4913, lng: 9.4741  },
+  { label: 'SDU Sønderborg',                       address: 'Alsion 2, 6400 Sønderborg',                   lat: 54.9126, lng: 9.7921  },
+  { label: 'Aalborg Universitet (AAU)',            address: 'Fredrik Bajers Vej 7, 9220 Aalborg Ø',        lat: 57.0142, lng: 9.9870  },
+  { label: 'AAU København',                        address: 'A.C. Meyers Vænge 15, 2450 København SV',    lat: 55.6580, lng: 12.5793 },
+  { label: 'Roskilde Universitet (RUC)',           address: 'Universitetsvej 1, 4000 Roskilde',            lat: 55.6523, lng: 12.1383 },
+  { label: 'IT-Universitetet i København (ITU)',   address: 'Rued Langgaards Vej 7, 2300 København S',    lat: 55.6600, lng: 12.5911 },
+  { label: 'Copenhagen Business School (CBS)',     address: 'Solbjerg Plads 3, 2000 Frederiksberg',        lat: 55.6870, lng: 12.5283 },
+  { label: 'Danmarks Tekniske Universitet (DTU)',  address: 'Anker Engelunds Vej 101, 2800 Kgs. Lyngby',  lat: 55.7860, lng: 12.5230 },
+  // ── Professionshøjskoler ───────────────────────────────
+  { label: 'UCL Erhvervsakademi og Professionshøjskole', address: 'Niels Bohrs Allé 1, 5230 Odense M',   lat: 55.3710, lng: 10.4305 },
+  { label: 'UCL Odense — Niels Bohrs Allé',        address: 'Niels Bohrs Allé 1, 5230 Odense M',          lat: 55.3710, lng: 10.4305 },
+  { label: 'UCL Odense — Seebladsgade',            address: 'Seebladsgade 1, 5000 Odense C',              lat: 55.4020, lng: 10.3780 },
+  { label: 'UCL Vejle',                            address: 'Vestre Engvej 51C, 7100 Vejle',              lat: 55.7113, lng: 9.5365  },
+  { label: 'VIA University College Aarhus',        address: 'Hedeager 2, 8200 Aarhus N',                  lat: 56.1488, lng: 10.2096 },
+  { label: 'VIA University College Viborg',        address: 'Vinkelvej 30, 8800 Viborg',                  lat: 56.4535, lng: 9.4026  },
+  { label: 'VIA University College Horsens',       address: 'Chr. M. Østergaards Vej 4, 8700 Horsens',   lat: 55.8601, lng: 9.8502  },
+  { label: 'VIA University College Holstebro',     address: 'Døesvej 70, 7500 Holstebro',                 lat: 56.3596, lng: 8.6191  },
+  { label: 'UC SYD Kolding',                       address: 'Th. Nielsens Gade 2, 6000 Kolding',          lat: 55.4913, lng: 9.4741  },
+  { label: 'UC SYD Haderslev',                     address: 'Lembckesvej 3, 6100 Haderslev',              lat: 55.2499, lng: 9.4895  },
+  { label: 'UCN (University College Nordjylland)', address: 'Selma Lagerløfs Vej 2, 9220 Aalborg Ø',     lat: 57.0488, lng: 9.9217  },
+  { label: 'KEA (Københavns Erhvervsakademi)',      address: 'Guldbergsgade 29N, 2200 København N',        lat: 55.6810, lng: 12.5930 },
+  { label: 'CPH Business',                         address: 'Nansensgade 19, 1366 København K',           lat: 55.6814, lng: 12.5946 },
+  { label: 'Professionshøjskolen Absalon Roskilde',address: 'Trekroner Forskerpark 4, 4000 Roskilde',     lat: 55.6500, lng: 12.0810 },
+  { label: 'Professionshøjskolen Absalon Næstved', address: 'Parkvej 190, 4700 Næstved',                  lat: 55.2290, lng: 11.7613 },
+  // ── Erhvervsakademier ──────────────────────────────────
+  { label: 'Erhvervsakademi Aarhus (EAAA)',        address: 'Sønderhøj 30, 8260 Viby J',                  lat: 56.1629, lng: 10.2039 },
+  { label: 'Erhvervsakademi Dania Randers',        address: 'Minervavej 63, 8960 Randers SØ',             lat: 56.4607, lng: 10.0360 },
+  { label: 'Erhvervsakademi MidtVest Herning',     address: 'Gl. Struervej 1, 7500 Holstebro',            lat: 56.1396, lng: 8.9724  },
+  { label: 'Erhvervsakademi SydVest Esbjerg',      address: 'Spangsbjerg Kirkevej 103, 6700 Esbjerg',     lat: 55.4674, lng: 8.4528  },
+  { label: 'Erhvervsakademi Sjælland Næstved',     address: 'Parkvej 190, 4700 Næstved',                  lat: 55.2290, lng: 11.7613 },
+  { label: 'Copenhagen Business Academy (Cphbusiness)', address: 'Rued Langgaards Vej 7, 2300 København S', lat: 55.6707, lng: 12.5337 },
+  // ── Gymnasier / HF ─────────────────────────────────────
+  { label: 'Niels Brock (Copenhagen Business High School)', address: 'H.C. Andersens Boulevard 37, 1553 København V', lat: 55.6890, lng: 12.5620 },
+  { label: 'Rysensteen Gymnasium',                 address: 'Niels Brocks Gade 1, 1574 København V',      lat: 55.6732, lng: 12.5657 },
+  { label: 'Odense Katedralskole',                 address: 'Allegade 4, 5000 Odense C',                  lat: 55.3961, lng: 10.3883 },
+  { label: 'Aarhus Katedralskole',                 address: 'Sortebrødre Torv 1, 8000 Aarhus C',          lat: 56.1572, lng: 10.2107 },
+  { label: 'Aalborg Katedralskole',                address: 'Hobrovej 18, 9000 Aalborg',                  lat: 57.0479, lng: 9.9238  },
+  // ── Erhvervsskoler / SOSU ──────────────────────────────
+  { label: 'Mercantec Viborg',                     address: 'Reberbanen 1, 8800 Viborg',                  lat: 56.4528, lng: 9.3998  },
+  { label: 'EUC Nord Hjørring',                    address: 'Bispensgade 1, 9800 Hjørring',               lat: 57.4638, lng: 9.9761  },
+  { label: 'Tech College Aalborg',                 address: 'Sønderbro 34, 9000 Aalborg',                 lat: 57.0388, lng: 9.9326  },
+  { label: 'NEXT Uddannelse København',            address: 'Humletorvet 3, 1799 København V',            lat: 55.6673, lng: 12.5271 },
+  { label: 'Tradium Randers',                      address: 'Minervavej 47, 8960 Randers SØ',             lat: 56.4568, lng: 10.0329 },
+  { label: 'EUC Syd Sønderborg',                   address: 'Mommarkvej 185, 6400 Sønderborg',            lat: 54.9120, lng: 9.7895  },
+  { label: 'SOSU Fyn',                             address: 'Østre Stationsvej 33, 5000 Odense C',        lat: 55.3788, lng: 10.3901 },
+  { label: 'SOSU Nord Aalborg',                    address: 'Skelagervej 1, 9000 Aalborg',                lat: 57.0488, lng: 9.9217  },
+  { label: 'SOSU Sjælland Roskilde',               address: 'Trekroner Forskerpark 4, 4000 Roskilde',     lat: 55.6438, lng: 12.0809 },
+];
+
+/* ═══════════════════════════════════════
+   SØGE-AUTOCOMPLETE
+═══════════════════════════════════════ */
+async function searchAcFetch(query) {
+  searchCoords = null;
+  debouncedFilter();
+  const drop = document.getElementById('drop-search');
+  if (!drop) return;
+  clearTimeout(searchAcTimer);
+  if (query.length < 2) { hideDrop('drop-search'); return; }
+
+  searchAcTimer = setTimeout(async () => {
+    try {
+      const ql = query.toLowerCase();
+
+      // Match uddannelsessteder lokalt (ingen API-kald)
+      const eduItems = EDUCATION_PLACES
+        .filter(e => e.label.toLowerCase().includes(ql) || e.address.toLowerCase().includes(ql))
+        .slice(0, 4)
+        .map(e => ({ label: e.label, sub: e.address, icon: '🎓', lat: e.lat, lng: e.lng }));
+
+      const [citiesRes, addrsRes] = await Promise.all([
+        fetch(`https://api.dataforsyningen.dk/postnumre/autocomplete?q=${encodeURIComponent(query)}&per_side=3`),
+        fetch(`https://api.dataforsyningen.dk/adresser/autocomplete?q=${encodeURIComponent(query)}&per_side=5`)
+      ]);
+      const cities = await citiesRes.json();
+      const addrs  = await addrsRes.json();
+
+      const items = [
+        ...eduItems,
+        ...cities.map(d => ({
+          label: d.postnummer.navn,
+          sub:   d.postnummer.nr + ' · ' + (d.postnummer.kommuner?.[0]?.navn || ''),
+          icon:  '🏘️',
+          lat: null, lng: null,
+          city: d.postnummer.navn
+        })),
+        ...addrs.map(d => ({
+          label: d.tekst,
+          sub:   '',
+          icon:  '📍',
+          lat:   d.adresse?.y,
+          lng:   d.adresse?.x,
+          city:  d.adresse?.postnrnavn
+        }))
+      ];
+
+      if (!items.length) {
+        drop.innerHTML = `<div class="dd-empty">Ingen resultater for "${h(query)}"</div>`;
+        drop.style.display = 'block';
+        return;
+      }
+
+      drop.innerHTML = items.map((it, i) => `
+        <div class="drop-item" data-idx="${i}">
+          <div class="dd-icon">${it.icon}</div>
+          <div class="dd-text">
+            <div class="dd-main">${hl(it.label, query)}</div>
+            ${it.sub ? `<div class="dd-sub">${h(it.sub)}</div>` : ''}
+          </div>
+        </div>`).join('');
+
+      drop.querySelectorAll('.drop-item').forEach(el => {
+        el.addEventListener('mousedown', async e => {
+          e.preventDefault();
+          const item = items[+el.dataset.idx];
+          document.getElementById('search-input').value = item.label;
+          hideDrop('drop-search');
+          if (item.lat && item.lng) {
+            searchCoords = { lat: item.lat, lng: item.lng };
+          } else {
+            searchCoords = await geocode(item.label);
+          }
+          filterListings();
+        });
+      });
+
+      drop.style.display = 'block';
+    } catch(e) {}
+  }, 180);
+}
+
+/* ═══════════════════════════════════════
+   CHAT
+═══════════════════════════════════════ */
+async function startChat(otherId) {
+  if (!me) { openModal('modal-login'); return; }
+  if (!myProfile) { toast('Opret din profil først ✍️'); showView('profile'); return; }
+
+  showView('chat');
+  const chatId = [me.uid, otherId].sort().join('_');
+  const ref = db.collection('chats').doc(chatId);
+  const snap = await ref.get();
+
+  const otherData = listingsMap[otherId] || {};
+
+  if (!snap.exists) {
+    await ref.set({
+      participants: [me.uid, otherId],
+      pData: {
+        [me.uid]:   { name: myProfile.name || me.displayName || '', photo: myProfile.photoURL || me.photoURL || '' },
+        [otherId]:  { name: otherData.name || 'Bruger', photo: otherData.photoURL || '' }
+      },
+      lastMsg: '', lastTime: firebase.firestore.FieldValue.serverTimestamp(),
+      [`u_${me.uid}`]: 0, [`u_${otherId}`]: 0
+    });
+  }
+
+  openChatWindow(chatId, otherId, otherData);
+}
+
+function initChatView() {
+  if (!me) { renderChatNoAuth(); return; }
+  if (unsub.chats) unsub.chats();
+  document.getElementById('chat-list-content').innerHTML = '<div style="padding:1.5rem;text-align:center;color:var(--muted);font-size:.85rem">Henter samtaler...</div>';
+
+  unsub.chats = db.collection('chats')
+    .where('participants', 'array-contains', me.uid)
+    .orderBy('lastTime', 'desc')
+    .onSnapshot(snap => {
+      const chats = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderChatList(chats);
+    });
+}
+
+function renderChatList(chats) {
+  const el = document.getElementById('chat-list-content');
+  if (!chats.length) {
+    el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--muted);font-size:.85rem;">Ingen samtaler endnu.<br>Find en profil og skriv! 💬</div>';
+    return;
+  }
+  el.innerHTML = chats.map(c => {
+    const oid = c.participants.find(p => p !== me.uid);
+    const o = c.pData?.[oid] || {};
+    const unread = c[`u_${me.uid}`] || 0;
+    const timeStr = c.lastTime ? fmtTime(c.lastTime.toDate()) : '';
+    const cl = color(oid);
+    const init = (o.name || '?')[0].toUpperCase();
+    return `
+    <div class="chat-row ${c.id === currentChatId ? 'active' : ''}" onclick="openFromList('${c.id}','${oid}')">
+      <div class="chat-row-avatar" style="background:${cl}">
+        ${o.photo ? `<img src="${h(o.photo)}" onerror="this.style.display='none'">` : init}
+      </div>
+      <div class="chat-row-info">
+        <div class="chat-row-name">${h(o.name || 'Bruger')}</div>
+        <div class="chat-row-preview">${h(c.lastMsg || 'Start samtalen...')}</div>
+      </div>
+      <div class="chat-row-meta">
+        <span class="chat-row-time">${timeStr}</span>
+        ${unread ? `<span class="unread-badge">${unread}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function openFromList(chatId, oid) {
+  const snap = await db.collection('chats').doc(chatId).get();
+  const data = snap.data()?.pData?.[oid] || {};
+  openChatWindow(chatId, oid, data);
+}
+
+function openChatWindow(chatId, oid, otherData) {
+  currentChatId = chatId;
+  currentOtherId = oid;
+
+  // Mobile: show window
+  document.getElementById('chat-list-panel').classList.add('mob-hidden');
+  document.getElementById('chat-window-panel').classList.remove('mob-hidden');
+
+  document.getElementById('chat-empty').style.display = 'none';
+  const ca = document.getElementById('chat-active');
+  ca.style.display = 'flex';
+
+  // Header
+  const cl = color(oid);
+  const init = (otherData.name || '?')[0].toUpperCase();
+  const avatar = document.getElementById('chat-h-avatar');
+  avatar.style.background = cl;
+  avatar.innerHTML = otherData.photo ? `<img src="${h(otherData.photo)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">` : init;
+  document.getElementById('chat-h-name').textContent = otherData.name || 'Bruger';
+
+  // Mark read
+  db.collection('chats').doc(chatId).update({ [`u_${me.uid}`]: 0 }).catch(() => {});
+
+  // Messages listener
+  if (unsub.chat) unsub.chat();
+  unsub.chat = db.collection('chats').doc(chatId).collection('messages')
+    .orderBy('createdAt', 'asc')
+    .onSnapshot(snap => renderMessages(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+
+  // Update active row
+  document.querySelectorAll('.chat-row').forEach(r => r.classList.remove('active'));
+  document.querySelector(`.chat-row[onclick*="${chatId}"]`)?.classList.add('active');
+}
+
+function renderMessages(msgs) {
+  const el = document.getElementById('chat-messages');
+  if (!msgs.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:2rem;">Start samtalen 👋</div>';
+    return;
+  }
+  el.innerHTML = msgs.map(m => {
+    const own = m.senderId === me.uid;
+    const t = m.createdAt ? fmtTime(m.createdAt.toDate()) : '';
+    return `
+    <div class="msg-wrap ${own ? 'own' : 'other'}">
+      <div class="msg-bubble ${own ? 'own' : 'other'}">${h(m.text)}</div>
+      <div class="msg-time">${t}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text || !currentChatId) return;
+  input.value = ''; input.style.height = 'auto';
+
+  const batch = db.batch();
+  const mRef = db.collection('chats').doc(currentChatId).collection('messages').doc();
+  batch.set(mRef, { senderId: me.uid, text, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+  const cRef = db.collection('chats').doc(currentChatId);
+  batch.update(cRef, {
+    lastMsg: text,
+    lastTime: firebase.firestore.FieldValue.serverTimestamp(),
+    [`u_${currentOtherId}`]: firebase.firestore.FieldValue.increment(1),
+    [`u_${me.uid}`]: 0
+  });
+  await batch.commit();
+}
+
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 100) + 'px'; }
+
+function backToList() {
+  document.getElementById('chat-list-panel').classList.remove('mob-hidden');
+  document.getElementById('chat-window-panel').classList.add('mob-hidden');
+}
+
+function renderChatNoAuth() {
+  document.getElementById('chat-list-content').innerHTML = `
+    <div style="padding:2rem;text-align:center;color:var(--muted);">
+      <p style="margin-bottom:1rem;font-size:.88rem">Log ind for at se dine beskeder</p>
+      <button class="btn-nav-auth" onclick="signInWithGoogle()">Log ind med Google</button>
+    </div>`;
+}
+
+function startGlobalChatListener() {
+  if (!me) return;
+  db.collection('chats').where('participants', 'array-contains', me.uid)
+    .onSnapshot(snap => {
+      const total = snap.docs.reduce((s, d) => s + (d.data()[`u_${me.uid}`] || 0), 0);
+      const badge = document.getElementById('chat-badge');
+      badge.textContent = total;
+      badge.style.display = total ? 'block' : 'none';
+      const badgeTop = document.getElementById('chat-badge-top');
+      badgeTop.textContent = total;
+      badgeTop.style.display = total ? 'inline-block' : 'none';
+    });
+}
+
+/* ═══════════════════════════════════════
+   PROFILE
+═══════════════════════════════════════ */
+function renderProfile() {
+  const el = document.getElementById('profile-content');
+
+  if (!me) {
+    el.innerHTML = `
+      <div class="login-screen">
+        <div class="login-icon">🏠</div>
+        <div class="login-title">Din roomie-profil</div>
+        <div class="login-sub">Log ind og opret din profil — bliv synlig for alle der søger roomie i Danmark.</div>
+        <button class="btn-google" onclick="signInWithGoogle()">
+          <svg class="g-logo" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Fortsæt med Google
+        </button>
+      </div>`;
+    return;
+  }
+
+  if (!myProfile) { renderForm(el, null); return; }
+
+  const p = myProfile;
+  const cl = color(me.uid);
+  const init = (p.name || '?')[0].toUpperCase();
+  el.innerHTML = `
+    <div class="profile-card">
+      ${p.photoURL
+        ? `<img src="${h(p.photoURL)}" class="profile-card-photo">`
+        : `<div class="profile-card-avatar" style="background:${cl}">${init}</div>`}
+      <div class="profile-card-name">${h(p.name || '')}${p.age ? `, ${p.age}` : ''}</div>
+      <span class="profile-card-type ${p.type}">${p.type === 'søger' ? 'Søger værelse' : 'Har ledigt værelse'}</span>
+      <div class="profile-stats">
+        <div class="p-stat"><strong>${h(p.city || '—')}</strong><span>By</span></div>
+        <div class="p-stat"><strong>${p.price ? Number(p.price).toLocaleString('da') + ' kr' : '—'}</strong><span>Husleje/md.</span></div>
+        <div class="p-stat"><strong>${h(p.moveIn || '—')}</strong><span>Indflytning</span></div>
+      </div>
+      ${p.bio ? `<p class="profile-bio-text">"${h(p.bio)}"</p>` : ''}
+
+      <div class="active-toggle-row">
+        <div>
+          <div class="atl">Aktivt opslag</div>
+          <div class="ats">Slå fra når du har fundet nogen</div>
+        </div>
+        <label class="sw">
+          <input type="checkbox" ${p.active !== false ? 'checked' : ''} onchange="setActive(this.checked)">
+          <span class="sw-track"></span>
+        </label>
+      </div>
+      <button class="btn-primary" onclick="editProfile()">Rediger profil</button>
+      <button class="btn-secondary" onclick="doSignOut()">Log ud</button>
+    </div>`;
+}
+
+function editProfile() {
+  renderForm(document.getElementById('profile-content'), myProfile);
+}
+
+function renderForm(el, profile) {
+  const p = profile || {};
+  const isEdit = !!profile;
+  el.innerHTML = `
+    <h2 class="profile-title">${isEdit ? 'Rediger profil' : 'Opret din profil'}</h2>
+
+    <div class="photo-area" id="photo-area">
+      ${p.photoURL ? `<img src="${h(p.photoURL)}" id="photo-prev">` : '<div class="photo-icon">📷</div><div class="photo-label">Tilføj foto</div>'}
+      <input type="file" id="photo-file" accept="image/*" onchange="prevPhoto(this)">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Jeg er...</label>
+      <div class="type-toggle">
+        <button class="type-btn ${(!p.type || p.type === 'søger') ? 'active' : ''}" data-v="søger" onclick="selType(this)">🔍 Søger værelse</button>
+        <button class="type-btn ${p.type === 'har' ? 'active' : ''}" data-v="har" onclick="selType(this)">🏠 Har ledigt værelse</button>
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
+        <label class="form-label">Fornavn</label>
+        <input id="f-name" class="form-input" value="${h(p.name || me?.displayName?.split(' ')[0] || '')}" placeholder="Dit fornavn">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Alder</label>
+        <input id="f-age" type="number" class="form-input" value="${p.age || ''}" placeholder="Din alder" min="16" max="99">
+      </div>
+      <div class="form-group">
+        <label class="form-label">By</label>
+        <div class="ac-wrap">
+          <input id="f-city" class="form-input" value="${h(p.city || '')}" placeholder="Fx Odense, Aarhus, København..." autocomplete="off" oninput="acFetch(this.value,'drop-city','city')" onkeydown="acKey(event,'drop-city','city')" onblur="setTimeout(()=>hideDrop('drop-city'),150)">
+          <div class="drop-list" id="drop-city"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Husleje per måned (kr.)</label>
+        <input id="f-price" type="number" class="form-input" value="${p.price || ''}" placeholder="Fx 4500">
+      </div>
+      <div class="form-group form-grid-full">
+        <label class="form-label"><span id="addr-label-text">${(!p.type || p.type === 'søger') ? 'Adresse til uddannelse/arbejde' : 'Adresse'}</span> <span style="font-weight:400;text-transform:none;font-size:.76rem">(bruges til km-søgning)</span></label>
+        <div class="ac-wrap">
+          <input id="f-addr" class="form-input" value="${h(p.address || '')}" placeholder="${(!p.type || p.type === 'søger') ? 'Fx Kongens Nytorv 1, København' : 'Fx Vestergade 12, Odense'}" autocomplete="off" oninput="acFetch(this.value,'drop-addr','addr')" onkeydown="acKey(event,'drop-addr','addr')" onblur="setTimeout(()=>hideDrop('drop-addr'),150)">
+          <div class="drop-list" id="drop-addr"></div>
+        </div>
+      </div>
+      <div class="form-group form-grid-full" id="søger-radius-group" style="display:${(!p.type || p.type === 'søger') ? 'block' : 'none'}">
+        <label class="form-label">Ønsket radius fra adressen</label>
+        <select id="f-preferred-radius" class="form-input">
+          <option value="">Vælg radius...</option>
+          <option value="1"  ${p.preferredRadius == 1  ? 'selected' : ''}>1 km</option>
+          <option value="2"  ${p.preferredRadius == 2  ? 'selected' : ''}>2 km</option>
+          <option value="3"  ${p.preferredRadius == 3  ? 'selected' : ''}>3 km</option>
+          <option value="5"  ${p.preferredRadius == 5  ? 'selected' : ''}>5 km</option>
+          <option value="10" ${p.preferredRadius == 10 ? 'selected' : ''}>10 km</option>
+          <option value="25" ${p.preferredRadius == 25 ? 'selected' : ''}>25 km</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ønsket indflytningsdato</label>
+        <div class="date-wrap">
+          <input id="f-movein" class="form-input" value="${h(p.moveIn || '')}" placeholder="Vælg dato..." readonly style="cursor:pointer;padding-right:2.4rem" onclick="toggleCal()">
+          <span class="cal-input-icon">📅</span>
+          <div class="cal-popup" id="cal-popup"></div>
+        </div>
+      </div>
+      <div class="form-group form-grid-full">
+        <label class="form-label">Om dig</label>
+        <textarea id="f-bio" class="form-textarea" placeholder="Studium, interesser, hvad du leder efter...">${h(p.bio || '')}</textarea>
+      </div>
+    </div>
+
+    <!-- Ekstra felter for "Har ledigt værelse" -->
+    <div id="room-extras" style="display:${p.type === 'har' ? 'block' : 'none'}">
+      <hr style="border:none;border-top:1px solid var(--border);margin:1.25rem 0">
+
+      <div class="form-group">
+        <label class="form-label">Værelsesstørrelse (m²)</label>
+        <input id="f-roomsize" type="number" class="form-input" value="${p.roomSize || ''}" placeholder="Fx 15" min="5" max="200">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Faciliteter</label>
+        <div class="fac-grid">
+          ${FACILITIES.map(f => `
+            <label class="fac-item ${(p.facilities||[]).includes(f.id) ? 'on' : ''}" onclick="togFac(this)">
+              <input type="checkbox" value="${f.id}" ${(p.facilities||[]).includes(f.id) ? 'checked' : ''}>
+              ${f.icon} ${f.label}
+            </label>`).join('')}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Billeder af boligen <span style="font-weight:400;text-transform:none">(op til 5)</span></label>
+        <div class="room-photos-wrap" id="rp-grid">
+          ${[0,1,2,3,4].map(i => {
+            const url = (p.roomPhotos||[])[i];
+            return `<div class="rp-slot" data-slot="${i}" onclick="pickRoomPhoto(${i})">
+              ${url ? `<img src="${h(url)}"><span class="rp-num">${i+1}</span><button class="rp-remove" onclick="removeRoomPhoto(${i},event)">×</button>` : '<div class="rp-icon">📷</div>'}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="save-btn" onclick="saveProfile()">
+      ${isEdit ? 'Gem ændringer' : 'Opret profil'}
+    </button>
+    ${isEdit ? `<button class="btn-secondary" onclick="renderProfile()">Annuller</button>` : ''}`;
+}
+
+function prevPhoto(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const area = document.getElementById('photo-area');
+    let img = document.getElementById('photo-prev');
+    if (!img) { img = document.createElement('img'); img.id = 'photo-prev'; area.insertBefore(img, input); }
+    img.src = e.target.result;
+    area.querySelectorAll('.photo-icon,.photo-label').forEach(x => x.remove());
+  };
+  reader.readAsDataURL(file);
+}
+
+const FACILITIES = [
+  { id: 'own-bath',    icon: '🚿', label: 'Eget bad' },
+  { id: 'shared-bath', icon: '🛁', label: 'Delt bad' },
+  { id: 'own-kitchen', icon: '🍳', label: 'Eget køkken' },
+  { id: 'shared-kit',  icon: '🥘', label: 'Delt køkken' },
+  { id: 'washing',     icon: '🧺', label: 'Vaskemaskine' },
+  { id: 'internet',    icon: '📶', label: 'Internet inkl.' },
+  { id: 'electricity', icon: '⚡', label: 'El inkluderet' },
+  { id: 'parking',     icon: '🅿️', label: 'Parkering' },
+  { id: 'furnished',   icon: '🛋️', label: 'Møbleret' },
+  { id: 'pets',        icon: '🐾', label: 'Husdyr tilladt' },
+  { id: 'smoking',     icon: '🚬', label: 'Rygning tilladt' },
+  { id: 'balcony',     icon: '🌿', label: 'Altan/have' },
+];
+
+function selType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const isHar = btn.dataset.v === 'har';
+  const extras = document.getElementById('room-extras');
+  if (extras) extras.style.display = isHar ? 'block' : 'none';
+  const addrLbl = document.getElementById('addr-label-text');
+  if (addrLbl) addrLbl.textContent = isHar ? 'Adresse' : 'Adresse til uddannelse/arbejde';
+  const addrInput = document.getElementById('f-addr');
+  if (addrInput) addrInput.placeholder = isHar ? 'Fx Vestergade 12, Odense' : 'Fx Kongens Nytorv 1, København';
+  const radiusGrp = document.getElementById('søger-radius-group');
+  if (radiusGrp) radiusGrp.style.display = isHar ? 'none' : 'block';
+}
+
+function togFac(label) {
+  const cb = label.querySelector('input');
+  cb.checked = !cb.checked;
+  label.classList.toggle('on', cb.checked);
+}
+
+/* ── BOLIGBILLEDER ─────────────────────────────────────── */
+let rpFiles = [null,null,null,null,null];
+
+function pickRoomPhoto(idx) {
+  const input = document.createElement('input');
+  input.type = 'file'; input.accept = 'image/*';
+  input.onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    rpFiles[idx] = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const slot = document.querySelector(`.rp-slot[data-slot="${idx}"]`);
+      if (slot) slot.innerHTML = `<img src="${ev.target.result}"><span class="rp-num">${idx+1}</span><button class="rp-remove" onclick="removeRoomPhoto(${idx},event)">×</button>`;
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+function removeRoomPhoto(idx, e) {
+  e.stopPropagation();
+  rpFiles[idx] = null;
+  const slot = document.querySelector(`.rp-slot[data-slot="${idx}"]`);
+  if (slot) slot.innerHTML = '<div class="rp-icon">📷</div>';
+}
+
+async function saveProfile() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Gemmer...'; btn.disabled = true;
+
+  try {
+    const name   = document.getElementById('f-name').value.trim();
+    const age    = parseInt(document.getElementById('f-age').value) || null;
+    const type   = document.querySelector('.type-btn.active')?.dataset.v || 'søger';
+    const city   = document.getElementById('f-city').value.trim();
+    const address = document.getElementById('f-addr').value.trim();
+    const price  = parseInt(document.getElementById('f-price').value) || null;
+    const moveIn = document.getElementById('f-movein').value.trim();
+    const bio    = document.getElementById('f-bio').value.trim();
+    const preferredRadius = parseInt(document.getElementById('f-preferred-radius')?.value) || null;
+
+    if (!name) { toast('Angiv dit fornavn'); btn.textContent = 'Gem'; btn.disabled = false; return; }
+
+    // Upload photo
+    let photoURL = myProfile?.photoURL || me.photoURL || '';
+    const fileInput = document.getElementById('photo-file');
+    if (fileInput?.files.length) {
+      const ref = stor.ref(`profiles/${me.uid}/photo`);
+      await ref.put(fileInput.files[0]);
+      photoURL = await ref.getDownloadURL();
+    }
+
+    // Koordinater: autocomplete-valg > geocode ny adresse > geocode eksisterende hvis mangler
+    let lat = myProfile?.lat || null, lng = myProfile?.lng || null;
+    if (acSelectedLat && acSelectedLng) {
+      lat = acSelectedLat; lng = acSelectedLng;
+    } else if (address && (address !== myProfile?.address || !lat || !lng)) {
+      const c = await geocode(address);
+      if (c) { lat = c.lat; lng = c.lng; }
+    }
+
+    // Ekstra felter for "har ledigt værelse"
+    const roomSize = parseInt(document.getElementById('f-roomsize')?.value) || null;
+    const facilities = type === 'har'
+      ? [...document.querySelectorAll('.fac-item.on input')].map(cb => cb.value)
+      : [];
+
+    // Upload boligbilleder
+    let roomPhotos = [...(myProfile?.roomPhotos || [])];
+    for (let i = 0; i < rpFiles.length; i++) {
+      if (rpFiles[i]) {
+        const ref = stor.ref(`profiles/${me.uid}/rooms/photo_${i}`);
+        await ref.put(rpFiles[i]);
+        roomPhotos[i] = await ref.getDownloadURL();
+      }
+    }
+    roomPhotos = roomPhotos.filter(Boolean);
+    rpFiles = [null,null,null,null,null]; // reset
+
+    const data = {
+      name, age, type, city, address, price, moveIn, bio, photoURL, lat, lng,
+      roomSize, facilities, roomPhotos, preferredRadius,
+      active: myProfile?.active !== false,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      createdAt: myProfile?.createdAt || firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection('users').doc(me.uid).set(data, { merge: true });
+    myProfile = { ...myProfile, ...data };
+    toast('Profil gemt ✓');
+    renderProfile();
+
+  } catch(e) {
+    toast('Fejl: ' + e.message);
+    btn.textContent = 'Prøv igen'; btn.disabled = false;
+  }
+}
+
+async function setActive(val) {
+  await db.collection('users').doc(me.uid).update({ active: val });
+  myProfile = { ...myProfile, active: val };
+  toast(val ? 'Opslag aktiveret ✓' : 'Opslag deaktiveret');
+}
+
+/* ═══════════════════════════════════════
+   UTILS
+═══════════════════════════════════════ */
+function h(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const COLORS = ['#2563EB','#7C3AED','#DB2777','#DC2626','#059669','#0891B2','#D97706'];
+function color(uid) {
+  let n = 0; for (let i = 0; i < (uid||'').length; i++) n = uid.charCodeAt(i) + ((n<<5)-n);
+  return COLORS[Math.abs(n) % COLORS.length];
+}
+
+function fmtTime(d) {
+  if (!d) return '';
+  const diff = Date.now() - d;
+  if (diff < 60000)    return 'Nu';
+  if (diff < 3600000)  return Math.floor(diff/60000) + ' min';
+  if (diff < 86400000) return d.toLocaleTimeString('da', { hour:'2-digit', minute:'2-digit' });
+  return d.toLocaleDateString('da', { day:'numeric', month:'short' });
+}
+
+/* ═══════════════════════════════════════
+   AUTOCOMPLETE  (DAWA — Danmarks officielle adresse-API)
+═══════════════════════════════════════ */
+let acTimer = null;
+let acSelectedLat = null, acSelectedLng = null;
+let searchAcTimer = null;
+let searchCoords = null;
+const acState = {};  // { [dropId]: { results:[], focusIdx:-1 } }
+
+function acInit(dropId) {
+  if (!acState[dropId]) acState[dropId] = { results: [], focusIdx: -1 };
+  return acState[dropId];
+}
+
+function hl(text, q) {
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return h(text).replace(re, '<em>$1</em>');
+}
+
+async function acFetch(query, dropId, field) {
+  const drop = document.getElementById(dropId);
+  if (!drop) return;
+  clearTimeout(acTimer);
+  const st = acInit(dropId);
+  if (query.length < 2) { hideDrop(dropId); return; }
+
+  acTimer = setTimeout(async () => {
+    try {
+      let items = [];
+
+      if (field === 'city') {
+        // DAWA postnumre autocomplete — kun bynavne
+        const res = await fetch(`https://api.dataforsyningen.dk/postnumre/autocomplete?q=${encodeURIComponent(query)}&per_side=8`);
+        const data = await res.json();
+        items = data.map(d => ({
+          label: d.postnummer.navn,
+          sub:   d.postnummer.kommuner?.[0]?.navn || '',
+          value: d.postnummer.navn
+        }));
+      } else {
+        // Uddannelsessteder (søger-type adressefelt)
+        const isSøger = !document.querySelector('.type-btn.active') ||
+                        document.querySelector('.type-btn.active')?.dataset.v === 'søger';
+        const ql = query.toLowerCase();
+        const eduMatches = isSøger
+          ? EDUCATION_PLACES
+              .filter(e => e.label.toLowerCase().includes(ql) || e.address.toLowerCase().includes(ql))
+              .slice(0, 3)
+              .map(e => ({ label: e.label, sub: e.address, value: e.label, lat: e.lat, lng: e.lng, icon: '🎓' }))
+          : [];
+
+        // DAWA adresser autocomplete — præcise danske adresser med koordinater
+        const res = await fetch(`https://api.dataforsyningen.dk/adresser/autocomplete?q=${encodeURIComponent(query)}&per_side=6`);
+        const data = await res.json();
+        const addrItems = data.map(d => ({
+          label: d.tekst,
+          sub:   '',
+          value: d.tekst,
+          lat:   d.adresse?.y,
+          lng:   d.adresse?.x,
+          city:  d.adresse?.postnrnavn,
+          icon:  '📍'
+        }));
+        items = [...eduMatches, ...addrItems];
+      }
+
+      st.results  = items;
+      st.focusIdx = -1;
+
+      if (!items.length) {
+        drop.innerHTML = `<div class="dd-empty">Ingen resultater for "${h(query)}"</div>`;
+        drop.style.display = 'block';
+        return;
+      }
+
+      drop.innerHTML = items.map((it, i) => `
+        <div class="drop-item" data-idx="${i}">
+          <div class="dd-icon">${it.icon || '📍'}</div>
+          <div class="dd-text">
+            <div class="dd-main">${hl(it.label, query)}</div>
+            ${it.sub ? `<div class="dd-sub">${h(it.sub)}</div>` : ''}
+          </div>
+        </div>`).join('');
+
+      drop.querySelectorAll('.drop-item').forEach(el => {
+        el.addEventListener('mousedown', e => { e.preventDefault(); acPick(dropId, field, +el.dataset.idx); });
+      });
+
+      drop.style.display = 'block';
+    } catch(e) {}
+  }, 180);
+}
+
+function acPick(dropId, field, idx) {
+  const st   = acInit(dropId);
+  const item = st.results[idx];
+  if (!item) return;
+  hideDrop(dropId);
+  st.focusIdx = -1;
+
+  if (field === 'city') {
+    const el = document.getElementById('f-city');
+    if (el) el.value = item.value;
+  } else {
+    const el = document.getElementById('f-addr');
+    if (el) el.value = item.value;
+    if (item.lat) acSelectedLat = item.lat;
+    if (item.lng) acSelectedLng = item.lng;
+    const cityEl = document.getElementById('f-city');
+    if (cityEl && !cityEl.value && item.city) cityEl.value = item.city;
+  }
+}
+
+function acKey(e, dropId, field) {
+  const drop = document.getElementById(dropId);
+  const st   = acInit(dropId);
+  const items = drop?.querySelectorAll('.drop-item');
+  if (!items?.length) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    items[st.focusIdx]?.classList.remove('focused');
+    st.focusIdx = Math.min(st.focusIdx + 1, items.length - 1);
+    items[st.focusIdx].classList.add('focused');
+    items[st.focusIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    items[st.focusIdx]?.classList.remove('focused');
+    st.focusIdx = Math.max(st.focusIdx - 1, 0);
+    items[st.focusIdx].classList.add('focused');
+    items[st.focusIdx].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' || e.key === 'Tab') {
+    const focused = drop?.querySelector('.drop-item.focused');
+    if (focused) { e.preventDefault(); acPick(dropId, field, +focused.dataset.idx); }
+  } else if (e.key === 'Escape') {
+    hideDrop(dropId);
+  }
+}
+
+function hideDrop(dropId) {
+  const el = document.getElementById(dropId);
+  if (el) el.style.display = 'none';
+}
+
+/* ═══════════════════════════════════════
+   CALENDAR
+═══════════════════════════════════════ */
+const DA_MONTHS = ['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+const DA_DAYS   = ['Ma','Ti','On','To','Fr','Lø','Sø'];
+
+let calViewDate = new Date();
+let calSelected = null;
+
+function toggleCal() {
+  const popup = document.getElementById('cal-popup');
+  if (!popup) return;
+
+  // Init from existing value
+  const existing = document.getElementById('f-movein')?.value;
+  if (existing && !calSelected) {
+    const parsed = parseDaDate(existing);
+    if (parsed) { calSelected = parsed; calViewDate = new Date(parsed); }
+  }
+
+  const isOpen = popup.classList.contains('open');
+  if (isOpen) { popup.classList.remove('open'); return; }
+  renderCal();
+  popup.classList.add('open');
+}
+
+function renderCal() {
+  const popup = document.getElementById('cal-popup');
+  if (!popup) return;
+
+  const y = calViewDate.getFullYear(), m = calViewDate.getMonth();
+  const first = new Date(y, m, 1);
+  let startDay = first.getDay() - 1;
+  if (startDay < 0) startDay = 6;
+
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let cells = '';
+  for (let i = 0; i < startDay; i++) cells += `<div class="cal-cell cal-empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, m, d);
+    const isPast = date < today;
+    const isSel  = calSelected && date.toDateString() === calSelected.toDateString();
+    const isToday = date.toDateString() === today.toDateString();
+    const cls = ['cal-cell', isPast?'cal-past':'', isSel?'cal-sel':'', isToday&&!isSel?'cal-today':''].filter(Boolean).join(' ');
+    cells += `<div class="${cls}" ${!isPast ? `onclick="calPick(${y},${m},${d})"` : ''}>${d}</div>`;
+  }
+
+  popup.innerHTML = `
+    <div class="cal-head">
+      <button class="cal-nav" onclick="calNav(-1);event.stopPropagation()">‹</button>
+      <span class="cal-head-month">${DA_MONTHS[m]} ${y}</span>
+      <button class="cal-nav" onclick="calNav(1);event.stopPropagation()">›</button>
+    </div>
+    <div class="cal-dow">${DA_DAYS.map(d=>`<span>${d}</span>`).join('')}</div>
+    <div class="cal-grid">${cells}</div>`;
+}
+
+function calNav(dir) {
+  calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + dir, 1);
+  renderCal();
+}
+
+function calPick(y, m, d) {
+  calSelected = new Date(y, m, d);
+  const el = document.getElementById('f-movein');
+  if (el) el.value = `${d}. ${DA_MONTHS[m]} ${y}`;
+  document.getElementById('cal-popup')?.classList.remove('open');
+}
+
+function parseDaDate(str) {
+  if (!str) return null;
+  const mo = { januar:0,februar:1,marts:2,april:3,maj:4,juni:5,juli:6,august:7,september:8,oktober:9,november:10,december:11 };
+  const match = str.match(/(\d+)\.\s+(\w+)\s+(\d{4})/);
+  if (match) { const m = mo[match[2].toLowerCase()]; if (m !== undefined) return new Date(+match[3], m, +match[1]); }
+  return null;
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.date-wrap')) {
+    document.getElementById('cal-popup')?.classList.remove('open');
+  }
+});
+
+/* INIT */
+loadMarketplace();
+</script>
+</body>
+</html>
