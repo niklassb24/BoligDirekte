@@ -216,6 +216,7 @@
       background: var(--card); border-radius: 16px; box-shadow: var(--card-shadow);
       overflow: hidden; border: 1px solid var(--border);
       transition: transform .2s, box-shadow .2s;
+      display: flex; flex-direction: column;
     }
     .listing-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(15,30,60,0.13); }
     .card-photo-wrap {
@@ -236,7 +237,7 @@
     }
     .type-badge.søger { background: rgba(15,30,61,.82); color: #fff; }
     .type-badge.har   { background: rgba(232,146,10,.88); color: #fff; }
-    .card-body { padding: .85rem .95rem; }
+    .card-body { padding: .85rem .95rem; display: flex; flex-direction: column; flex: 1; }
     .card-top-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .25rem; }
     .card-name { font-weight: 600; font-size: .92rem; color: var(--text); }
     .card-price { font-size: .78rem; font-weight: 700; color: var(--amber); }
@@ -251,6 +252,7 @@
       width: 100%; padding: .55rem; background: var(--amber); color: #fff;
       border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
       font-size: .85rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
+      margin-top: auto;
     }
     .btn-write:hover { opacity: .85; }
 
@@ -608,6 +610,122 @@
       .listings-grid { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
     }
 
+    /* ── FACILITET FILTER BAR ─────────────────────────── */
+    .fac-filter-row {
+      display: flex; flex-wrap: wrap; gap: .35rem;
+      padding: .55rem 1.25rem .65rem; border-top: 1px solid var(--border);
+      background: var(--nav-bg); backdrop-filter: blur(8px);
+    }
+    @media (min-width: 768px) { .fac-filter-row { padding: .5rem 2.5rem; } }
+    .fac-chip { font-size: .75rem; padding: .25rem .7rem; }
+
+    /* ── LISTING DETAIL MODAL ──────────────────────────── */
+    .listing-modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,.55);
+      z-index: 250; display: flex; align-items: flex-end;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .listing-modal-bg.open { opacity: 1; pointer-events: all; }
+    .listing-modal {
+      position: relative; width: 100%; max-height: 92vh;
+      background: var(--card); border-radius: 24px 24px 0 0;
+      overflow: hidden; display: flex; flex-direction: column;
+      transform: translateY(100%); transition: transform .32s cubic-bezier(.32,0,.67,0);
+    }
+    .listing-modal-bg.open .listing-modal { transform: translateY(0); }
+
+    .lm-gallery {
+      position: relative; width: 100%; aspect-ratio: 4/3;
+      background: var(--chip-bg); flex-shrink: 0; overflow: hidden;
+    }
+    .lm-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .lm-gallery-placeholder {
+      width: 100%; height: 100%; display: flex; align-items: center;
+      justify-content: center; font-family: 'Fraunces', serif;
+      font-size: 4.5rem; font-weight: 700; color: rgba(255,255,255,.85);
+    }
+    .lm-gal-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.38); border: none; color: #fff;
+      width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+      font-size: 1.4rem; display: flex; align-items: center; justify-content: center;
+      transition: background .15s; line-height: 1;
+    }
+    .lm-gal-nav:hover { background: rgba(0,0,0,.62); }
+    .lm-gal-prev { left: .75rem; }
+    .lm-gal-next { right: .75rem; }
+    .lm-gal-dots {
+      position: absolute; bottom: .65rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: .38rem;
+    }
+    .lm-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,.45); cursor: pointer; transition: background .15s;
+    }
+    .lm-dot.active { background: #fff; transform: scale(1.2); }
+    .lm-close {
+      position: absolute; top: .75rem; right: .75rem; z-index: 10;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: rgba(0,0,0,.42); border: none; color: #fff;
+      font-size: 1.15rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lm-body {
+      overflow-y: auto; padding: 1.25rem 1.25rem 1.5rem;
+      flex: 1; display: flex; flex-direction: column; gap: .65rem;
+    }
+    .lm-type-badge {
+      display: inline-block; padding: .22rem .65rem; border-radius: 100px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .lm-type-badge.søger { background: rgba(15,30,61,.1); color: var(--navy); }
+    .lm-type-badge.har   { background: rgba(232,146,10,.1); color: var(--amber); }
+    [data-theme="dark"] .lm-type-badge.søger { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
+    .lm-price { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--amber); line-height: 1.1; }
+    .lm-meta { font-size: .85rem; color: var(--muted); line-height: 1.8; }
+    .lm-facs { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .lm-fac {
+      font-size: .78rem; padding: .22rem .65rem;
+      border: 1px solid var(--border); border-radius: 100px;
+      color: var(--muted); background: var(--chip-bg);
+    }
+    .lm-bio { font-size: .88rem; color: var(--muted); line-height: 1.7; font-style: italic; }
+    .lm-divider { border: none; border-top: 1px solid var(--border); }
+    .lm-host {
+      display: flex; align-items: center; gap: .85rem;
+      padding: .85rem; background: var(--chip-bg); border-radius: 14px;
+    }
+    .lm-host-photo { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; object-fit: cover; border: 2px solid var(--amber); }
+    .lm-host-avatar {
+      width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: #fff;
+      border: 2px solid var(--amber);
+    }
+    .lm-host-name { font-weight: 600; font-size: .95rem; }
+    .lm-host-sub  { font-size: .78rem; color: var(--muted); margin-top: .1rem; }
+    .lm-cta {
+      width: 100%; padding: .85rem; background: var(--amber); color: #fff;
+      border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
+      margin-top: auto; flex-shrink: 0;
+    }
+    .lm-cta:hover:not(:disabled) { opacity: .85; }
+    .lm-cta:disabled { opacity: .55; cursor: default; background: var(--navy); }
+
+    @media (min-width: 768px) {
+      .listing-modal-bg { align-items: center; }
+      .listing-modal {
+        max-width: 880px; max-height: 88vh; width: 100%;
+        border-radius: 20px; flex-direction: row;
+        transform: translateY(16px) scale(.97);
+        box-shadow: 0 30px 80px rgba(0,0,0,.28);
+      }
+      .listing-modal-bg.open .listing-modal { transform: translateY(0) scale(1); }
+      .lm-gallery { width: 52%; aspect-ratio: unset; flex-shrink: 0; }
+      .lm-body { padding: 1.5rem 1.75rem 1.75rem; }
+    }
+
     /* ── AUTOCOMPLETE ──────────────────────────────────── */
     .ac-wrap { position: relative; }
     .drop-list {
@@ -853,7 +971,7 @@
 
 <!-- TOP NAV -->
 <nav class="top-nav">
-  <a href="index.html" class="logo">Bolig<span>Direkte</span><span class="logo-tag">Roomie Nu</span></a>
+  <a href="index.html?ref=roomie" class="logo">Bolig<span>Direkte</span><span class="logo-tag">Roomie Nu</span></a>
   <div class="nav-links">
     <button class="nav-link active" data-v="marketplace" onclick="showView('marketplace')">Opslag</button>
     <button class="nav-link" data-v="chat" onclick="showView('chat')">
@@ -892,11 +1010,24 @@
         </select>
       </div>
       <div class="filter-chips">
-        <button class="chip active" data-t="alle" onclick="setType(this)">Alle</button>
-        <button class="chip" data-t="søger" onclick="setType(this)">Søger værelse</button>
-        <button class="chip" data-t="har" onclick="setType(this)">Har ledigt værelse</button>
+        <div id="type-chips">
+          <button class="chip active" data-t="alle" onclick="setType(this)">Alle</button>
+          <button class="chip" data-t="søger" onclick="setType(this)">Søger værelse</button>
+          <button class="chip" data-t="har" onclick="setType(this)">Har ledigt værelse</button>
+        </div>
+        <span id="type-label" style="display:none;font-size:.8rem;color:var(--muted);font-weight:500"></span>
         <input id="max-price" type="number" class="price-input" placeholder="Max kr/md" oninput="debouncedFilter()">
       </div>
+    </div>
+    <div class="fac-filter-row" id="fac-filter-row" style="display:none">
+      <button class="chip fac-chip" data-fac="own-bath" onclick="toggleFacFilter(this)">🚿 Eget bad</button>
+      <button class="chip fac-chip" data-fac="pets" onclick="toggleFacFilter(this)">🐾 Husdyr tilladt</button>
+      <button class="chip fac-chip" data-fac="furnished" onclick="toggleFacFilter(this)">🛋️ Møbleret</button>
+      <button class="chip fac-chip" data-fac="internet" onclick="toggleFacFilter(this)">📶 Internet inkl.</button>
+      <button class="chip fac-chip" data-fac="electricity" onclick="toggleFacFilter(this)">⚡ El inkl.</button>
+      <button class="chip fac-chip" data-fac="parking" onclick="toggleFacFilter(this)">🅿️ Parkering</button>
+      <button class="chip fac-chip" data-fac="balcony" onclick="toggleFacFilter(this)">🌿 Altan/have</button>
+      <button class="chip fac-chip" data-fac="washing" onclick="toggleFacFilter(this)">🧺 Vask inkl.</button>
     </div>
     <div id="listings-grid" class="listings-grid">
       <div class="spinner">Henter opslag...</div>
@@ -946,6 +1077,21 @@
 
 </main>
 
+<!-- LISTING DETAIL MODAL -->
+<div class="listing-modal-bg" id="listing-modal-bg" onclick="if(event.target===this)closeListing()">
+  <div class="listing-modal" id="listing-modal">
+    <div class="lm-gallery" id="lm-gallery">
+      <div class="lm-gallery-placeholder" id="lm-gallery-placeholder" style="display:none"></div>
+      <img class="lm-gallery-img" id="lm-gallery-img" style="display:none" alt="">
+      <button class="lm-gal-nav lm-gal-prev" id="lm-prev" onclick="galMove(-1)" style="display:none">&#8249;</button>
+      <button class="lm-gal-nav lm-gal-next" id="lm-next" onclick="galMove(1)" style="display:none">&#8250;</button>
+      <div class="lm-gal-dots" id="lm-dots"></div>
+      <button class="lm-close" onclick="closeListing()">&#215;</button>
+    </div>
+    <div class="lm-body" id="lm-body"></div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="bnav-btn active" data-v="marketplace" onclick="showView('marketplace')">
@@ -992,6 +1138,8 @@ let listingsMap = {};
 let allListings = [];
 let filterTimer = null;
 let unsub = { listings: null, chats: null, chat: null };
+let currentListingId = null;
+let activeFacFilters = new Set();
 
 /* ═══════════════════════════════════════
    AUTH
@@ -1014,6 +1162,7 @@ function renderAuthArea() {
   const el = document.getElementById('auth-area');
   if (!me) {
     el.innerHTML = `<button class="btn-nav-auth" onclick="signInWithGoogle()">Log ind</button>`;
+    updateTypeChips();
     return;
   }
   const src = myProfile?.photoURL || me.photoURL;
@@ -1022,6 +1171,21 @@ function renderAuthArea() {
   } else {
     const c = color(me.uid);
     el.innerHTML = `<div class="nav-user-photo" style="background:${c};display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.8rem;cursor:pointer;" onclick="showView('profile')">${(me.displayName||'?')[0]}</div>`;
+  }
+  updateTypeChips();
+}
+
+function updateTypeChips() {
+  const chips = document.getElementById('type-chips');
+  const label = document.getElementById('type-label');
+  if (!chips || !label) return;
+  if (myProfile?.type === 'søger') {
+    chips.style.display = 'none';
+    label.style.display = 'inline';
+    label.textContent = 'Viser: Ledige værelser';
+  } else {
+    chips.style.display = 'inline-flex';
+    label.style.display = 'none';
   }
 }
 
@@ -1180,6 +1344,15 @@ function loadMarketplace() {
 function setType(btn) {
   document.querySelectorAll('.chip[data-t]').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
+  // Vis facilitet-filter kun når "Har ledigt værelse" eller "Alle" er valgt
+  const t = btn.dataset.t;
+  const facRow = document.getElementById('fac-filter-row');
+  if (facRow) facRow.style.display = (t === 'har' || t === 'alle') ? 'flex' : 'none';
+  if (t === 'søger') {
+    // Ryd facilitet-filter når vi skifter til søger
+    activeFacFilters.clear();
+    document.querySelectorAll('.fac-chip').forEach(c => c.classList.remove('active'));
+  }
   filterListings();
 }
 
@@ -1190,6 +1363,11 @@ function debouncedFilter() {
 
 async function filterListings() {
   let list = [...allListings];
+
+  // Søger ser kun "har"-opslag — aldrig andre søgere
+  if (myProfile?.type === 'søger') {
+    list = list.filter(l => l.type === 'har' || l.id === me?.uid);
+  }
 
   const t = document.querySelector('.chip[data-t].active')?.dataset.t;
   if (t && t !== 'alle') list = list.filter(l => l.type === t);
@@ -1217,6 +1395,13 @@ async function filterListings() {
     );
   }
 
+  // Facilitet-filter — vis kun "har"-opslag der matcher ALLE valgte faciliteter
+  if (activeFacFilters.size > 0) {
+    list = list.filter(l =>
+      l.type === 'har' && [...activeFacFilters].every(fac => (l.facilities || []).includes(fac))
+    );
+  }
+
   renderCards(list);
 }
 
@@ -1239,7 +1424,7 @@ function renderCards(list) {
     }).join('');
 
     return `
-    <div class="listing-card">
+    <div class="listing-card" onclick="openListing('${l.id}')" style="cursor:pointer">
       <div class="card-photo-wrap">
         ${cardPhoto
           ? `<img src="${h(cardPhoto)}" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
@@ -1258,8 +1443,10 @@ function renderCards(list) {
         <p class="card-bio">${h(l.bio || '')}</p>
         ${l.moveIn ? `<div class="card-movein">🗓 ${h(l.moveIn)}</div>` : ''}
         ${l.id === me?.uid
-          ? `<button class="btn-write" style="background:var(--navy);opacity:.7;cursor:default" disabled>Dit opslag</button>`
-          : `<button class="btn-write" onclick="startChat('${l.id}')">Skriv besked</button>`
+          ? `<button class="btn-write" style="background:var(--navy);opacity:.7;cursor:default" disabled onclick="event.stopPropagation()">Dit opslag</button>`
+          : (myProfile?.type === 'har' && l.type === 'har')
+            ? ``
+            : `<button class="btn-write" onclick="event.stopPropagation();startChat('${l.id}')">Skriv besked</button>`
         }
       </div>
     </div>`;
@@ -1873,9 +2060,16 @@ async function saveProfile() {
     let photoURL = myProfile?.photoURL || me.photoURL || '';
     const fileInput = document.getElementById('photo-file');
     if (fileInput?.files.length) {
-      const ref = stor.ref(`profiles/${me.uid}/photo`);
-      await ref.put(fileInput.files[0]);
-      photoURL = await ref.getDownloadURL();
+      try {
+        btn.textContent = 'Uploader billede...';
+        const compressed = await resizeImage(fileInput.files[0], 600, 600, 0.82);
+        const ref = stor.ref(`profiles/${me.uid}/photo`);
+        await ref.put(compressed, { contentType: 'image/jpeg' });
+        photoURL = await ref.getDownloadURL();
+      } catch(uploadErr) {
+        toast('Billedupload fejlede: ' + uploadErr.message);
+        btn.textContent = 'Prøv igen'; btn.disabled = false; return;
+      }
     }
 
     // Koordinater: autocomplete-valg > geocode ny adresse > geocode eksisterende hvis mangler
@@ -1928,6 +2122,30 @@ async function setActive(val) {
   await db.collection('users').doc(me.uid).update({ active: val });
   myProfile = { ...myProfile, active: val };
   toast(val ? 'Opslag aktiveret ✓' : 'Opslag deaktiveret');
+}
+
+/* ═══════════════════════════════════════
+   IMAGE RESIZE
+═══════════════════════════════════════ */
+function resizeImage(file, maxW = 800, maxH = 800, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.width, h = img.height;
+      if (w > maxW || h > maxH) {
+        const ratio = Math.min(maxW / w, maxH / h);
+        w = Math.round(w * ratio); h = Math.round(h * ratio);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Kunne ikke behandle billedet')), 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Ugyldigt billedformat')); };
+    img.src = url;
+  });
 }
 
 /* ═══════════════════════════════════════
@@ -2181,6 +2399,129 @@ document.addEventListener('click', e => {
     document.getElementById('cal-popup')?.classList.remove('open');
   }
 });
+
+/* ═══════════════════════════════════════
+   FACILITET FILTER
+═══════════════════════════════════════ */
+function toggleFacFilter(btn) {
+  const fac = btn.dataset.fac;
+  if (activeFacFilters.has(fac)) {
+    activeFacFilters.delete(fac);
+    btn.classList.remove('active');
+  } else {
+    activeFacFilters.add(fac);
+    btn.classList.add('active');
+  }
+  filterListings();
+}
+
+/* ═══════════════════════════════════════
+   LISTING DETAIL MODAL
+═══════════════════════════════════════ */
+let galPhotos = [];
+let galIdx    = 0;
+
+function openListing(id) {
+  const l = allListings.find(x => x.id === id);
+  if (!l) return;
+  currentListingId = id;
+
+  // Gallery
+  const photos = (l.type === 'har' && l.roomPhotos?.length) ? l.roomPhotos
+               : l.photoURL ? [l.photoURL] : [];
+  galPhotos = photos;
+  galIdx = 0;
+  renderGal(l);
+
+  // Body
+  const c    = color(l.id);
+  const init = (l.name || '?')[0].toUpperCase();
+  const facHtml = (l.facilities || []).map(fid => {
+    const f = FACILITIES.find(x => x.id === fid);
+    return f ? `<span class="lm-fac">${f.icon} ${h(f.label)}</span>` : '';
+  }).join('');
+
+  const isOwn      = l.id === me?.uid;
+  const canMessage = !isOwn && !(myProfile?.type === 'har' && l.type === 'har');
+
+  document.getElementById('lm-body').innerHTML = `
+    <span class="lm-type-badge ${l.type}">${l.type === 'søger' ? 'Søger værelse' : 'Har ledigt værelse'}</span>
+    <div class="lm-price">${l.price ? Number(l.price).toLocaleString('da') + ' kr/md' : ''}</div>
+    <div class="lm-meta">
+      📍 ${h(l.city || '')}${l.roomSize ? ` &nbsp;·&nbsp; ${l.roomSize} m²` : ''}
+      ${l.moveIn ? `<br>🗓&nbsp; Indflytning: ${h(l.moveIn)}` : ''}
+      ${l.address ? `<br>📌&nbsp; ${h(l.address)}` : ''}
+    </div>
+    ${facHtml ? `<div class="lm-facs">${facHtml}</div>` : ''}
+    ${l.bio ? `<p class="lm-bio">"${h(l.bio)}"</p>` : ''}
+    <hr class="lm-divider">
+    <div class="lm-host">
+      ${l.photoURL
+        ? `<img class="lm-host-photo" src="${h(l.photoURL)}" onerror="this.style.display='none'">`
+        : `<div class="lm-host-avatar" style="background:${c}">${init}</div>`
+      }
+      <div>
+        <div class="lm-host-name">${h(l.name || 'Anonym')}${l.age ? `, ${l.age} år` : ''}</div>
+        <div class="lm-host-sub">${l.type === 'søger' ? 'Søger værelse' : 'Udlejer'}</div>
+      </div>
+    </div>
+    ${isOwn
+      ? `<button class="lm-cta" disabled>Dit eget opslag</button>`
+      : canMessage
+        ? `<button class="lm-cta" onclick="startChat('${l.id}');closeListing()">✉️ Skriv besked</button>`
+        : ``
+    }`;
+
+  document.getElementById('listing-modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderGal(l) {
+  const placeholder = document.getElementById('lm-gallery-placeholder');
+  const img         = document.getElementById('lm-gallery-img');
+  const prev        = document.getElementById('lm-prev');
+  const next        = document.getElementById('lm-next');
+  const dots        = document.getElementById('lm-dots');
+
+  if (!galPhotos.length) {
+    const c    = color(l?.id || '');
+    const init = (l?.name || '?')[0].toUpperCase();
+    placeholder.style.display = 'flex';
+    placeholder.style.background = c;
+    placeholder.textContent = init;
+    img.style.display = 'none';
+    prev.style.display = next.style.display = 'none';
+    dots.innerHTML = '';
+  } else {
+    placeholder.style.display = 'none';
+    img.style.display = 'block';
+    img.src = galPhotos[galIdx];
+    prev.style.display = galPhotos.length > 1 ? 'flex' : 'none';
+    next.style.display = galPhotos.length > 1 ? 'flex' : 'none';
+    dots.innerHTML = galPhotos.length > 1
+      ? galPhotos.map((_, i) => `<div class="lm-dot ${i === galIdx ? 'active' : ''}" onclick="galDot(${i})"></div>`).join('')
+      : '';
+  }
+}
+
+function galMove(dir) {
+  if (!galPhotos.length) return;
+  galIdx = (galIdx + dir + galPhotos.length) % galPhotos.length;
+  const l = allListings.find(x => x.id === currentListingId);
+  renderGal(l);
+}
+
+function galDot(i) {
+  galIdx = i;
+  const l = allListings.find(x => x.id === currentListingId);
+  renderGal(l);
+}
+
+function closeListing() {
+  document.getElementById('listing-modal-bg').classList.remove('open');
+  document.body.style.overflow = '';
+  currentListingId = null;
+}
 
 /* INIT */
 loadMarketplace();

@@ -408,6 +408,7 @@
     /* HERO */
     .hero {
       min-height: 100vh;
+      min-height: 100svh;
       background: transparent;
       display: flex;
       align-items: center;
@@ -2731,6 +2732,50 @@
         card.style.transition = 'outline 0.3s';
         setTimeout(() => { card.style.outline = ''; }, 2500);
       }, 400);
+    })();
+
+    // ── FRA ROOMIE NU — mobil-banner ──
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('ref') !== 'roomie') return;
+
+      // Indsæt mobil-banner under nav
+      const banner = document.createElement('div');
+      banner.id = 'roomie-banner';
+      banner.innerHTML = `
+        <a href="roomie.html" id="roomie-banner-back">← Roomie Nu</a>
+        <span id="roomie-banner-sep">·</span>
+        <span id="roomie-banner-text">Her finder du boliger til køb &amp; salg</span>
+      `;
+      document.body.appendChild(banner);
+
+      // Tilføj stil dynamisk (mobil only)
+      const style = document.createElement('style');
+      style.textContent = `
+        #roomie-banner {
+          display: none;
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          background: rgba(232,146,10,0.12);
+          border-bottom: 1px solid rgba(232,146,10,0.28);
+          padding: 0.55rem 1.25rem;
+          text-align: center;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: var(--amber, #E8920A);
+          z-index: 200;
+          backdrop-filter: blur(8px);
+        }
+        #roomie-banner a { color: var(--amber, #E8920A); font-weight: 700; text-decoration: none; }
+        #roomie-banner-sep { margin: 0 0.5rem; opacity: 0.5; }
+        @media (max-width: 767px) {
+          #roomie-banner { display: block; }
+          nav { top: 36px !important; }
+          .hero { padding-top: 7rem !important; }
+        }
+      `;
+      document.head.appendChild(style);
     })();
   </script>
 
