@@ -2502,6 +2502,15 @@
 
     switchMode('salg', true);
 
+    // Fjern hero-animationer efter de er afspillet — forhindrer genafspilning ved scroll på Android
+    setTimeout(() => {
+      document.querySelectorAll('.hero-badge, .hero h1, .hero p, .hero-form, .search-wrap, .hero-trust, .search-label').forEach(el => {
+        el.style.animation = 'none';
+        el.style.opacity   = '1';
+        el.style.transform = 'none';
+      });
+    }, 1200);
+
     // ── LISTINGS ──
     const pageSections = ['.how', '.comparison', '.calculator', '.signup'];
 
