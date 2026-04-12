@@ -2504,10 +2504,10 @@
 
     // Fjern hero-animationer efter de er afspillet — forhindrer genafspilning ved scroll på Android
     setTimeout(() => {
-      document.querySelectorAll('.hero-badge, .hero h1, .hero p, .hero-form, .search-wrap, .hero-trust, .search-label').forEach(el => {
-        el.style.animation = 'none';
-        el.style.opacity   = '1';
-        el.style.transform = 'none';
+      document.querySelectorAll('.hero-content, .hero-content > *, .hero-badge, .hero h1, .hero p, .hero-form, .search-wrap, .hero-trust, .search-label, .mode-switch, .mode-btn').forEach(el => {
+        el.style.setProperty('animation', 'none', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('transform', 'translateY(0)', 'important');
       });
     }, 1200);
 
