@@ -195,7 +195,7 @@
       --calc-badge:    rgba(255,255,255,0.8);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -1556,8 +1556,6 @@
     @media (max-width: 1000px) { .hero-cards { display: none; } }
 
     @media (max-width: 640px) {
-      /* Prevent horizontal overflow globally */
-      body { overflow-x: hidden; }
 
       /* Nav */
       .nav-center { display: none !important; }
