@@ -1556,6 +1556,10 @@
     @media (max-width: 1000px) { .hero-cards { display: none; } }
 
     @media (max-width: 640px) {
+      /* Skjul tunge GPU-elementer — forhindrer blank skærm ved scroll */
+      .blob-amber, .blob-blue, .beam { display: none !important; }
+      .page-grid { display: none !important; }
+
 
       /* Nav — solid baggrund på mobil, ingen backdrop-filter (forstyrrer Android rendering) */
       .nav-center { display: none !important; }
