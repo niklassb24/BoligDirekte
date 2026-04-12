@@ -1569,6 +1569,21 @@
       .hero { align-items: flex-start; padding: clamp(5rem, 14vh, 7rem) 1.25rem 2rem; }
       .hero-content { width: 100%; }
 
+      /* Deaktiver alle hero-animationer på mobil — forhindrer forsvinden ved scroll */
+      .hero-badge,
+      .hero h1,
+      .hero p,
+      .hero-form,
+      .search-wrap,
+      .hero-trust,
+      .search-label,
+      .mode-switch,
+      .hero-content > * {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
       /* Badge — lille skrift, én linje, clip hvis meget lille skærm */
       .hero-badge { font-size: 0.65rem; padding: 0.3rem 0.7rem; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
@@ -2501,15 +2516,6 @@
     }
 
     switchMode('salg', true);
-
-    // Fjern hero-animationer efter de er afspillet — forhindrer genafspilning ved scroll på Android
-    setTimeout(() => {
-      document.querySelectorAll('.hero-content, .hero-content > *, .hero-badge, .hero h1, .hero p, .hero-form, .search-wrap, .hero-trust, .search-label, .mode-switch, .mode-btn').forEach(el => {
-        el.style.setProperty('animation', 'none', 'important');
-        el.style.setProperty('opacity', '1', 'important');
-        el.style.setProperty('transform', 'translateY(0)', 'important');
-      });
-    }, 1200);
 
     // ── LISTINGS ──
     const pageSections = ['.how', '.comparison', '.calculator', '.signup'];
