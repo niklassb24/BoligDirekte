@@ -558,20 +558,22 @@
     .hero-filter-btn {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.4rem;
       background: transparent;
       color: var(--text-muted);
       border: none;
-      padding: 0 1rem;
+      border-left: 1px solid var(--input-border);
+      padding: 0 1.1rem;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.88rem;
       font-weight: 500;
       cursor: pointer;
       white-space: nowrap;
-      transition: color 0.2s;
-      height: 100%;
+      transition: color 0.2s, background 0.2s;
+      align-self: stretch;
     }
-    .hero-filter-btn:hover { color: var(--text-main); }
+    .hero-filter-btn:hover { color: var(--text-main); background: rgba(232,146,10,0.04); }
     .hero-filter-btn svg { width: 14px; height: 14px; }
 
     .hero-search-btn {
@@ -1554,19 +1556,44 @@
     @media (max-width: 1000px) { .hero-cards { display: none; } }
 
     @media (max-width: 640px) {
-      .hero-form { flex-direction: column; }
+      /* Prevent horizontal overflow globally */
+      body { overflow-x: hidden; }
+
+      /* Nav */
+      .nav-center { display: none !important; }
+      nav { padding: 1rem 1.25rem; }
+      .toggle-label { display: none; }
+      .theme-toggle { padding: 0.3rem 0.5rem; }
+      .nav-btn { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+      .nav-right { gap: 0.4rem; }
+
+      /* Hero — flex-start så indholdet ikke centreres midt på skærmen */
+      .hero { align-items: flex-start; padding: clamp(5rem, 14vh, 7rem) 1.25rem 2rem; }
+      .hero-content { width: 100%; }
+
+      /* Badge — lille skrift, én linje, clip hvis meget lille skærm */
+      .hero-badge { font-size: 0.65rem; padding: 0.3rem 0.7rem; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+
+      /* Overskrift — skalerer ned på smalle skærme */
+      .hero h1 { font-size: clamp(2rem, 8.5vw, 2.8rem); }
+
+      /* Brødtekst */
+      .hero p { font-size: 0.97rem; }
+
+      /* Mode-knapper fylder bredden */
+      .mode-switch { width: 100%; box-sizing: border-box; }
+      .mode-btn { flex: 1; padding: 0.5rem 0.5rem; font-size: 0.82rem; }
+
+      /* Søgefelt fylder fuld bredde */
+      .hero-form { width: 100%; max-width: 100%; }
+
+      /* Sektioner */
+      section { padding: 4rem 1.25rem; }
       .comp-row { grid-template-columns: 1.5fr 1fr 1fr; }
       .comp-cell { padding: 0.9rem 0.75rem; font-size: 0.8rem; }
       .stats-inner { gap: 2rem; }
       .calc-box { padding: 2rem 1.5rem; }
       .signup-box { padding: 2.5rem 1.5rem; }
-      section { padding: 4rem 1.25rem; }
-
-      nav { padding: 1rem 1.25rem; }
-      .toggle-label { display: none; }
-      .theme-toggle { padding: 0.3rem 0.5rem; }
-      .nav-btn { padding: 0.55rem 0.9rem; font-size: 0.82rem; }
-      .nav-right { gap: 0.5rem; }
     }
   </style>
 </head>
@@ -1830,7 +1857,6 @@
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" id="hero-search" placeholder="Søg by, postnummer eller adresse…" autocomplete="off" />
           </div>
-          <div class="hero-divider"></div>
           <button class="hero-filter-btn" id="filter-btn" onclick="toggleFilter(event)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
             Filter <span id="filter-count" style="display:none;background:var(--amber);color:#fff;border-radius:100px;padding:0.05rem 0.45rem;font-size:0.72rem;font-weight:700;margin-left:2px;"></span>
@@ -2720,8 +2746,8 @@
       if (!user) { center.style.display = 'none'; return; }
       center.style.display = '';
       const items = mode === 'leje'
-        ? [{ label: 'Leje',   action: () => window.location.href = 'dashboard.html?tab=koeber' },
-           { label: 'Udleje', action: () => window.location.href = 'dashboard.html?tab=saelger' }]
+        ? [{ label: 'Leje',   action: () => window.location.href = 'dashboard.html?tab=lejer' },
+           { label: 'Udleje', action: () => window.location.href = 'dashboard.html?tab=udlejer' }]
         : [{ label: 'Køb',   action: () => window.location.href = 'dashboard.html?tab=koeber' },
            { label: 'Sælg',  action: () => window.location.href = 'dashboard.html?tab=saelger' }];
       btns.innerHTML = '';

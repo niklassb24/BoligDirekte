@@ -151,6 +151,41 @@
 
     /* BOLIGER GRID */
     .boliger-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    /* ── Køber søgebox ── */
+    .k-search-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem; margin-bottom: 1.5rem; box-shadow: var(--card-shadow); }
+    .k-search-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.85rem; }
+    .k-search-input-wrap { flex: 1 1 240px; position: relative; display: flex; align-items: center; }
+    .k-search-icon { position: absolute; left: 0.75rem; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; flex-shrink: 0; }
+    .k-search-input { width: 100%; padding: 0.6rem 0.75rem 0.6rem 2.4rem; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg, var(--page-bg)); color: var(--text-main); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; transition: border-color 0.2s; }
+    .k-search-input:focus { border-color: var(--amber); }
+    .k-filter-select { padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg, var(--page-bg)); color: var(--text-main); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; cursor: pointer; min-width: 160px; }
+    .k-filter-toggle-btn { display: flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--input-bg, var(--page-bg)); color: var(--text-main); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: border-color 0.2s, background 0.2s; }
+    .k-filter-toggle-btn.open { border-color: var(--amber); background: rgba(232,146,10,0.06); }
+    .k-type-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0; }
+    .k-type-pill { padding: 0.35rem 0.85rem; border: 1px solid var(--border); border-radius: 100px; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .k-type-pill.active, .k-type-pill:hover { border-color: var(--amber); color: var(--amber); background: rgba(232,146,10,0.07); }
+    .k-filtre-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.1rem; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 1px solid var(--divider); }
+    .k-filter-group {}
+    .k-filter-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .k-range-row { display: flex; align-items: center; gap: 0.4rem; }
+    .k-range-input { flex: 1; padding: 0.5rem 0.65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--input-bg, var(--page-bg)); color: var(--text-main); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; min-width: 0; transition: border-color 0.2s; }
+    .k-range-input:focus { border-color: var(--amber); }
+    .k-range-sep { color: var(--text-muted); font-size: 0.9rem; }
+    .k-num-pills { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .k-num-pill { padding: 0.3rem 0.7rem; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .k-num-pill.active { border-color: var(--amber); color: var(--amber); background: rgba(232,146,10,0.08); font-weight: 700; }
+    .k-energi-a.active, .k-energi-a:hover { border-color:#15803d;color:#15803d;background:rgba(21,128,61,0.08); }
+    .k-energi-b.active, .k-energi-b:hover { border-color:#22c55e;color:#22c55e;background:rgba(34,197,94,0.08); }
+    .k-energi-c.active, .k-energi-c:hover { border-color:#84cc16;color:#84cc16;background:rgba(132,204,22,0.08); }
+    .k-energi-d.active, .k-energi-d:hover { border-color:#eab308;color:#eab308;background:rgba(234,179,8,0.08); }
+    .k-energi-e.active, .k-energi-e:hover { border-color:#f97316;color:#f97316;background:rgba(249,115,22,0.08); }
+    .k-energi-f.active, .k-energi-f:hover { border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,0.08); }
+    .k-energi-g.active, .k-energi-g:hover { border-color:#991b1b;color:#991b1b;background:rgba(153,27,27,0.08); }
+    .k-nulstil-btn { margin-top: 1rem; padding: 0.45rem 1rem; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.15s; }
+    .k-nulstil-btn:hover { border-color: #ef4444; color: #ef4444; }
+    .k-filter-chip { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.65rem; border-radius: 100px; background: rgba(232,146,10,0.1); border: 1px solid rgba(232,146,10,0.25); color: var(--amber); font-size: 0.78rem; font-weight: 600; }
+    .k-filter-chip button { background: none; border: none; cursor: pointer; color: var(--amber); font-size: 0.85rem; line-height: 1; padding: 0; margin-left: 1px; opacity: 0.7; }
+    .k-filter-chip button:hover { opacity: 1; }
     .bolig-listing { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.2s, box-shadow 0.2s; }
     .bolig-listing:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(232,146,10,0.10); }
     .bolig-img { width: 100%; height: 160px; background: linear-gradient(135deg, rgba(232,146,10,0.15), rgba(20,55,210,0.08)); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
@@ -702,10 +737,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         <span>Favoritter</span>
       </button>
-      <button class="nav-link" onclick="showPanel('koeber','minsogning',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        <span>Min søgning</span>
-      </button>
       <button class="nav-link" id="nav-koeber-beskeder-btn" onclick="showPanel('koeber','beskeder',this)" style="position:relative;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <span>Beskeder</span>
@@ -751,10 +782,6 @@
       <button class="nav-link" onclick="showPanel('lejer','favoritter',this)">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         <span>Favoritter</span>
-      </button>
-      <button class="nav-link" onclick="showPanel('lejer','minsogning',this)">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        <span>Min søgning</span>
       </button>
       <button class="nav-link" id="nav-lejer-beskeder-btn" onclick="showPanel('lejer','beskeder',this)" style="position:relative;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -971,48 +998,6 @@
           </div>
         </div>
 
-        <!-- SKILTNING CARD -->
-        <div class="card" style="border:1px solid rgba(15,30,61,0.2);background:linear-gradient(135deg,var(--card-bg) 60%,rgba(15,30,61,0.03) 100%);">
-          <div class="card-header" style="margin-bottom:1rem;">
-            <div style="display:flex;align-items:center;gap:0.75rem;">
-              <div style="width:42px;height:42px;border-radius:10px;background:rgba(15,30,61,0.08);border:1px solid rgba(15,30,61,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M12 22V12"/><rect x="2" y="3" width="15" height="9" rx="2"/></svg>
-              </div>
-              <div>
-                <div class="card-title" style="margin-bottom:0.1rem;">Til salg-skiltning</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);">Et synligt skilt foran boligen der fanger naboer og forbipasserende</div>
-              </div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
-            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
-              Leveret og sat op
-            </div>
-            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
-              Lokal synlighed
-            </div>
-            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
-              Fjernes ved salg
-            </div>
-            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
-              Professionelt BoligDirekte-skilt
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:1.25rem;border-top:1px solid var(--divider);flex-wrap:wrap;gap:1rem;">
-            <div>
-              <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">Pris oplyses snart</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Engangsbetaling · Inkl. opsætning</div>
-            </div>
-            <button onclick="åbnSkiltningModal()" style="background:var(--logo-color);color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-              Bestil skiltning →
-            </button>
-          </div>
-        </div>
-
         <!-- BOLIGSTYLING CARD -->
         <div class="card" style="border:1px solid rgba(16,185,129,0.25);background:linear-gradient(135deg,var(--card-bg) 60%,rgba(16,185,129,0.04) 100%);">
           <div class="card-header" style="margin-bottom:1rem;">
@@ -1054,6 +1039,48 @@
             </button>
           </div>
         </div>
+
+        <!-- SKILTNING CARD -->
+        <div class="card" style="border:1px solid rgba(15,30,61,0.2);background:linear-gradient(135deg,var(--card-bg) 60%,rgba(15,30,61,0.03) 100%);">
+          <div class="card-header" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div style="width:42px;height:42px;border-radius:10px;background:rgba(15,30,61,0.08);border:1px solid rgba(15,30,61,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M12 22V12"/><rect x="2" y="3" width="15" height="9" rx="2"/></svg>
+              </div>
+              <div>
+                <div class="card-title" style="margin-bottom:0.1rem;">Til salg-skiltning</div>
+                <div style="font-size:0.78rem;color:var(--text-muted);">Et synligt skilt foran boligen der fanger naboer og forbipasserende</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.75rem;margin-bottom:1.25rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Leveret og sat op
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Lokal synlighed
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Fjernes ved salg
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.84rem;color:var(--text-muted);">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="var(--logo-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+              Professionelt BoligDirekte-skilt
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:1.25rem;border-top:1px solid var(--divider);flex-wrap:wrap;gap:1rem;">
+            <div>
+              <div style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--h1-color);line-height:1;">Pris oplyses snart</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem;">Engangsbetaling · Inkl. opsætning</div>
+            </div>
+            <button onclick="åbnSkiltningModal()" style="background:var(--logo-color);color:#fff;border:none;padding:0.7rem 1.4rem;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+              Bestil skiltning →
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Boliger til salg -->
@@ -1062,6 +1089,114 @@
           <h1>Boliger <em style="font-style:italic;color:var(--amber)">til salg</em></h1>
           <p>Alle aktive boliger på BoligDirekte</p>
         </div>
+
+        <!-- SØGEBAR -->
+        <div class="k-search-box">
+          <div class="k-search-row">
+            <div class="k-search-input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="k-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="s-filter-tekst" type="text" placeholder="Søg by, postnummer eller adresse…" class="k-search-input" oninput="filterSaelgerBoliger()">
+            </div>
+            <select id="s-filter-sort" class="k-filter-select" onchange="filterSaelgerBoliger()">
+              <option value="ny">Nyeste først</option>
+              <option value="pris-lav">Pris: lav → høj</option>
+              <option value="pris-hoj">Pris: høj → lav</option>
+              <option value="areal-stor">Størst m²</option>
+              <option value="areal-lille">Mindste m²</option>
+            </select>
+            <button class="k-filter-toggle-btn" id="s-filter-toggle" onclick="toggleSaelgerFiltre()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filtre <span id="s-filter-badge" style="display:none;background:var(--amber);color:#fff;border-radius:100px;font-size:0.7rem;font-weight:700;padding:1px 6px;margin-left:2px;"></span>
+            </button>
+          </div>
+
+          <!-- Boligtype pills -->
+          <div class="k-type-pills">
+            <button class="k-type-pill active" data-type="" onclick="setSaelgerType(this)">Alle typer</button>
+            <button class="k-type-pill" data-type="Villa" onclick="setSaelgerType(this)">Villa</button>
+            <button class="k-type-pill" data-type="Rækkehus" onclick="setSaelgerType(this)">Rækkehus</button>
+            <button class="k-type-pill" data-type="Lejlighed" onclick="setSaelgerType(this)">Lejlighed</button>
+            <button class="k-type-pill" data-type="Ejerlejlighed" onclick="setSaelgerType(this)">Ejerlejlighed</button>
+            <button class="k-type-pill" data-type="Andelsbolig" onclick="setSaelgerType(this)">Andelsbolig</button>
+            <button class="k-type-pill" data-type="Sommerhus" onclick="setSaelgerType(this)">Sommerhus</button>
+          </div>
+
+          <!-- Udvidede filtre -->
+          <div id="s-filtre-udvidet" style="display:none;">
+            <div class="k-filtre-grid">
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Pris (kr.)</div>
+                <div class="k-range-row">
+                  <input id="s-pris-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterSaelgerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="s-pris-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterSaelgerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Størrelse (m²)</div>
+                <div class="k-range-row">
+                  <input id="s-areal-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterSaelgerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="s-areal-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterSaelgerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Byggeår</div>
+                <div class="k-range-row">
+                  <input id="s-aar-fra" type="number" placeholder="Fra" class="k-range-input" min="1800" max="2030" oninput="filterSaelgerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="s-aar-til" type="number" placeholder="Til" class="k-range-input" min="1800" max="2030" oninput="filterSaelgerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal værelser</div>
+                <div class="k-num-pills" id="s-vaerelse-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setSaelgerNum(this,'vaerelse')">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setSaelgerNum(this,'vaerelse')">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setSaelgerNum(this,'vaerelse')">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setSaelgerNum(this,'vaerelse')">3+</button>
+                  <button class="k-num-pill" data-val="4" onclick="setSaelgerNum(this,'vaerelse')">4+</button>
+                  <button class="k-num-pill" data-val="5" onclick="setSaelgerNum(this,'vaerelse')">5+</button>
+                  <button class="k-num-pill" data-val="6" onclick="setSaelgerNum(this,'vaerelse')">6+</button>
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal badeværelser</div>
+                <div class="k-num-pills" id="s-bade-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setSaelgerNum(this,'bade')">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setSaelgerNum(this,'bade')">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setSaelgerNum(this,'bade')">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setSaelgerNum(this,'bade')">3+</button>
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Energimærke</div>
+                <div class="k-num-pills" id="s-energi-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setSaelgerEnergi(this)">Alle</button>
+                  <button class="k-num-pill k-energi-a" data-val="A" onclick="setSaelgerEnergi(this)">A</button>
+                  <button class="k-num-pill k-energi-b" data-val="B" onclick="setSaelgerEnergi(this)">B</button>
+                  <button class="k-num-pill k-energi-c" data-val="C" onclick="setSaelgerEnergi(this)">C</button>
+                  <button class="k-num-pill k-energi-d" data-val="D" onclick="setSaelgerEnergi(this)">D</button>
+                  <button class="k-num-pill k-energi-e" data-val="E" onclick="setSaelgerEnergi(this)">E</button>
+                  <button class="k-num-pill k-energi-f" data-val="F" onclick="setSaelgerEnergi(this)">F</button>
+                  <button class="k-num-pill k-energi-g" data-val="G" onclick="setSaelgerEnergi(this)">G</button>
+                </div>
+              </div>
+
+            </div>
+            <button class="k-nulstil-btn" onclick="nulstilSaelgerFiltre()">Nulstil alle filtre</button>
+          </div>
+
+          <div id="s-aktive-filtre" style="display:none;margin-top:0.75rem;display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;"></div>
+          <div id="s-resultat-linje" style="font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;"></div>
+        </div>
+
         <div class="boliger-grid" id="s-boliger-grid"></div>
       </div>
 
@@ -1184,6 +1319,117 @@
           <h1>Find din <em style="font-style:italic;color:var(--amber)">næste bolig</em></h1>
           <p>Alle boliger til salg på BoligDirekte</p>
         </div>
+
+        <!-- SØGEBAR -->
+        <div class="k-search-box">
+          <!-- Linje 1: tekst + type + sort -->
+          <div class="k-search-row">
+            <div class="k-search-input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="k-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="k-filter-tekst" type="text" placeholder="Søg by, postnummer eller adresse…" class="k-search-input" oninput="filterKoeberBoliger()">
+            </div>
+            <select id="k-filter-sort" class="k-filter-select" onchange="filterKoeberBoliger()">
+              <option value="ny">Nyeste først</option>
+              <option value="pris-lav">Pris: lav → høj</option>
+              <option value="pris-hoj">Pris: høj → lav</option>
+              <option value="areal-stor">Størst m²</option>
+              <option value="areal-lille">Mindste m²</option>
+            </select>
+            <button class="k-filter-toggle-btn" id="k-filter-toggle" onclick="toggleKoeberFiltre()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filtre <span id="k-filter-badge" style="display:none;background:var(--amber);color:#fff;border-radius:100px;font-size:0.7rem;font-weight:700;padding:1px 6px;margin-left:2px;"></span>
+            </button>
+          </div>
+
+          <!-- Boligtype pills -->
+          <div class="k-type-pills">
+            <button class="k-type-pill active" data-type="" onclick="setKoeberType(this)">Alle typer</button>
+            <button class="k-type-pill" data-type="Villa" onclick="setKoeberType(this)">Villa</button>
+            <button class="k-type-pill" data-type="Rækkehus" onclick="setKoeberType(this)">Rækkehus</button>
+            <button class="k-type-pill" data-type="Lejlighed" onclick="setKoeberType(this)">Lejlighed</button>
+            <button class="k-type-pill" data-type="Ejerlejlighed" onclick="setKoeberType(this)">Ejerlejlighed</button>
+            <button class="k-type-pill" data-type="Andelsbolig" onclick="setKoeberType(this)">Andelsbolig</button>
+            <button class="k-type-pill" data-type="Sommerhus" onclick="setKoeberType(this)">Sommerhus</button>
+          </div>
+
+          <!-- Udvidede filtre -->
+          <div id="k-filtre-udvidet" style="display:none;">
+            <div class="k-filtre-grid">
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Pris (kr.)</div>
+                <div class="k-range-row">
+                  <input id="k-pris-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterKoeberBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="k-pris-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterKoeberBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Størrelse (m²)</div>
+                <div class="k-range-row">
+                  <input id="k-areal-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterKoeberBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="k-areal-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterKoeberBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Byggeår</div>
+                <div class="k-range-row">
+                  <input id="k-aar-fra" type="number" placeholder="Fra" class="k-range-input" min="1800" max="2030" oninput="filterKoeberBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="k-aar-til" type="number" placeholder="Til" class="k-range-input" min="1800" max="2030" oninput="filterKoeberBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal værelser</div>
+                <div class="k-num-pills" id="k-vaerelse-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setKoeberNum(this,'vaerelse')">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setKoeberNum(this,'vaerelse')">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setKoeberNum(this,'vaerelse')">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setKoeberNum(this,'vaerelse')">3+</button>
+                  <button class="k-num-pill" data-val="4" onclick="setKoeberNum(this,'vaerelse')">4+</button>
+                  <button class="k-num-pill" data-val="5" onclick="setKoeberNum(this,'vaerelse')">5+</button>
+                  <button class="k-num-pill" data-val="6" onclick="setKoeberNum(this,'vaerelse')">6+</button>
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal badeværelser</div>
+                <div class="k-num-pills" id="k-bade-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setKoeberNum(this,'bade')">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setKoeberNum(this,'bade')">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setKoeberNum(this,'bade')">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setKoeberNum(this,'bade')">3+</button>
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Energimærke</div>
+                <div class="k-num-pills" id="k-energi-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setKoeberEnergi(this)">Alle</button>
+                  <button class="k-num-pill k-energi-a" data-val="A" onclick="setKoeberEnergi(this)">A</button>
+                  <button class="k-num-pill k-energi-b" data-val="B" onclick="setKoeberEnergi(this)">B</button>
+                  <button class="k-num-pill k-energi-c" data-val="C" onclick="setKoeberEnergi(this)">C</button>
+                  <button class="k-num-pill k-energi-d" data-val="D" onclick="setKoeberEnergi(this)">D</button>
+                  <button class="k-num-pill k-energi-e" data-val="E" onclick="setKoeberEnergi(this)">E</button>
+                  <button class="k-num-pill k-energi-f" data-val="F" onclick="setKoeberEnergi(this)">F</button>
+                  <button class="k-num-pill k-energi-g" data-val="G" onclick="setKoeberEnergi(this)">G</button>
+                </div>
+              </div>
+
+            </div>
+            <button class="k-nulstil-btn" onclick="nulstilKoeberFiltre()">Nulstil alle filtre</button>
+          </div>
+
+          <!-- Aktive filter-chips + resultatantal -->
+          <div id="k-aktive-filtre" style="display:none;margin-top:0.75rem;display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;">
+          </div>
+          <div id="k-resultat-linje" style="font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;"></div>
+        </div>
+
         <div class="boliger-grid" id="k-boliger-grid"></div>
       </div>
 
@@ -1194,22 +1440,6 @@
           <p>Boliger du har gemt med hjertet</p>
         </div>
         <div id="favoritter-grid" class="boliger-grid"></div>
-      </div>
-
-      <!-- Min søgning -->
-      <div class="panel" id="kp-minsogning">
-        <div class="page-header">
-          <h1>Min <em style="font-style:italic;color:var(--amber)">søgning</em></h1>
-          <p>Dine søgekriterier</p>
-        </div>
-        <div class="card">
-          <div class="details-grid">
-            <div><div class="detail-label">Ønsket område</div><div class="detail-value" id="k-omraade">—</div></div>
-            <div><div class="detail-label">Boligtype</div><div class="detail-value" id="k-type">—</div></div>
-            <div><div class="detail-label">Max budget</div><div class="detail-value" id="k-budget">—</div></div>
-          </div>
-          <div class="card-actions"><button class="btn-primary">Rediger søgning</button></div>
-        </div>
       </div>
 
       <!-- Profil (køber) -->
@@ -1378,7 +1608,95 @@
           <h1>Boliger <em style="font-style:italic;color:var(--amber)">til leje</em></h1>
           <p style="color:var(--text-muted);font-size:0.95rem;margin-top:0.4rem;">Se alle aktive lejeboliger på platformen.</p>
         </div>
-        <div id="up-boliger-grid"><div class="empty-state"><div class="empty-icon">⏳</div><h3>Indlæser...</h3></div></div>
+
+        <!-- SØGEBAR -->
+        <div class="k-search-box">
+          <div class="k-search-row">
+            <div class="k-search-input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="k-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="u-filter-tekst" type="text" placeholder="Søg by, postnummer eller adresse…" class="k-search-input" oninput="filterUdlejerBoliger()">
+            </div>
+            <select id="u-filter-sort" class="k-filter-select" onchange="filterUdlejerBoliger()">
+              <option value="ny">Nyeste først</option>
+              <option value="leje-lav">Husleje: lav → høj</option>
+              <option value="leje-hoj">Husleje: høj → lav</option>
+              <option value="areal-stor">Størst m²</option>
+              <option value="areal-lille">Mindste m²</option>
+            </select>
+            <button class="k-filter-toggle-btn" id="u-filter-toggle" onclick="toggleUdlejerFiltre()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filtre <span id="u-filter-badge" style="display:none;background:var(--amber);color:#fff;border-radius:100px;font-size:0.7rem;font-weight:700;padding:1px 6px;margin-left:2px;"></span>
+            </button>
+          </div>
+
+          <!-- Boligtype pills -->
+          <div class="k-type-pills">
+            <button class="k-type-pill active" data-type="" onclick="setUdlejerType(this)">Alle typer</button>
+            <button class="k-type-pill" data-type="Lejlighed" onclick="setUdlejerType(this)">Lejlighed</button>
+            <button class="k-type-pill" data-type="Værelse" onclick="setUdlejerType(this)">Værelse</button>
+            <button class="k-type-pill" data-type="Rækkehus" onclick="setUdlejerType(this)">Rækkehus</button>
+            <button class="k-type-pill" data-type="Villa" onclick="setUdlejerType(this)">Villa</button>
+            <button class="k-type-pill" data-type="Studiebolig" onclick="setUdlejerType(this)">Studiebolig</button>
+            <button class="k-type-pill" data-type="Hus" onclick="setUdlejerType(this)">Hus</button>
+          </div>
+
+          <!-- Udvidede filtre -->
+          <div id="u-filtre-udvidet" style="display:none;">
+            <div class="k-filtre-grid">
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Husleje (kr./md.)</div>
+                <div class="k-range-row">
+                  <input id="u-leje-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterUdlejerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="u-leje-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterUdlejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Størrelse (m²)</div>
+                <div class="k-range-row">
+                  <input id="u-areal-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterUdlejerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="u-areal-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterUdlejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Ledig fra (dato)</div>
+                <div class="k-range-row">
+                  <input id="u-ledig-fra" type="date" class="k-range-input" oninput="filterUdlejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Max depositum (kr.)</div>
+                <div class="k-range-row">
+                  <input id="u-depositum-til" type="number" placeholder="Maks" class="k-range-input" min="0" oninput="filterUdlejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal værelser</div>
+                <div class="k-num-pills" id="u-vaerelse-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setUdlejerNum(this)">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setUdlejerNum(this)">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setUdlejerNum(this)">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setUdlejerNum(this)">3+</button>
+                  <button class="k-num-pill" data-val="4" onclick="setUdlejerNum(this)">4+</button>
+                  <button class="k-num-pill" data-val="5" onclick="setUdlejerNum(this)">5+</button>
+                </div>
+              </div>
+
+            </div>
+            <button class="k-nulstil-btn" onclick="nulstilUdlejerFiltre()">Nulstil alle filtre</button>
+          </div>
+
+          <div id="u-aktive-filtre" style="display:none;margin-top:0.75rem;display:flex;align-items:center;flex-wrap:wrap;gap:0.4rem;"></div>
+          <div id="u-resultat-linje" style="font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;"></div>
+        </div>
+
+        <div id="up-boliger-grid" class="boliger-grid"></div>
       </div>
 
       <!-- Interesserede lejere -->
@@ -1579,6 +1897,92 @@
           <h1>Find din <em style="font-style:italic;color:var(--amber)">lejebolig</em></h1>
           <p>Gennemse alle tilgængelige lejeboliger og kontakt udlejerne direkte.</p>
         </div>
+
+        <!-- SØGEBAR (lejer) -->
+        <div class="k-search-box">
+          <div class="k-search-row">
+            <div class="k-search-input-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="k-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="l-filter-tekst" type="text" placeholder="Søg by, postnummer eller adresse…" class="k-search-input" oninput="filterLejerBoliger()">
+            </div>
+            <select id="l-filter-sort" class="k-filter-select" onchange="filterLejerBoliger()">
+              <option value="ny">Nyeste først</option>
+              <option value="leje-lav">Husleje: lav → høj</option>
+              <option value="leje-hoj">Husleje: høj → lav</option>
+              <option value="areal-stor">Størst m²</option>
+              <option value="areal-lille">Mindste m²</option>
+            </select>
+            <button class="k-filter-toggle-btn" id="l-filter-toggle" onclick="toggleLejerFiltre()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filtre <span id="l-filter-badge" style="display:none;background:var(--amber);color:#fff;border-radius:100px;font-size:0.7rem;font-weight:700;padding:1px 6px;margin-left:2px;"></span>
+            </button>
+          </div>
+
+          <div class="k-type-pills">
+            <button class="k-type-pill active" data-type="" onclick="setLejerType(this)">Alle typer</button>
+            <button class="k-type-pill" data-type="Lejlighed" onclick="setLejerType(this)">Lejlighed</button>
+            <button class="k-type-pill" data-type="Værelse" onclick="setLejerType(this)">Værelse</button>
+            <button class="k-type-pill" data-type="Rækkehus" onclick="setLejerType(this)">Rækkehus</button>
+            <button class="k-type-pill" data-type="Villa" onclick="setLejerType(this)">Villa</button>
+            <button class="k-type-pill" data-type="Studiebolig" onclick="setLejerType(this)">Studiebolig</button>
+            <button class="k-type-pill" data-type="Hus" onclick="setLejerType(this)">Hus</button>
+          </div>
+
+          <div id="l-filtre-udvidet" style="display:none;">
+            <div class="k-filtre-grid">
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Husleje (kr./md.)</div>
+                <div class="k-range-row">
+                  <input id="l-leje-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterLejerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="l-leje-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterLejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Størrelse (m²)</div>
+                <div class="k-range-row">
+                  <input id="l-areal-fra" type="number" placeholder="Fra" class="k-range-input" min="0" oninput="filterLejerBoliger()">
+                  <span class="k-range-sep">–</span>
+                  <input id="l-areal-til" type="number" placeholder="Til" class="k-range-input" min="0" oninput="filterLejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Mindst antal værelser</div>
+                <div class="k-num-pills" id="l-vaerelse-pills">
+                  <button class="k-num-pill active" data-val="" onclick="setLejerNum(this)">Alle</button>
+                  <button class="k-num-pill" data-val="1" onclick="setLejerNum(this)">1+</button>
+                  <button class="k-num-pill" data-val="2" onclick="setLejerNum(this)">2+</button>
+                  <button class="k-num-pill" data-val="3" onclick="setLejerNum(this)">3+</button>
+                  <button class="k-num-pill" data-val="4" onclick="setLejerNum(this)">4+</button>
+                  <button class="k-num-pill" data-val="5" onclick="setLejerNum(this)">5+</button>
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Ledig fra (senest)</div>
+                <div class="k-range-row">
+                  <input id="l-ledig-fra" type="date" class="k-range-input" style="flex:1;" onchange="filterLejerBoliger()">
+                </div>
+              </div>
+
+              <div class="k-filter-group">
+                <div class="k-filter-label">Max depositum (kr.)</div>
+                <div class="k-range-row">
+                  <input id="l-depositum-til" type="number" placeholder="Max" class="k-range-input" min="0" oninput="filterLejerBoliger()">
+                </div>
+              </div>
+
+            </div>
+            <button class="k-nulstil-btn" onclick="nulstilLejerFiltre()">Nulstil alle filtre</button>
+          </div>
+
+          <div id="l-aktive-filtre" style="display:none;flex-wrap:wrap;gap:0.4rem;margin-top:0.75rem;align-items:center;"></div>
+          <div id="l-resultat-linje" style="font-size:0.82rem;color:var(--text-muted);margin-top:0.6rem;"></div>
+        </div>
+
         <div class="boliger-grid" id="l-boliger-grid"></div>
       </div>
 
@@ -1593,27 +1997,6 @@
         </div>
       </div>
 
-      <!-- Min søgning (lejer) -->
-      <div class="panel" id="lp-minsogning">
-        <div class="page-header"><h1>Min <em style="font-style:italic;color:var(--amber)">søgning</em></h1></div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Søgepræferencer</div>
-            <button class="btn-secondary" onclick="openLejerSogningPanel()">Rediger søgning</button>
-          </div>
-          <div class="details-grid">
-            <div><div class="detail-label">Ønsket område</div><div class="detail-value" id="l-omraade">—</div></div>
-            <div><div class="detail-label">Boligtype</div><div class="detail-value" id="l-type">—</div></div>
-            <div><div class="detail-label">Max husleje</div><div class="detail-value" id="l-budget">—</div></div>
-            <div><div class="detail-label">Min størrelse</div><div class="detail-value" id="l-areal">—</div></div>
-            <div><div class="detail-label">Antal rum</div><div class="detail-value" id="l-rum">—</div></div>
-            <div><div class="detail-label">Ledig senest</div><div class="detail-value" id="l-ledigfra">—</div></div>
-          </div>
-          <div class="card-actions">
-            <button class="btn-primary" onclick="openLejerSogningPanel()">Rediger søgning</button>
-          </div>
-        </div>
-      </div>
 
       <!-- Beskeder (lejer) -->
       <div class="panel" id="lp-beskeder">
@@ -2506,6 +2889,625 @@
     };
 
     // Panel switching
+    // ── Køber søge- og filterlogik ──
+    window._allKoeberBoliger = []; // rå data fra Firestore
+    window._koeberFilterState = { types: [], vaerelse: '', bade: '', energi: '' };
+
+    window.toggleKoeberFiltre = function() {
+      const el  = document.getElementById('k-filtre-udvidet');
+      const btn = document.getElementById('k-filter-toggle');
+      const open = el.style.display === 'none' || el.style.display === '';
+      el.style.display = open ? 'block' : 'none';
+      btn.classList.toggle('open', open);
+    };
+
+    window.setKoeberType = function(btn) {
+      const type = btn.dataset.type;
+      const types = window._koeberFilterState.types;
+      if (type === '') {
+        window._koeberFilterState.types = [];
+      } else {
+        const idx = types.indexOf(type);
+        if (idx === -1) types.push(type);
+        else types.splice(idx, 1);
+      }
+      const allePill = document.querySelector('#kp-find .k-type-pill[data-type=""]');
+      if (window._koeberFilterState.types.length === 0) {
+        document.querySelectorAll('#kp-find .k-type-pill').forEach(b => b.classList.remove('active'));
+        allePill.classList.add('active');
+      } else {
+        allePill.classList.remove('active');
+        document.querySelectorAll('#kp-find .k-type-pill[data-type]').forEach(b => {
+          b.classList.toggle('active', b.dataset.type !== '' && window._koeberFilterState.types.includes(b.dataset.type));
+        });
+      }
+      filterKoeberBoliger();
+    };
+
+    window.setKoeberNum = function(btn, key) {
+      const group = key === 'vaerelse' ? 'k-vaerelse-pills' : 'k-bade-pills';
+      document.querySelectorAll(`#${group} .k-num-pill`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._koeberFilterState[key] = btn.dataset.val;
+      filterKoeberBoliger();
+    };
+
+    window.setKoeberEnergi = function(btn) {
+      document.querySelectorAll('#k-energi-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._koeberFilterState.energi = btn.dataset.val;
+      filterKoeberBoliger();
+    };
+
+    window.nulstilKoeberFiltre = function() {
+      document.getElementById('k-filter-tekst').value = '';
+      document.getElementById('k-pris-fra').value = '';
+      document.getElementById('k-pris-til').value = '';
+      document.getElementById('k-areal-fra').value = '';
+      document.getElementById('k-areal-til').value = '';
+      document.getElementById('k-aar-fra').value = '';
+      document.getElementById('k-aar-til').value = '';
+      document.querySelectorAll('#kp-find .k-type-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#kp-find .k-type-pill[data-type=""]').classList.add('active');
+      ['k-vaerelse-pills','k-bade-pills','k-energi-pills'].forEach(id => {
+        document.querySelectorAll(`#${id} .k-num-pill`).forEach(b => b.classList.remove('active'));
+        document.querySelector(`#${id} .k-num-pill[data-val=""]`).classList.add('active');
+      });
+      window._koeberFilterState = { types: [], vaerelse: '', bade: '', energi: '' };
+      filterKoeberBoliger();
+    };
+
+    window.filterKoeberBoliger = function() {
+      const fs      = window._koeberFilterState;
+      const tekst   = (document.getElementById('k-filter-tekst')?.value || '').toLowerCase();
+      const prisFra = parseInt(document.getElementById('k-pris-fra')?.value) || 0;
+      const prisTil = parseInt(document.getElementById('k-pris-til')?.value) || Infinity;
+      const arFra   = parseInt(document.getElementById('k-areal-fra')?.value) || 0;
+      const arTil   = parseInt(document.getElementById('k-areal-til')?.value) || Infinity;
+      const aarFra  = parseInt(document.getElementById('k-aar-fra')?.value) || 0;
+      const aarTil  = parseInt(document.getElementById('k-aar-til')?.value) || Infinity;
+      const sort    = document.getElementById('k-filter-sort')?.value || 'ny';
+
+      let resultater = window._allKoeberBoliger.filter(({ d }) => {
+        if (fs.types.length > 0 && !fs.types.includes(d.boligtype||'')) return false;
+        if (tekst && !((d.adresse||'')+(d.by||'')+(d.postnummer||'')).toLowerCase().includes(tekst)) return false;
+        const pris = parseInt((d.salgspris||'').replace(/\D/g,'')) || 0;
+        if (pris && (pris < prisFra || pris > prisTil)) return false;
+        const ar   = parseInt(d.areal) || 0;
+        if (ar && (ar < arFra || ar > arTil)) return false;
+        const aar  = parseInt(d.byggeaar) || 0;
+        if (aar && (aar < aarFra || aar > aarTil)) return false;
+        if (fs.vaerelse && (parseInt(d.rum)||0) < parseInt(fs.vaerelse)) return false;
+        if (fs.bade    && (parseInt(d.badevaerelser)||0) < parseInt(fs.bade)) return false;
+        if (fs.energi  && (d.energimaerke||'').toUpperCase() !== fs.energi) return false;
+        return true;
+      });
+
+      // Sorter
+      resultater.sort((a, b) => {
+        const pa = parseInt((a.d.salgspris||'').replace(/\D/g,'')) || 0;
+        const pb = parseInt((b.d.salgspris||'').replace(/\D/g,'')) || 0;
+        const aa = parseInt(a.d.areal) || 0;
+        const ab = parseInt(b.d.areal) || 0;
+        if (sort === 'pris-lav') return pa - pb;
+        if (sort === 'pris-hoj') return pb - pa;
+        if (sort === 'areal-stor') return ab - aa;
+        if (sort === 'areal-lille') return aa - ab;
+        return 0; // ny = Firestore-rækkefølge bevares
+      });
+
+      // Render
+      const grid = document.getElementById('k-boliger-grid');
+      if (!grid) return;
+      if (resultater.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h3>Ingen boliger matcher din søgning</h3><p>Prøv at justere dine filtre.</p></div>';
+      } else {
+        grid.innerHTML = resultater.map(({ sid, d, feeStr, meta, isFavCls, serialTag }) =>
+          `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${sid}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${serialTag}<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;"><button class="heart-btn${isFavCls}" data-fav-uid="${sid}" onclick="event.stopPropagation();toggleFavorit('${sid}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button><button class="contact-btn" onclick="event.stopPropagation();openListing('${sid}')">Se opslag</button></div></div></div></div>`
+        ).join('');
+      }
+
+      // Resultatlinje
+      const rl = document.getElementById('k-resultat-linje');
+      if (rl) rl.textContent = `${resultater.length} ${resultater.length === 1 ? 'bolig' : 'boliger'} fundet`;
+
+      // Aktive filter-chips
+      opdaterFilterChips();
+    };
+
+    function opdaterFilterChips() {
+      const fs     = window._koeberFilterState;
+      const chips  = [];
+      const prisFra = document.getElementById('k-pris-fra')?.value;
+      const prisTil = document.getElementById('k-pris-til')?.value;
+      const arFra   = document.getElementById('k-areal-fra')?.value;
+      const arTil   = document.getElementById('k-areal-til')?.value;
+      const aarFra  = document.getElementById('k-aar-fra')?.value;
+      const aarTil  = document.getElementById('k-aar-til')?.value;
+      const tekst   = document.getElementById('k-filter-tekst')?.value;
+      if (tekst)                       chips.push({ label: `"${tekst}"`, clear: () => { document.getElementById('k-filter-tekst').value=''; filterKoeberBoliger(); } });
+      if (fs.types.length > 0)         fs.types.forEach(t => chips.push({ label: t, clear: () => { setKoeberType(document.querySelector(`#kp-find .k-type-pill[data-type="${t}"]`)); } }));
+      if (prisFra || prisTil)          chips.push({ label: `Pris: ${prisFra||'0'} – ${prisTil||'∞'} kr.`, clear: () => { document.getElementById('k-pris-fra').value=''; document.getElementById('k-pris-til').value=''; filterKoeberBoliger(); } });
+      if (arFra || arTil)              chips.push({ label: `${arFra||'0'}–${arTil||'∞'} m²`, clear: () => { document.getElementById('k-areal-fra').value=''; document.getElementById('k-areal-til').value=''; filterKoeberBoliger(); } });
+      if (aarFra || aarTil)            chips.push({ label: `Bygget ${aarFra||''}–${aarTil||''}`, clear: () => { document.getElementById('k-aar-fra').value=''; document.getElementById('k-aar-til').value=''; filterKoeberBoliger(); } });
+      if (fs.vaerelse)                 chips.push({ label: `${fs.vaerelse}+ værelser`, clear: () => { document.querySelector('#k-vaerelse-pills .k-num-pill[data-val=""]').click(); } });
+      if (fs.bade)                     chips.push({ label: `${fs.bade}+ badeværelser`, clear: () => { document.querySelector('#k-bade-pills .k-num-pill[data-val=""]').click(); } });
+      if (fs.energi)                   chips.push({ label: `Energi ${fs.energi}`, clear: () => { document.querySelector('#k-energi-pills .k-num-pill[data-val=""]').click(); } });
+
+      const el = document.getElementById('k-aktive-filtre');
+      if (!el) return;
+      if (chips.length === 0) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      el.innerHTML = chips.map((c, i) =>
+        `<span class="k-filter-chip">${c.label}<button onclick="window._chipClear[${i}]()" title="Fjern filter">×</button></span>`
+      ).join('');
+      window._chipClear = chips.map(c => c.clear);
+
+      // Opdater badge-tæller på filter-knappen
+      const badge = document.getElementById('k-filter-badge');
+      if (badge) { badge.textContent = chips.length; badge.style.display = chips.length ? 'inline' : 'none'; }
+    }
+
+    // ── Lejer søge- og filterlogik ──
+    window._allLejerBoliger = [];
+    window._lejerFilterState = { types: [], vaerelse: '' };
+
+    window.toggleLejerFiltre = function() {
+      const el  = document.getElementById('l-filtre-udvidet');
+      const btn = document.getElementById('l-filter-toggle');
+      const open = el.style.display === 'none' || el.style.display === '';
+      el.style.display = open ? 'block' : 'none';
+      btn.classList.toggle('open', open);
+    };
+
+    window.setLejerType = function(btn) {
+      const type = btn.dataset.type;
+      const types = window._lejerFilterState.types;
+      if (type === '') {
+        window._lejerFilterState.types = [];
+      } else {
+        const idx = types.indexOf(type);
+        if (idx === -1) types.push(type);
+        else types.splice(idx, 1);
+      }
+      const allePill = document.querySelector('#lp-find .k-type-pill[data-type=""]');
+      if (window._lejerFilterState.types.length === 0) {
+        document.querySelectorAll('#lp-find .k-type-pill').forEach(b => b.classList.remove('active'));
+        allePill.classList.add('active');
+      } else {
+        allePill.classList.remove('active');
+        document.querySelectorAll('#lp-find .k-type-pill[data-type]').forEach(b => {
+          b.classList.toggle('active', b.dataset.type !== '' && window._lejerFilterState.types.includes(b.dataset.type));
+        });
+      }
+      filterLejerBoliger();
+    };
+
+    window.setLejerNum = function(btn) {
+      document.querySelectorAll('#l-vaerelse-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._lejerFilterState.vaerelse = btn.dataset.val;
+      filterLejerBoliger();
+    };
+
+    window.nulstilLejerFiltre = function() {
+      document.getElementById('l-filter-tekst').value = '';
+      document.getElementById('l-leje-fra').value = '';
+      document.getElementById('l-leje-til').value = '';
+      document.getElementById('l-areal-fra').value = '';
+      document.getElementById('l-areal-til').value = '';
+      document.getElementById('l-ledig-fra').value = '';
+      document.getElementById('l-depositum-til').value = '';
+      document.querySelectorAll('#lp-find .k-type-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#lp-find .k-type-pill[data-type=""]').classList.add('active');
+      document.querySelectorAll('#l-vaerelse-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#l-vaerelse-pills .k-num-pill[data-val=""]').classList.add('active');
+      window._lejerFilterState = { types: [], vaerelse: '' };
+      filterLejerBoliger();
+    };
+
+    window.filterLejerBoliger = function() {
+      const fs       = window._lejerFilterState;
+      const tekst    = (document.getElementById('l-filter-tekst')?.value || '').toLowerCase();
+      const lejeFra  = parseInt(document.getElementById('l-leje-fra')?.value) || 0;
+      const lejeTil  = parseInt(document.getElementById('l-leje-til')?.value) || Infinity;
+      const arFra    = parseInt(document.getElementById('l-areal-fra')?.value) || 0;
+      const arTil    = parseInt(document.getElementById('l-areal-til')?.value) || Infinity;
+      const ledigFra = document.getElementById('l-ledig-fra')?.value || '';
+      const depTil   = parseInt(document.getElementById('l-depositum-til')?.value) || Infinity;
+      const sort     = document.getElementById('l-filter-sort')?.value || 'ny';
+
+      let resultater = window._allLejerBoliger.filter(({ d }) => {
+        if (fs.types.length > 0 && !fs.types.includes(d.boligtype||'')) return false;
+        if (tekst && !((d.adresse||'')+(d.by||'')+(d.postnummer||'')).toLowerCase().includes(tekst)) return false;
+        const leje = parseInt((d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        if (leje && (leje < lejeFra || leje > lejeTil)) return false;
+        const ar = parseInt(d.areal) || 0;
+        if (ar && (ar < arFra || ar > arTil)) return false;
+        if (fs.vaerelse && (parseInt(d.rum)||0) < parseInt(fs.vaerelse)) return false;
+        const dep = parseInt((d.depositum||'').replace(/\D/g,'')) || 0;
+        if (dep && dep > depTil) return false;
+        if (ledigFra && d.ledigFra && d.ledigFra > ledigFra) return false;
+        return true;
+      });
+
+      resultater.sort((a, b) => {
+        const la = parseInt((a.d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        const lb = parseInt((b.d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        const aa = parseInt(a.d.areal) || 0;
+        const ab = parseInt(b.d.areal) || 0;
+        if (sort === 'leje-lav') return la - lb;
+        if (sort === 'leje-hoj') return lb - la;
+        if (sort === 'areal-stor') return ab - aa;
+        if (sort === 'areal-lille') return aa - ab;
+        return 0;
+      });
+
+      const grid = document.getElementById('l-boliger-grid');
+      if (!grid) return;
+      if (resultater.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h3>Ingen lejeboliger matcher din søgning</h3><p>Prøv at justere dine filtre.</p></div>';
+      } else {
+        grid.innerHTML = resultater.map(({ sid, d, ledigTag, depositTag, meta, heartCls }) => `
+          <div class="bolig-listing">
+            <div class="bolig-img">🔑</div>
+            <div class="bolig-body">
+              <div class="bolig-type">${d.boligtype||'Lejebolig'}</div>
+              <div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>
+              ${meta ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.4rem;">${meta}</div>` : ''}
+              ${ledigTag}
+              <div class="bolig-pris">${d.maanedligLeje||'Pris ikke angivet'}</div>
+              ${depositTag}
+              <div class="bolig-footer">
+                <span></span>
+                <div style="display:flex;align-items:center;gap:0.4rem;">
+                  <button class="heart-btn${heartCls}" data-leje-fav="${sid}" onclick="event.stopPropagation();toggleLejerFavorit('${sid}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                  <button class="contact-btn" onclick="openUdlejerOpslag('${sid}')">Se opslag</button>
+                </div>
+              </div>
+            </div>
+          </div>`).join('');
+      }
+
+      const rl = document.getElementById('l-resultat-linje');
+      if (rl) rl.textContent = `${resultater.length} ${resultater.length === 1 ? 'lejebolig' : 'lejeboliger'} fundet`;
+
+      opdaterLejerFilterChips();
+    };
+
+    function opdaterLejerFilterChips() {
+      const fs      = window._lejerFilterState;
+      const chips   = [];
+      const tekst   = document.getElementById('l-filter-tekst')?.value;
+      const lejeFra = document.getElementById('l-leje-fra')?.value;
+      const lejeTil = document.getElementById('l-leje-til')?.value;
+      const arFra   = document.getElementById('l-areal-fra')?.value;
+      const arTil   = document.getElementById('l-areal-til')?.value;
+      const ledig   = document.getElementById('l-ledig-fra')?.value;
+      const dep     = document.getElementById('l-depositum-til')?.value;
+
+      if (tekst)              chips.push({ label: `"${tekst}"`,                    clear: () => { document.getElementById('l-filter-tekst').value=''; filterLejerBoliger(); } });
+      if (fs.types.length > 0) fs.types.forEach(t => chips.push({ label: t, clear: () => { setLejerType(document.querySelector(`#lp-find .k-type-pill[data-type="${t}"]`)); } }));
+      if (lejeFra || lejeTil) chips.push({ label: `${lejeFra||'0'}–${lejeTil||'∞'} kr./md.`, clear: () => { document.getElementById('l-leje-fra').value=''; document.getElementById('l-leje-til').value=''; filterLejerBoliger(); } });
+      if (arFra || arTil)     chips.push({ label: `${arFra||'0'}–${arTil||'∞'} m²`,          clear: () => { document.getElementById('l-areal-fra').value=''; document.getElementById('l-areal-til').value=''; filterLejerBoliger(); } });
+      if (fs.vaerelse)        chips.push({ label: `${fs.vaerelse}+ værelser`,      clear: () => { document.querySelector('#l-vaerelse-pills .k-num-pill[data-val=""]').click(); } });
+      if (ledig)              chips.push({ label: `Ledig: ${ledig}`,               clear: () => { document.getElementById('l-ledig-fra').value=''; filterLejerBoliger(); } });
+      if (dep)                chips.push({ label: `Max dep. ${dep} kr.`,           clear: () => { document.getElementById('l-depositum-til').value=''; filterLejerBoliger(); } });
+
+      const el = document.getElementById('l-aktive-filtre');
+      if (!el) return;
+      if (chips.length === 0) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      el.innerHTML = chips.map((c, i) =>
+        `<span class="k-filter-chip">${c.label}<button onclick="window._lejerChipClear[${i}]()" title="Fjern filter">×</button></span>`
+      ).join('');
+      window._lejerChipClear = chips.map(c => c.clear);
+      const badge = document.getElementById('l-filter-badge');
+      if (badge) { badge.textContent = chips.length; badge.style.display = chips.length ? 'inline' : 'none'; }
+    }
+
+    // ── Udlejer søge- og filterlogik (markedsoverblik) ──
+    window._allUdlejerBoliger = [];
+    window._udlejerFilterState = { types: [], vaerelse: '' };
+
+    window.toggleUdlejerFiltre = function() {
+      const el  = document.getElementById('u-filtre-udvidet');
+      const btn = document.getElementById('u-filter-toggle');
+      const open = el.style.display === 'none' || el.style.display === '';
+      el.style.display = open ? 'block' : 'none';
+      btn.classList.toggle('open', open);
+    };
+
+    window.setUdlejerType = function(btn) {
+      const type = btn.dataset.type;
+      const types = window._udlejerFilterState.types;
+      if (type === '') {
+        window._udlejerFilterState.types = [];
+      } else {
+        const idx = types.indexOf(type);
+        if (idx === -1) types.push(type);
+        else types.splice(idx, 1);
+      }
+      const allePill = document.querySelector('#up-boliger .k-type-pill[data-type=""]');
+      if (window._udlejerFilterState.types.length === 0) {
+        document.querySelectorAll('#up-boliger .k-type-pill').forEach(b => b.classList.remove('active'));
+        allePill.classList.add('active');
+      } else {
+        allePill.classList.remove('active');
+        document.querySelectorAll('#up-boliger .k-type-pill[data-type]').forEach(b => {
+          b.classList.toggle('active', b.dataset.type !== '' && window._udlejerFilterState.types.includes(b.dataset.type));
+        });
+      }
+      filterUdlejerBoliger();
+    };
+
+    window.setUdlejerNum = function(btn) {
+      document.querySelectorAll('#u-vaerelse-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._udlejerFilterState.vaerelse = btn.dataset.val;
+      filterUdlejerBoliger();
+    };
+
+    window.nulstilUdlejerFiltre = function() {
+      document.getElementById('u-filter-tekst').value = '';
+      document.getElementById('u-leje-fra').value = '';
+      document.getElementById('u-leje-til').value = '';
+      document.getElementById('u-areal-fra').value = '';
+      document.getElementById('u-areal-til').value = '';
+      document.getElementById('u-ledig-fra').value = '';
+      document.getElementById('u-depositum-til').value = '';
+      document.querySelectorAll('#up-boliger .k-type-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#up-boliger .k-type-pill[data-type=""]').classList.add('active');
+      document.querySelectorAll('#u-vaerelse-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#u-vaerelse-pills .k-num-pill[data-val=""]').classList.add('active');
+      window._udlejerFilterState = { types: [], vaerelse: '' };
+      filterUdlejerBoliger();
+    };
+
+    window.filterUdlejerBoliger = function() {
+      const fs      = window._udlejerFilterState;
+      const tekst   = (document.getElementById('u-filter-tekst')?.value || '').toLowerCase();
+      const lejeFra = parseInt(document.getElementById('u-leje-fra')?.value) || 0;
+      const lejeTil = parseInt(document.getElementById('u-leje-til')?.value) || Infinity;
+      const arFra   = parseInt(document.getElementById('u-areal-fra')?.value) || 0;
+      const arTil   = parseInt(document.getElementById('u-areal-til')?.value) || Infinity;
+      const ledigFra = document.getElementById('u-ledig-fra')?.value || '';
+      const depTil  = parseInt(document.getElementById('u-depositum-til')?.value) || Infinity;
+      const sort    = document.getElementById('u-filter-sort')?.value || 'ny';
+
+      let resultater = window._allUdlejerBoliger.filter(({ d }) => {
+        if (fs.types.length > 0 && !fs.types.includes(d.boligtype||'')) return false;
+        if (tekst && !((d.adresse||'')+(d.by||'')+(d.postnummer||'')).toLowerCase().includes(tekst)) return false;
+        const leje = parseInt((d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        if (leje && (leje < lejeFra || leje > lejeTil)) return false;
+        const ar = parseInt(d.areal) || 0;
+        if (ar && (ar < arFra || ar > arTil)) return false;
+        if (ledigFra && d.ledigFra && d.ledigFra > ledigFra) return false;
+        const dep = parseInt((d.depositum||'').replace(/\D/g,'')) || 0;
+        if (dep && dep > depTil) return false;
+        if (fs.vaerelse && (parseInt(d.rum)||0) < parseInt(fs.vaerelse)) return false;
+        return true;
+      });
+
+      resultater.sort((a, b) => {
+        const la = parseInt((a.d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        const lb = parseInt((b.d.maanedligLeje||'').replace(/\D/g,'')) || 0;
+        const aa = parseInt(a.d.areal) || 0;
+        const ab = parseInt(b.d.areal) || 0;
+        if (sort === 'leje-lav') return la - lb;
+        if (sort === 'leje-hoj') return lb - la;
+        if (sort === 'areal-stor') return ab - aa;
+        if (sort === 'areal-lille') return aa - ab;
+        return 0;
+      });
+
+      const grid = document.getElementById('up-boliger-grid');
+      if (!grid) return;
+      if (resultater.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h3>Ingen boliger matcher din søgning</h3><p>Prøv at justere dine filtre.</p></div>';
+      } else {
+        grid.innerHTML = resultater.map(({ sid, d }) => {
+          const meta = [d.areal ? d.areal + ' m²' : '', d.rum ? d.rum + ' rum' : '', d.byggeaar ? 'Bygget ' + d.byggeaar : ''].filter(Boolean).join(' · ') || '';
+          const ledigTag  = d.ledigFra  ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">Ledig: ${d.ledigFra}</div>` : '';
+          const depositTag = d.depositum ? `<div style="font-size:0.75rem;color:var(--text-muted);">Depositum: ${d.depositum}</div>` : '';
+          return `<div class="bolig-listing"><div class="bolig-img">🔑</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Lejebolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${meta ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.4rem;">${meta}</div>` : ''}${ledigTag}<div class="bolig-pris">${d.maanedligLeje||'Pris ikke angivet'}</div>${depositTag}<div class="bolig-footer"><span></span><button class="contact-btn" onclick="openUdlejerOpslag('${sid}')">Se opslag</button></div></div></div>`;
+        }).join('');
+      }
+
+      const rl = document.getElementById('u-resultat-linje');
+      if (rl) rl.textContent = `${resultater.length} ${resultater.length === 1 ? 'lejebolig' : 'lejeboliger'} fundet`;
+
+      opdaterUdlejerFilterChips();
+    };
+
+    function opdaterUdlejerFilterChips() {
+      const fs     = window._udlejerFilterState;
+      const chips  = [];
+      const tekst    = document.getElementById('u-filter-tekst')?.value;
+      const lejeFra  = document.getElementById('u-leje-fra')?.value;
+      const lejeTil  = document.getElementById('u-leje-til')?.value;
+      const arFra    = document.getElementById('u-areal-fra')?.value;
+      const arTil    = document.getElementById('u-areal-til')?.value;
+      const ledig    = document.getElementById('u-ledig-fra')?.value;
+      const dep      = document.getElementById('u-depositum-til')?.value;
+
+      if (tekst)              chips.push({ label: `"${tekst}"`,                     clear: () => { document.getElementById('u-filter-tekst').value=''; filterUdlejerBoliger(); } });
+      if (fs.types.length > 0) fs.types.forEach(t => chips.push({ label: t, clear: () => { setUdlejerType(document.querySelector(`#up-boliger .k-type-pill[data-type="${t}"]`)); } }));
+      if (lejeFra || lejeTil) chips.push({ label: `${lejeFra||'0'}–${lejeTil||'∞'} kr./md.`, clear: () => { document.getElementById('u-leje-fra').value=''; document.getElementById('u-leje-til').value=''; filterUdlejerBoliger(); } });
+      if (arFra || arTil)     chips.push({ label: `${arFra||'0'}–${arTil||'∞'} m²`,         clear: () => { document.getElementById('u-areal-fra').value=''; document.getElementById('u-areal-til').value=''; filterUdlejerBoliger(); } });
+      if (fs.vaerelse)        chips.push({ label: `${fs.vaerelse}+ værelser`,       clear: () => { document.querySelector('#u-vaerelse-pills .k-num-pill[data-val=""]').click(); } });
+      if (ledig)              chips.push({ label: `Ledig: ${ledig}`,                clear: () => { document.getElementById('u-ledig-fra').value=''; filterUdlejerBoliger(); } });
+      if (dep)                chips.push({ label: `Max dep. ${dep} kr.`,            clear: () => { document.getElementById('u-depositum-til').value=''; filterUdlejerBoliger(); } });
+
+      const el = document.getElementById('u-aktive-filtre');
+      if (!el) return;
+      if (chips.length === 0) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      el.innerHTML = chips.map((c, i) =>
+        `<span class="k-filter-chip">${c.label}<button onclick="window._udlejerChipClear[${i}]()" title="Fjern filter">×</button></span>`
+      ).join('');
+      window._udlejerChipClear = chips.map(c => c.clear);
+
+      const badge = document.getElementById('u-filter-badge');
+      if (badge) { badge.textContent = chips.length; badge.style.display = chips.length ? 'inline' : 'none'; }
+    }
+
+    // ── Sælger søge- og filterlogik ──
+    window._allSaelgerBoliger = [];
+    window._saelgerFilterState = { types: [], vaerelse: '', bade: '', energi: '' };
+
+    window.toggleSaelgerFiltre = function() {
+      const el  = document.getElementById('s-filtre-udvidet');
+      const btn = document.getElementById('s-filter-toggle');
+      const open = el.style.display === 'none' || el.style.display === '';
+      el.style.display = open ? 'block' : 'none';
+      btn.classList.toggle('open', open);
+    };
+
+    window.setSaelgerType = function(btn) {
+      const type = btn.dataset.type;
+      const types = window._saelgerFilterState.types;
+      if (type === '') {
+        window._saelgerFilterState.types = [];
+      } else {
+        const idx = types.indexOf(type);
+        if (idx === -1) types.push(type);
+        else types.splice(idx, 1);
+      }
+      const allePill = document.querySelector('#sp-boliger .k-type-pill[data-type=""]');
+      if (window._saelgerFilterState.types.length === 0) {
+        document.querySelectorAll('#sp-boliger .k-type-pill').forEach(b => b.classList.remove('active'));
+        allePill.classList.add('active');
+      } else {
+        allePill.classList.remove('active');
+        document.querySelectorAll('#sp-boliger .k-type-pill[data-type]').forEach(b => {
+          b.classList.toggle('active', b.dataset.type !== '' && window._saelgerFilterState.types.includes(b.dataset.type));
+        });
+      }
+      filterSaelgerBoliger();
+    };
+
+    window.setSaelgerNum = function(btn, key) {
+      const group = key === 'vaerelse' ? 's-vaerelse-pills' : 's-bade-pills';
+      document.querySelectorAll(`#${group} .k-num-pill`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._saelgerFilterState[key] = btn.dataset.val;
+      filterSaelgerBoliger();
+    };
+
+    window.setSaelgerEnergi = function(btn) {
+      document.querySelectorAll('#s-energi-pills .k-num-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      window._saelgerFilterState.energi = btn.dataset.val;
+      filterSaelgerBoliger();
+    };
+
+    window.nulstilSaelgerFiltre = function() {
+      document.getElementById('s-filter-tekst').value = '';
+      document.getElementById('s-pris-fra').value = '';
+      document.getElementById('s-pris-til').value = '';
+      document.getElementById('s-areal-fra').value = '';
+      document.getElementById('s-areal-til').value = '';
+      document.getElementById('s-aar-fra').value = '';
+      document.getElementById('s-aar-til').value = '';
+      document.querySelectorAll('#sp-boliger .k-type-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector('#sp-boliger .k-type-pill[data-type=""]').classList.add('active');
+      ['s-vaerelse-pills','s-bade-pills','s-energi-pills'].forEach(id => {
+        document.querySelectorAll(`#${id} .k-num-pill`).forEach(b => b.classList.remove('active'));
+        document.querySelector(`#${id} .k-num-pill[data-val=""]`).classList.add('active');
+      });
+      window._saelgerFilterState = { types: [], vaerelse: '', bade: '', energi: '' };
+      filterSaelgerBoliger();
+    };
+
+    window.filterSaelgerBoliger = function() {
+      const fs      = window._saelgerFilterState;
+      const tekst   = (document.getElementById('s-filter-tekst')?.value || '').toLowerCase();
+      const prisFra = parseInt(document.getElementById('s-pris-fra')?.value) || 0;
+      const prisTil = parseInt(document.getElementById('s-pris-til')?.value) || Infinity;
+      const arFra   = parseInt(document.getElementById('s-areal-fra')?.value) || 0;
+      const arTil   = parseInt(document.getElementById('s-areal-til')?.value) || Infinity;
+      const aarFra  = parseInt(document.getElementById('s-aar-fra')?.value) || 0;
+      const aarTil  = parseInt(document.getElementById('s-aar-til')?.value) || Infinity;
+      const sort    = document.getElementById('s-filter-sort')?.value || 'ny';
+
+      let resultater = window._allSaelgerBoliger.filter(({ d }) => {
+        if (fs.types.length > 0 && !fs.types.includes(d.boligtype||'')) return false;
+        if (tekst && !((d.adresse||'')+(d.by||'')+(d.postnummer||'')).toLowerCase().includes(tekst)) return false;
+        const pris = parseInt((d.salgspris||'').replace(/\D/g,'')) || 0;
+        if (pris && (pris < prisFra || pris > prisTil)) return false;
+        const ar   = parseInt(d.areal) || 0;
+        if (ar && (ar < arFra || ar > arTil)) return false;
+        const aar  = parseInt(d.byggeaar) || 0;
+        if (aar && (aar < aarFra || aar > aarTil)) return false;
+        if (fs.vaerelse && (parseInt(d.rum)||0) < parseInt(fs.vaerelse)) return false;
+        if (fs.bade    && (parseInt(d.badevaerelser)||0) < parseInt(fs.bade)) return false;
+        if (fs.energi  && (d.energimaerke||'').toUpperCase() !== fs.energi) return false;
+        return true;
+      });
+
+      resultater.sort((a, b) => {
+        const pa = parseInt((a.d.salgspris||'').replace(/\D/g,'')) || 0;
+        const pb = parseInt((b.d.salgspris||'').replace(/\D/g,'')) || 0;
+        const aa = parseInt(a.d.areal) || 0;
+        const ab = parseInt(b.d.areal) || 0;
+        if (sort === 'pris-lav') return pa - pb;
+        if (sort === 'pris-hoj') return pb - pa;
+        if (sort === 'areal-stor') return ab - aa;
+        if (sort === 'areal-lille') return aa - ab;
+        return 0;
+      });
+
+      const grid = document.getElementById('s-boliger-grid');
+      if (!grid) return;
+      if (resultater.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><h3>Ingen boliger matcher din søgning</h3><p>Prøv at justere dine filtre.</p></div>';
+      } else {
+        grid.innerHTML = resultater.map(({ sid, d, feeStr, meta, isFavCls, serialTag }) => {
+          const heartHtml = `<button class="heart-btn${isFavCls}" data-fav-uid="${sid}" onclick="event.stopPropagation();toggleFavorit('${sid}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
+          return `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${sid}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${serialTag}<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${sid}')">Se opslag</button></div></div></div></div>`;
+        }).join('');
+      }
+
+      const rl = document.getElementById('s-resultat-linje');
+      if (rl) rl.textContent = `${resultater.length} ${resultater.length === 1 ? 'bolig' : 'boliger'} fundet`;
+
+      opdaterSaelgerFilterChips();
+    };
+
+    function opdaterSaelgerFilterChips() {
+      const fs     = window._saelgerFilterState;
+      const chips  = [];
+      const tekst   = document.getElementById('s-filter-tekst')?.value;
+      const prisFra = document.getElementById('s-pris-fra')?.value;
+      const prisTil = document.getElementById('s-pris-til')?.value;
+      const arFra   = document.getElementById('s-areal-fra')?.value;
+      const arTil   = document.getElementById('s-areal-til')?.value;
+      const aarFra  = document.getElementById('s-aar-fra')?.value;
+      const aarTil  = document.getElementById('s-aar-til')?.value;
+
+      if (tekst)                       chips.push({ label: `"${tekst}"`, clear: () => { document.getElementById('s-filter-tekst').value=''; filterSaelgerBoliger(); } });
+      if (fs.types.length > 0)         fs.types.forEach(t => chips.push({ label: t, clear: () => { setSaelgerType(document.querySelector(`#sp-boliger .k-type-pill[data-type="${t}"]`)); } }));
+      if (prisFra || prisTil)          chips.push({ label: `Pris: ${prisFra||'0'} – ${prisTil||'∞'} kr.`, clear: () => { document.getElementById('s-pris-fra').value=''; document.getElementById('s-pris-til').value=''; filterSaelgerBoliger(); } });
+      if (arFra || arTil)              chips.push({ label: `${arFra||'0'}–${arTil||'∞'} m²`, clear: () => { document.getElementById('s-areal-fra').value=''; document.getElementById('s-areal-til').value=''; filterSaelgerBoliger(); } });
+      if (aarFra || aarTil)            chips.push({ label: `Bygget ${aarFra||''}–${aarTil||''}`, clear: () => { document.getElementById('s-aar-fra').value=''; document.getElementById('s-aar-til').value=''; filterSaelgerBoliger(); } });
+      if (fs.vaerelse)                 chips.push({ label: `${fs.vaerelse}+ værelser`, clear: () => { document.querySelector('#s-vaerelse-pills .k-num-pill[data-val=""]').click(); } });
+      if (fs.bade)                     chips.push({ label: `${fs.bade}+ badeværelser`, clear: () => { document.querySelector('#s-bade-pills .k-num-pill[data-val=""]').click(); } });
+      if (fs.energi)                   chips.push({ label: `Energi ${fs.energi}`, clear: () => { document.querySelector('#s-energi-pills .k-num-pill[data-val=""]').click(); } });
+
+      const el = document.getElementById('s-aktive-filtre');
+      if (!el) return;
+      if (chips.length === 0) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      el.innerHTML = chips.map((c, i) =>
+        `<span class="k-filter-chip">${c.label}<button onclick="window._saelgerChipClear[${i}]()" title="Fjern filter">×</button></span>`
+      ).join('');
+      window._saelgerChipClear = chips.map(c => c.clear);
+
+      const badge = document.getElementById('s-filter-badge');
+      if (badge) { badge.textContent = chips.length; badge.style.display = chips.length ? 'inline' : 'none'; }
+    }
+
     window.showPanel = function(role, name, btn) {
       const prefixes = { saelger: 'sp', koeber: 'kp', udlejer: 'up', lejer: 'lp' };
       const prefix = prefixes[role] || 'sp';
@@ -2513,6 +3515,7 @@
       document.getElementById(`${prefix}-${name}`).classList.add('active');
       document.querySelectorAll(`#nav-${role} .nav-link`).forEach(l => l.classList.remove('active'));
       btn.classList.add('active');
+      localStorage.setItem('bd_last_panel', name);
       if (name === 'find')          loadBoliger(role);
       if (name === 'boliger')       loadBoliger(role);
       if (name === 'favoritter')    role === 'lejer' ? loadLejerFavoritter() : loadFavoritter();
@@ -2530,6 +3533,7 @@
     window.switchRole = function(role) {
       localStorage.setItem('bd_role', role);
       localStorage.setItem('bd_front_mode', (role === 'udlejer' || role === 'lejer') ? 'leje' : 'salg');
+      try { history.replaceState(null, '', '?tab=' + role); } catch(e) {}
       ['saelger','koeber','udlejer','lejer'].forEach(r => {
         document.getElementById('view-' + r)?.classList.toggle('active', r === role);
         const navEl = document.getElementById('nav-' + r);
@@ -3447,33 +4451,14 @@
           grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>Ingen lejeboliger endnu</h3><p>Der er endnu ingen lejeboliger oprettet på platformen.</p></div>';
           return;
         }
-        grid.innerHTML = '';
+        const alleBoliger = [];
         snap.forEach(s => {
           const d = s.data();
           if (d.status === 'nede' || d.status === 'udlejet') return;
-          const meta = [d.areal ? d.areal + ' m²' : '', d.rum ? d.rum + ' rum' : '', d.byggeaar ? 'Bygget ' + d.byggeaar : ''].filter(Boolean).join(' · ') || '';
-          const ledigTag = d.ledigFra ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">Ledig: ${d.ledigFra}</div>` : '';
-          const depositTag = d.depositum ? `<div style="font-size:0.75rem;color:var(--text-muted);">Depositum: ${d.depositum}</div>` : '';
-          grid.innerHTML += `
-            <div class="bolig-listing">
-              <div class="bolig-img">🔑</div>
-              <div class="bolig-body">
-                <div class="bolig-type">${d.boligtype || 'Lejebolig'}</div>
-                <div class="bolig-adresse">${d.adresse || 'Adresse ikke angivet'}</div>
-                ${meta ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.4rem;">${meta}</div>` : ''}
-                ${ledigTag}
-                <div class="bolig-pris">${d.maanedligLeje || 'Pris ikke angivet'}</div>
-                ${depositTag}
-                <div class="bolig-footer">
-                  <span></span>
-                  <button class="contact-btn" onclick="openUdlejerOpslag('${s.id}')">Se opslag</button>
-                </div>
-              </div>
-            </div>`;
+          alleBoliger.push({ sid: s.id, d });
         });
-        if (!grid.innerHTML.trim()) {
-          grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>Ingen aktive lejeboliger</h3><p>Alle boliger er i øjeblikket udlejet eller midlertidigt nede.</p></div>';
-        }
+        window._allUdlejerBoliger = alleBoliger;
+        filterUdlejerBoliger();
       } catch(e) {
         grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente lejeboliger</h3></div>';
       }
@@ -3524,7 +4509,7 @@
           grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>Ingen lejeboliger endnu</h3><p>Der er endnu ingen lejeboliger oprettet på platformen.</p></div>';
           return;
         }
-        grid.innerHTML = '';
+        const alleBoliger = [];
         snap.forEach(s => {
           const d = s.data();
           if (d.status === 'nede' || d.status === 'udlejet') return;
@@ -3532,33 +4517,12 @@
           const isFav    = window._lejerFavoritter.has(s.id);
           const heartCls = isFav ? ' active' : '';
           const meta     = [d.areal ? d.areal + ' m²' : '', d.rum ? d.rum + ' rum' : '', d.byggeaar ? 'Bygget ' + d.byggeaar : ''].filter(Boolean).join(' · ') || '';
-          const ledigTag = d.ledigFra ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">Ledig: ${d.ledigFra}</div>` : '';
+          const ledigTag   = d.ledigFra  ? `<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:0.4rem;">Ledig: ${d.ledigFra}</div>` : '';
           const depositTag = d.depositum ? `<div style="font-size:0.75rem;color:var(--text-muted);">Depositum: ${d.depositum}</div>` : '';
-          grid.innerHTML += `
-            <div class="bolig-listing">
-              <div class="bolig-img">🔑</div>
-              <div class="bolig-body">
-                <div class="bolig-type">${d.boligtype || 'Lejebolig'}</div>
-                <div class="bolig-adresse">${d.adresse || 'Adresse ikke angivet'}</div>
-                ${meta ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.4rem;">${meta}</div>` : ''}
-                ${ledigTag}
-                <div class="bolig-pris">${d.maanedligLeje || 'Pris ikke angivet'}</div>
-                ${depositTag}
-                <div class="bolig-footer">
-                  <span></span>
-                  <div style="display:flex;align-items:center;gap:0.4rem;">
-                    <button class="heart-btn${heartCls}" data-leje-fav="${s.id}" onclick="event.stopPropagation();toggleLejerFavorit('${s.id}',this)">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    </button>
-                    <button class="contact-btn" onclick="openUdlejerOpslag('${s.id}')">Se opslag</button>
-                  </div>
-                </div>
-              </div>
-            </div>`;
+          alleBoliger.push({ sid: s.id, d, meta, ledigTag, depositTag, heartCls });
         });
-        if (!grid.innerHTML.trim()) {
-          grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>Ingen aktive lejeboliger</h3><p>Alle boliger er i øjeblikket udlejet eller midlertidigt nede.</p></div>';
-        }
+        window._allLejerBoliger = alleBoliger;
+        filterLejerBoliger();
       } catch(e) {
         grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente lejeboliger</h3></div>';
       }
@@ -4275,6 +5239,10 @@
         if (snap.empty) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🏡</div><h3>Ingen boliger endnu</h3><p>Bliv den første til at oprette en bolig.</p></div>'; return; }
         grid.innerHTML = '';
         const serialUpdates = [];
+
+        // Til køber: byg rådata-liste til filtrering
+        const alleBoliger = [];
+
         snap.forEach(s => {
           let d = s.data();
           if (d.status === 'nede' || d.status === 'klargøring') return;
@@ -4288,20 +5256,46 @@
           window._sellersMap[s.id] = { ...d, _docId: s.id };
           const feeNum = parseInt((d.salgspris||'').replace(/\D/g,''));
           const feeStr = fmt(String(Math.round(feeNum * 0.005)));
-          const meta    = [d.areal ? d.areal+' m²' : '', d.rum ? d.rum+' rum' : '', d.byggeaar ? 'Bygget '+d.byggeaar : ''].filter(Boolean).join(' · ') || '&nbsp;';
+          const metaParts = [
+            d.areal    ? d.areal+' m²'        : '',
+            d.rum      ? d.rum+' vær.'         : '',
+            d.badevaerelser ? d.badevaerelser+' bad' : '',
+            d.byggeaar ? 'Bygget '+d.byggeaar  : '',
+            d.energimaerke ? 'Energi '+d.energimaerke.toUpperCase() : ''
+          ].filter(Boolean);
+          const meta     = metaParts.join(' · ') || '&nbsp;';
           const isFavCls = window._myFavoritter.has(s.id) ? ' active' : '';
-          const heartHtml = `<button class="heart-btn${isFavCls}" data-fav-uid="${s.id}" onclick="event.stopPropagation();toggleFavorit('${s.id}',this)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>`;
           const serialTag = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.5rem;">${d.serialNr}</div>` : '';
-          grid.innerHTML += `<div class="bolig-listing" style="cursor:pointer;" onclick="openListing('${s.id}')"><div class="bolig-img">🏠</div><div class="bolig-body"><div class="bolig-type">${d.boligtype||'Bolig'}</div><div class="bolig-adresse">${d.adresse||'Adresse ikke angivet'}</div>${serialTag}<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.5rem;">${meta}</div><div class="bolig-pris">${d.salgspris||'Pris ikke angivet'}</div><div class="bolig-footer"><span class="bolig-fee">Fee: ${feeStr}</span><div style="display:flex;align-items:center;gap:0.3rem;">${heartHtml}<button class="contact-btn" onclick="event.stopPropagation();openListing('${s.id}')">Se opslag</button></div></div></div></div>`;
+
+          if (role === 'koeber') {
+            // Gem til filtreringsarray — render sker via filterKoeberBoliger()
+            alleBoliger.push({ sid: s.id, d, feeStr, meta, isFavCls, serialTag });
+          } else if (role === 'saelger') {
+            // Sælger-view: gem til filtreringsarray
+            alleBoliger.push({ sid: s.id, d, feeStr, meta, isFavCls, serialTag });
+          }
         });
+
+        // Køber: gem rådata og kør filtre
+        if (role === 'koeber') {
+          window._allKoeberBoliger = alleBoliger;
+          filterKoeberBoliger();
+        }
+
+        // Sælger: gem rådata og kør filtre
+        if (role === 'saelger') {
+          window._allSaelgerBoliger = alleBoliger;
+          filterSaelgerBoliger();
+        }
+
         if (serialUpdates.length) await Promise.all(serialUpdates).catch(() => {});
-      // Auto-åbn opslag fra URL-param (?opslag=DOCID) — kun én gang ved page load
-      const autoOpslag = new URLSearchParams(window.location.search).get('opslag');
-      if (autoOpslag && window._sellersMap[autoOpslag] && !window._autoOpslagDone) {
-        window._autoOpslagDone = true;
-        history.replaceState(null, '', window.location.pathname);
-        setTimeout(() => openListing(autoOpslag), 200);
-      }
+        // Auto-åbn opslag fra URL-param (?opslag=DOCID) — kun én gang ved page load
+        const autoOpslag = new URLSearchParams(window.location.search).get('opslag');
+        if (autoOpslag && window._sellersMap[autoOpslag] && !window._autoOpslagDone) {
+          window._autoOpslagDone = true;
+          try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+          setTimeout(() => openListing(autoOpslag), 200);
+        }
       } catch(e) { grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Kunne ikke hente boliger</h3><p></p></div>'; }
     }
 
@@ -5158,7 +6152,7 @@
               window._sellersMap = window._sellersMap || {};
               window._sellersMap[snap.id] = { ...snap.data(), _docId: snap.id };
               window._isGuest = true;
-              history.replaceState(null, '', window.location.pathname);
+              try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
               // Vent på at DOM er klar, vis opslaget
               setTimeout(() => {
                 openListing(snap.id);
@@ -5272,9 +6266,6 @@
       // Udfyld køber-data
       if (hasBuyer) {
         const d = buyerSnap.data();
-        document.getElementById('k-omraade').textContent  = d.omraade   || '—';
-        document.getElementById('k-type').textContent     = d.boligtype || '—';
-        document.getElementById('k-budget').textContent   = fmt(d.budget);
         document.getElementById('kp-navn').textContent    = d.fornavn + ' ' + d.efternavn;
         document.getElementById('kp-email').textContent   = d.email     || user.email;
         document.getElementById('kp-tlf').textContent     = d.telefon   || '—';
@@ -5323,6 +6314,22 @@
       if (currentRole === 'saelger') loadBoliger('saelger');
       if (currentRole === 'koeber')  loadBoliger('koeber');
       if (currentRole === 'lejer')   loadBoliger('lejer');
+
+      // Gendan sidste panel
+      const lastPanel = localStorage.getItem('bd_last_panel');
+      if (lastPanel) {
+        const prefixes = { saelger: 'sp', koeber: 'kp', udlejer: 'up', lejer: 'lp' };
+        const prefix = prefixes[currentRole];
+        const panelEl = prefix ? document.getElementById(`${prefix}-${lastPanel}`) : null;
+        const navBtns = document.querySelectorAll(`#nav-${currentRole} .nav-link`);
+        const matchBtn = Array.from(navBtns).find(b => b.getAttribute('onclick')?.includes(`'${lastPanel}'`));
+        if (panelEl && matchBtn) {
+          document.querySelectorAll(`#view-${currentRole} .panel`).forEach(p => p.classList.remove('active'));
+          panelEl.classList.add('active');
+          navBtns.forEach(l => l.classList.remove('active'));
+          matchBtn.classList.add('active');
+        }
+      }
 
       document.getElementById('loading').style.display   = 'none';
       document.getElementById('dashboard').style.display = 'block';

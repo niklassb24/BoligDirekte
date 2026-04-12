@@ -638,7 +638,8 @@
       position: relative; width: 100%; aspect-ratio: 4/3;
       background: var(--chip-bg); flex-shrink: 0; overflow: hidden;
     }
-    .lm-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .lm-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .18s ease; }
+    .lm-gallery-img.fade { opacity: 0; }
     .lm-gallery-placeholder {
       width: 100%; height: 100%; display: flex; align-items: center;
       justify-content: center; font-family: 'Fraunces', serif;
@@ -671,50 +672,76 @@
       display: flex; align-items: center; justify-content: center;
     }
     .lm-body {
-      overflow-y: auto; padding: 1.25rem 1.25rem 1.5rem;
-      flex: 1; display: flex; flex-direction: column; gap: .65rem;
+      overflow-y: auto; padding: 1.5rem 1.5rem 1.75rem;
+      flex: 1; display: flex; flex-direction: column; gap: 1rem;
     }
+    .lm-top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
     .lm-type-badge {
-      display: inline-block; padding: .22rem .65rem; border-radius: 100px;
-      font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .28rem .75rem; border-radius: 100px;
+      font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
     }
-    .lm-type-badge.søger { background: rgba(15,30,61,.1); color: var(--navy); }
-    .lm-type-badge.har   { background: rgba(232,146,10,.1); color: var(--amber); }
-    [data-theme="dark"] .lm-type-badge.søger { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
-    .lm-price { font-family: 'Fraunces', serif; font-size: 1.7rem; font-weight: 700; color: var(--amber); line-height: 1.1; }
-    .lm-meta { font-size: .85rem; color: var(--muted); line-height: 1.8; }
-    .lm-facs { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .lm-type-badge.søger { background: rgba(15,30,61,.08); color: var(--navy); border: 1px solid rgba(15,30,61,.12); }
+    .lm-type-badge.har   { background: rgba(232,146,10,.1); color: var(--amber); border: 1px solid rgba(232,146,10,.22); }
+    [data-theme="dark"] .lm-type-badge.søger { background: rgba(255,255,255,.08); color: rgba(255,255,255,.8); border-color: rgba(255,255,255,.12); }
+    .lm-title-block { display: flex; flex-direction: column; gap: .2rem; }
+    .lm-price { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 700; color: var(--amber); line-height: 1.1; }
+    .lm-price-sub { font-size: .78rem; color: var(--muted); font-weight: 500; }
+    .lm-info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .55rem;
+    }
+    .lm-info-item {
+      display: flex; flex-direction: column; gap: .18rem;
+      padding: .65rem .8rem; background: var(--chip-bg);
+      border-radius: 12px; border: 1px solid var(--border);
+    }
+    .lm-info-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+    .lm-info-value { font-size: .88rem; font-weight: 600; color: var(--text); }
+    .lm-section-label {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); margin-bottom: -.35rem;
+    }
+    .lm-facs { display: flex; flex-wrap: wrap; gap: .4rem; }
     .lm-fac {
-      font-size: .78rem; padding: .22rem .65rem;
+      font-size: .8rem; padding: .3rem .75rem;
       border: 1px solid var(--border); border-radius: 100px;
-      color: var(--muted); background: var(--chip-bg);
+      color: var(--text); background: var(--chip-bg); font-weight: 500;
     }
-    .lm-bio { font-size: .88rem; color: var(--muted); line-height: 1.7; font-style: italic; }
-    .lm-divider { border: none; border-top: 1px solid var(--border); }
+    .lm-bio {
+      font-size: .9rem; color: var(--text); line-height: 1.75;
+      padding: 1rem 1.1rem; background: var(--chip-bg);
+      border-radius: 14px; border-left: 3px solid var(--amber);
+      font-style: italic; opacity: .85;
+    }
+    .lm-divider { border: none; border-top: 1px solid var(--border); margin: .1rem 0; }
     .lm-host {
-      display: flex; align-items: center; gap: .85rem;
-      padding: .85rem; background: var(--chip-bg); border-radius: 14px;
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 1rem; background: var(--chip-bg);
+      border-radius: 16px; border: 1px solid var(--border);
     }
-    .lm-host-photo { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; object-fit: cover; border: 2px solid var(--amber); }
+    .lm-host-photo { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; object-fit: cover; border: 2.5px solid var(--amber); }
     .lm-host-avatar {
       width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: #fff;
-      border: 2px solid var(--amber);
+      border: 2.5px solid var(--amber);
     }
-    .lm-host-name { font-weight: 600; font-size: .95rem; }
-    .lm-host-sub  { font-size: .78rem; color: var(--muted); margin-top: .1rem; }
+    .lm-host-info { flex: 1; min-width: 0; }
+    .lm-host-name { font-weight: 700; font-size: 1rem; }
+    .lm-host-sub  { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+    .lm-cta-wrap { margin-top: auto; flex-shrink: 0; display: flex; flex-direction: column; gap: .6rem; }
     .lm-cta {
-      width: 100%; padding: .85rem; background: var(--amber); color: #fff;
+      width: 100%; padding: .9rem; background: var(--amber); color: #fff;
       border: none; border-radius: 14px; font-family: 'DM Sans', sans-serif;
-      font-size: .95rem; font-weight: 600; cursor: pointer; transition: opacity .2s;
-      margin-top: auto; flex-shrink: 0;
+      font-size: .95rem; font-weight: 700; cursor: pointer; transition: all .2s;
+      letter-spacing: .01em;
     }
-    .lm-cta:hover:not(:disabled) { opacity: .85; }
-    .lm-cta:disabled { opacity: .55; cursor: default; background: var(--navy); }
+    .lm-cta:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+    .lm-cta:disabled { opacity: .45; cursor: default; background: var(--muted); transform: none; }
+    .lm-cta-note { font-size: .75rem; color: var(--muted); text-align: center; }
 
     @media (min-width: 768px) {
-      .listing-modal-bg { align-items: center; }
+      .listing-modal-bg { align-items: center; justify-content: center; }
       .listing-modal {
         max-width: 880px; max-height: 88vh; width: 100%;
         border-radius: 20px; flex-direction: row;
@@ -723,7 +750,8 @@
       }
       .listing-modal-bg.open .listing-modal { transform: translateY(0) scale(1); }
       .lm-gallery { width: 52%; aspect-ratio: unset; flex-shrink: 0; }
-      .lm-body { padding: 1.5rem 1.75rem 1.75rem; }
+      .lm-body { padding: 1.75rem 2rem 2rem; }
+      .lm-info-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ── AUTOCOMPLETE ──────────────────────────────────── */
@@ -824,6 +852,30 @@
       background: rgba(0,0,0,.55); color: #fff; border-radius: 100px;
       font-size: .68rem; font-weight: 700; padding: .18rem .5rem;
     }
+
+    /* Kort-galleri pile */
+    .card-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.45); border: none; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .18s; z-index: 2; line-height: 1;
+    }
+    .card-photo-wrap:hover .card-nav { opacity: 1; }
+    .card-nav:hover { background: rgba(0,0,0,.7); }
+    .card-nav-prev { left: .4rem; }
+    .card-nav-next { right: .4rem; }
+    .card-photo-wrap img { transition: opacity .15s; }
+    .card-photo-wrap img.fade { opacity: 0; }
+    .card-dots {
+      position: absolute; bottom: .5rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: .28rem; pointer-events: none;
+    }
+    .card-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,.5);
+    }
+    .card-dot.active { background: #fff; }
 
     /* ── ANIMATED BACKGROUND — identical to index.html hero ── */
     .page-bg {
@@ -1009,14 +1061,33 @@
           <option value="25">25 km</option>
         </select>
       </div>
-      <div class="filter-chips">
-        <div id="type-chips">
+      <div class="filter-chips" id="filter-chips-bar">
+        <!-- Vises altid: rolle-label -->
+        <span id="type-label" style="font-size:.8rem;color:var(--muted);font-weight:500;white-space:nowrap;"></span>
+
+        <!-- Søger-filtre: ser ledige værelser -->
+        <div id="filter-soeger" style="display:none;display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;">
+          <input id="max-price" type="number" class="price-input" placeholder="Max kr/md" oninput="debouncedFilter()">
+          <input id="min-m2" type="number" class="price-input" placeholder="Min m²" style="width:90px" oninput="debouncedFilter()">
+          <button class="chip" style="font-size:.75rem;padding:.28rem .7rem;" onclick="nulstilRoomieFilter()">Nulstil</button>
+        </div>
+
+        <!-- Har-filtre: ser folk der søger -->
+        <div id="filter-har" style="display:none;display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;">
+          <input id="f-age-fra" type="number" class="price-input" placeholder="Alder fra" style="width:95px" oninput="debouncedFilter()">
+          <input id="f-age-til" type="number" class="price-input" placeholder="Alder til" style="width:95px" oninput="debouncedFilter()">
+          <input id="f-budget-min" type="number" class="price-input" placeholder="Min budget kr/md" oninput="debouncedFilter()">
+          <input id="f-movein-max" type="date" class="price-input" style="width:150px" onchange="debouncedFilter()" title="Kan flytte ind senest">
+          <button class="chip" style="font-size:.75rem;padding:.28rem .7rem;" onclick="nulstilRoomieFilter()">Nulstil</button>
+        </div>
+
+        <!-- Fallback (ikke logget ind / ingen profil) -->
+        <div id="filter-default" style="display:flex;align-items:center;gap:.45rem;">
           <button class="chip active" data-t="alle" onclick="setType(this)">Alle</button>
           <button class="chip" data-t="søger" onclick="setType(this)">Søger værelse</button>
           <button class="chip" data-t="har" onclick="setType(this)">Har ledigt værelse</button>
+          <input id="max-price-default" type="number" class="price-input" placeholder="Max kr/md" oninput="debouncedFilter()">
         </div>
-        <span id="type-label" style="display:none;font-size:.8rem;color:var(--muted);font-weight:500"></span>
-        <input id="max-price" type="number" class="price-input" placeholder="Max kr/md" oninput="debouncedFilter()">
       </div>
     </div>
     <div class="fac-filter-row" id="fac-filter-row" style="display:none">
@@ -1176,17 +1247,43 @@ function renderAuthArea() {
 }
 
 function updateTypeChips() {
-  const chips = document.getElementById('type-chips');
-  const label = document.getElementById('type-label');
-  if (!chips || !label) return;
+  const label     = document.getElementById('type-label');
+  const defBlock  = document.getElementById('filter-default');
+  const soegerBlk = document.getElementById('filter-soeger');
+  const harBlk    = document.getElementById('filter-har');
+  const facRow    = document.getElementById('fac-filter-row');
+  if (!defBlock) return;
+
   if (myProfile?.type === 'søger') {
-    chips.style.display = 'none';
-    label.style.display = 'inline';
-    label.textContent = 'Viser: Ledige værelser';
+    defBlock.style.display  = 'none';
+    soegerBlk.style.display = 'flex';
+    harBlk.style.display    = 'none';
+    if (label) { label.textContent = '🔑 Ledige værelser'; label.style.display = 'inline'; }
+    if (facRow) facRow.style.display = 'flex';
+  } else if (myProfile?.type === 'har') {
+    defBlock.style.display  = 'none';
+    soegerBlk.style.display = 'none';
+    harBlk.style.display    = 'flex';
+    if (label) { label.textContent = '🔍 Folk der søger værelse'; label.style.display = 'inline'; }
+    if (facRow) facRow.style.display = 'none';
   } else {
-    chips.style.display = 'inline-flex';
-    label.style.display = 'none';
+    defBlock.style.display  = 'flex';
+    soegerBlk.style.display = 'none';
+    harBlk.style.display    = 'none';
+    if (label) label.style.display = 'none';
   }
+}
+
+function nulstilRoomieFilter() {
+  ['max-price','min-m2','f-age-fra','f-age-til','f-budget-min','f-movein-max'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('search-input').value = '';
+  document.getElementById('radius-select').value = 'all';
+  activeFacFilters.clear();
+  document.querySelectorAll('.fac-chip').forEach(c => c.classList.remove('active'));
+  filterListings();
 }
 
 function signInWithGoogle() {
@@ -1237,7 +1334,7 @@ function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal()  { document.querySelectorAll('.modal-bg').forEach(m => m.classList.remove('open')); }
 
 let toastTimer;
-function toast(msg, ms = 2600) {
+function toast(msg, ms = 3000) {
   const el = document.getElementById('toast');
   el.textContent = msg; el.classList.add('show');
   clearTimeout(toastTimer);
@@ -1364,17 +1461,67 @@ function debouncedFilter() {
 async function filterListings() {
   let list = [...allListings];
 
-  // Søger ser kun "har"-opslag — aldrig andre søgere
+  // Rollebaseret synlighed: søger ser kun "har", har ser kun "søger"
   if (myProfile?.type === 'søger') {
     list = list.filter(l => l.type === 'har' || l.id === me?.uid);
+  } else if (myProfile?.type === 'har') {
+    list = list.filter(l => l.type === 'søger' || l.id === me?.uid);
   }
 
-  const t = document.querySelector('.chip[data-t].active')?.dataset.t;
-  if (t && t !== 'alle') list = list.filter(l => l.type === t);
+  // Ingen profil: brug type-chip filter
+  if (!myProfile) {
+    const t = document.querySelector('.chip[data-t].active')?.dataset.t;
+    if (t && t !== 'alle') list = list.filter(l => l.type === t);
+  }
 
-  const max = parseInt(document.getElementById('max-price').value);
-  if (!isNaN(max) && max > 0) list = list.filter(l => !l.price || l.price <= max);
+  // --- Søger-filtre (ser "har"-opslag) ---
+  if (myProfile?.type === 'søger') {
+    const maxPrice = parseInt(document.getElementById('max-price')?.value);
+    if (!isNaN(maxPrice) && maxPrice > 0) list = list.filter(l => !l.price || l.price <= maxPrice);
 
+    const minM2 = parseInt(document.getElementById('min-m2')?.value);
+    if (!isNaN(minM2) && minM2 > 0) list = list.filter(l => !l.roomSize || l.roomSize >= minM2);
+
+    // Facilitet-filter
+    if (activeFacFilters.size > 0) {
+      list = list.filter(l => [...activeFacFilters].every(fac => (l.facilities || []).includes(fac)));
+    }
+  }
+
+  // --- Har-filtre (ser "søger"-profiler) ---
+  if (myProfile?.type === 'har') {
+    const ageFra = parseInt(document.getElementById('f-age-fra')?.value);
+    const ageTil = parseInt(document.getElementById('f-age-til')?.value);
+    if (!isNaN(ageFra) && ageFra > 0) list = list.filter(l => !l.age || l.age >= ageFra);
+    if (!isNaN(ageTil) && ageTil > 0) list = list.filter(l => !l.age || l.age <= ageTil);
+
+    const budgetMin = parseInt(document.getElementById('f-budget-min')?.value);
+    if (!isNaN(budgetMin) && budgetMin > 0) list = list.filter(l => !l.price || l.price >= budgetMin);
+
+    const moveInMax = document.getElementById('f-movein-max')?.value;
+    if (moveInMax) {
+      list = list.filter(l => {
+        if (!l.moveIn) return true;
+        // moveIn er typisk "YYYY-MM-DD" eller dansk datoformat
+        return l.moveIn <= moveInMax;
+      });
+    }
+  }
+
+  // --- Default-filtre (ingen profil) ---
+  if (!myProfile) {
+    const maxDef = parseInt(document.getElementById('max-price-default')?.value);
+    if (!isNaN(maxDef) && maxDef > 0) list = list.filter(l => !l.price || l.price <= maxDef);
+
+    // Facilitet-filter i default-mode
+    if (activeFacFilters.size > 0) {
+      list = list.filter(l =>
+        l.type === 'har' && [...activeFacFilters].every(fac => (l.facilities || []).includes(fac))
+      );
+    }
+  }
+
+  // --- Geo/tekst-søgning (alle roller) ---
   const q = document.getElementById('search-input').value.trim();
   const r = document.getElementById('radius-select').value;
   if (q && r !== 'all') {
@@ -1384,21 +1531,12 @@ async function filterListings() {
       list = list.filter(l => l.lat && l.lng && dist(coords.lat, coords.lng, l.lat, l.lng) <= km);
     }
   }
-
-  // Tekstsøgning (uden radius) — filtrer på by og navn
   if (q && r === 'all') {
     const ql = q.toLowerCase();
     list = list.filter(l =>
       (l.city || '').toLowerCase().includes(ql) ||
       (l.name || '').toLowerCase().includes(ql) ||
       (l.address || '').toLowerCase().includes(ql)
-    );
-  }
-
-  // Facilitet-filter — vis kun "har"-opslag der matcher ALLE valgte faciliteter
-  if (activeFacFilters.size > 0) {
-    list = list.filter(l =>
-      l.type === 'har' && [...activeFacFilters].every(fac => (l.facilities || []).includes(fac))
     );
   }
 
@@ -1414,10 +1552,10 @@ function renderCards(list) {
   grid.innerHTML = list.map(l => {
     const c = color(l.id);
     const init = (l.name || '?')[0].toUpperCase();
-    // Vis første boligbillede for "har ledigt værelse", ellers profilbillede
-    const cardPhoto = (l.type === 'har' && l.roomPhotos?.length) ? l.roomPhotos[0] : l.photoURL;
-    const photoCount = l.type === 'har' && l.roomPhotos?.length > 1 ? l.roomPhotos.length : 0;
-    // Vis max 3 faciliteter som badges
+    const photos = (l.type === 'har' && l.roomPhotos?.length) ? l.roomPhotos
+                 : l.photoURL ? [l.photoURL] : [];
+    const firstPhoto = photos[0] || null;
+    const multiPhoto = photos.length > 1;
     const facBadges = (l.facilities || []).slice(0,3).map(id => {
       const f = FACILITIES.find(x => x.id === id);
       return f ? `<span style="font-size:.7rem">${f.icon} ${f.label}</span>` : '';
@@ -1425,13 +1563,18 @@ function renderCards(list) {
 
     return `
     <div class="listing-card" onclick="openListing('${l.id}')" style="cursor:pointer">
-      <div class="card-photo-wrap">
-        ${cardPhoto
-          ? `<img src="${h(cardPhoto)}" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+      <div class="card-photo-wrap" id="cpw-${l.id}">
+        ${firstPhoto
+          ? `<img id="cimg-${l.id}" src="${h(firstPhoto)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
           : ''}
-        <div class="card-avatar" style="background:${c};${cardPhoto ? 'display:none' : ''}">${init}</div>
+        <div class="card-avatar" style="background:${c};${firstPhoto ? 'display:none' : ''}">${init}</div>
         <span class="type-badge ${l.type}">${l.type === 'søger' ? 'Søger værelse' : 'Har ledigt værelse'}</span>
-        ${photoCount ? `<span class="photo-count">📷 ${photoCount}</span>` : ''}
+        ${multiPhoto ? `
+          <button class="card-nav card-nav-prev" onclick="event.stopPropagation();cardNav('${l.id}',-1)">&#8249;</button>
+          <button class="card-nav card-nav-next" onclick="event.stopPropagation();cardNav('${l.id}',1)">&#8250;</button>
+          <div class="card-dots" id="cdots-${l.id}">
+            ${photos.map((_,i) => `<div class="card-dot${i===0?' active':''}"></div>`).join('')}
+          </div>` : ''}
       </div>
       <div class="card-body">
         <div class="card-top-row">
@@ -1446,7 +1589,7 @@ function renderCards(list) {
           ? `<button class="btn-write" style="background:var(--navy);opacity:.7;cursor:default" disabled onclick="event.stopPropagation()">Dit opslag</button>`
           : (myProfile?.type === 'har' && l.type === 'har')
             ? ``
-            : `<button class="btn-write" onclick="event.stopPropagation();startChat('${l.id}')">Skriv besked</button>`
+            : `<button class="btn-write" onclick="event.stopPropagation();openListing('${l.id}')">Se opslag</button>`
         }
       </div>
     </div>`;
@@ -2054,25 +2197,17 @@ async function saveProfile() {
     const bio    = document.getElementById('f-bio').value.trim();
     const preferredRadius = parseInt(document.getElementById('f-preferred-radius')?.value) || null;
 
-    if (!name) { toast('Angiv dit fornavn'); btn.textContent = 'Gem'; btn.disabled = false; return; }
+    if (!name) { toast('Angiv dit fornavn', 3000); btn.textContent = 'Gem ændringer'; btn.disabled = false; return; }
 
-    // Upload photo
+    // Profilbillede → base64 (ingen Firebase Storage nødvendig)
     let photoURL = myProfile?.photoURL || me.photoURL || '';
     const fileInput = document.getElementById('photo-file');
     if (fileInput?.files.length) {
-      try {
-        btn.textContent = 'Uploader billede...';
-        const compressed = await resizeImage(fileInput.files[0], 600, 600, 0.82);
-        const ref = stor.ref(`profiles/${me.uid}/photo`);
-        await ref.put(compressed, { contentType: 'image/jpeg' });
-        photoURL = await ref.getDownloadURL();
-      } catch(uploadErr) {
-        toast('Billedupload fejlede: ' + uploadErr.message);
-        btn.textContent = 'Prøv igen'; btn.disabled = false; return;
-      }
+      btn.textContent = 'Behandler profilbillede...';
+      photoURL = await fileToBase64(fileInput.files[0], 300, 300, 0.78);
     }
 
-    // Koordinater: autocomplete-valg > geocode ny adresse > geocode eksisterende hvis mangler
+    // Koordinater
     let lat = myProfile?.lat || null, lng = myProfile?.lng || null;
     if (acSelectedLat && acSelectedLng) {
       lat = acSelectedLat; lng = acSelectedLng;
@@ -2087,17 +2222,17 @@ async function saveProfile() {
       ? [...document.querySelectorAll('.fac-item.on input')].map(cb => cb.value)
       : [];
 
-    // Upload boligbilleder
+    // Boligbilleder → base64 (ingen Firebase Storage nødvendig)
     let roomPhotos = [...(myProfile?.roomPhotos || [])];
     for (let i = 0; i < rpFiles.length; i++) {
-      if (rpFiles[i]) {
-        const ref = stor.ref(`profiles/${me.uid}/rooms/photo_${i}`);
-        await ref.put(rpFiles[i]);
-        roomPhotos[i] = await ref.getDownloadURL();
-      }
+      if (!rpFiles[i]) continue;
+      btn.textContent = `Behandler billede ${i + 1} af 5...`;
+      roomPhotos[i] = await fileToBase64(rpFiles[i], 900, 675, 0.80);
     }
     roomPhotos = roomPhotos.filter(Boolean);
-    rpFiles = [null,null,null,null,null]; // reset
+    rpFiles = [null,null,null,null,null];
+
+    btn.textContent = 'Gemmer profil...';
 
     const data = {
       name, age, type, city, address, price, moveIn, bio, photoURL, lat, lng,
@@ -2109,11 +2244,12 @@ async function saveProfile() {
 
     await db.collection('users').doc(me.uid).set(data, { merge: true });
     myProfile = { ...myProfile, ...data };
-    toast('Profil gemt ✓');
+    toast('Profil gemt ✓', 3000);
     renderProfile();
 
   } catch(e) {
-    toast('Fejl: ' + e.message);
+    console.error('saveProfile fejl:', e);
+    toast('Kunne ikke gemme: ' + e.message, 5000);
     btn.textContent = 'Prøv igen'; btn.disabled = false;
   }
 }
@@ -2125,8 +2261,27 @@ async function setActive(val) {
 }
 
 /* ═══════════════════════════════════════
-   IMAGE RESIZE
+   IMAGE HELPERS
 ═══════════════════════════════════════ */
+function fileToBase64(file, maxW, maxH, quality) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.width, h = img.height;
+      const ratio = Math.min(maxW / w, maxH / h, 1);
+      w = Math.round(w * ratio); h = Math.round(h * ratio);
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Ugyldigt billedformat')); };
+    img.src = url;
+  });
+}
+
 function resizeImage(file, maxW = 800, maxH = 800, quality = 0.82) {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -2444,37 +2599,127 @@ function openListing(id) {
   const isOwn      = l.id === me?.uid;
   const canMessage = !isOwn && !(myProfile?.type === 'har' && l.type === 'har');
 
+  const infoItems = [
+    l.city    ? { label: 'By',         value: '📍 ' + h(l.city) } : null,
+    l.roomSize ? { label: 'Størrelse',  value: l.roomSize + ' m²' } : null,
+    l.moveIn  ? { label: 'Indflytning', value: '🗓 ' + h(l.moveIn) } : null,
+    l.address ? { label: 'Adresse',     value: '📌 ' + h(l.address) } : null,
+  ].filter(Boolean);
+
   document.getElementById('lm-body').innerHTML = `
-    <span class="lm-type-badge ${l.type}">${l.type === 'søger' ? 'Søger værelse' : 'Har ledigt værelse'}</span>
-    <div class="lm-price">${l.price ? Number(l.price).toLocaleString('da') + ' kr/md' : ''}</div>
-    <div class="lm-meta">
-      📍 ${h(l.city || '')}${l.roomSize ? ` &nbsp;·&nbsp; ${l.roomSize} m²` : ''}
-      ${l.moveIn ? `<br>🗓&nbsp; Indflytning: ${h(l.moveIn)}` : ''}
-      ${l.address ? `<br>📌&nbsp; ${h(l.address)}` : ''}
+    <div class="lm-top-row">
+      <div class="lm-title-block">
+        <span class="lm-type-badge ${l.type}">${l.type === 'søger' ? '🔍 Søger værelse' : '🏠 Ledigt værelse'}</span>
+        ${l.price ? `<div class="lm-price">${Number(l.price).toLocaleString('da')} <span style="font-size:1rem;font-weight:500;color:var(--muted)">kr/md</span></div>` : ''}
+      </div>
     </div>
-    ${facHtml ? `<div class="lm-facs">${facHtml}</div>` : ''}
-    ${l.bio ? `<p class="lm-bio">"${h(l.bio)}"</p>` : ''}
+
+    ${infoItems.length ? `
+    <div class="lm-info-grid">
+      ${infoItems.map(item => `
+        <div class="lm-info-item">
+          <span class="lm-info-label">${item.label}</span>
+          <span class="lm-info-value">${item.value}</span>
+        </div>`).join('')}
+    </div>` : ''}
+
+    ${facHtml ? `
+    <div>
+      <div class="lm-section-label">Faciliteter</div>
+      <div class="lm-facs" style="margin-top:.6rem">${facHtml}</div>
+    </div>` : ''}
+
+    ${l.bio ? `
+    <div>
+      <div class="lm-section-label">Om opslaget</div>
+      <p class="lm-bio" style="margin-top:.6rem">${h(l.bio)}</p>
+    </div>` : ''}
+
     <hr class="lm-divider">
+
     <div class="lm-host">
       ${l.photoURL
         ? `<img class="lm-host-photo" src="${h(l.photoURL)}" onerror="this.style.display='none'">`
         : `<div class="lm-host-avatar" style="background:${c}">${init}</div>`
       }
-      <div>
+      <div class="lm-host-info">
         <div class="lm-host-name">${h(l.name || 'Anonym')}${l.age ? `, ${l.age} år` : ''}</div>
-        <div class="lm-host-sub">${l.type === 'søger' ? 'Søger værelse' : 'Udlejer'}</div>
+        <div class="lm-host-sub">${l.type === 'søger' ? '🔍 Søger værelse' : '🏠 Udlejer'}</div>
       </div>
     </div>
-    ${isOwn
-      ? `<button class="lm-cta" disabled>Dit eget opslag</button>`
-      : canMessage
-        ? `<button class="lm-cta" onclick="startChat('${l.id}');closeListing()">✉️ Skriv besked</button>`
-        : ``
-    }`;
+
+    <div class="lm-cta-wrap">
+      ${isOwn
+        ? `<button class="lm-cta" disabled>Dit eget opslag</button>`
+        : canMessage
+          ? `<button class="lm-cta" onclick="startChat('${l.id}');closeListing()">✉️ Skriv besked til ${h(l.name || 'udlejer')}</button>
+             <div class="lm-cta-note">Normalt svar inden 24 timer</div>`
+          : ``
+      }
+    </div>`;
 
   document.getElementById('listing-modal-bg').classList.add('open');
   document.body.style.overflow = 'hidden';
+  initGalSwipe();
 }
+
+/* ── KORT-GALLERI ───────────────────────────────────── */
+const cardPhotoIdx = {};
+
+function cardNav(id, dir) {
+  const l = allListings.find(x => x.id === id);
+  if (!l) return;
+  const photos = (l.type === 'har' && l.roomPhotos?.length) ? l.roomPhotos
+               : l.photoURL ? [l.photoURL] : [];
+  if (photos.length < 2) return;
+  cardPhotoIdx[id] = ((cardPhotoIdx[id] || 0) + dir + photos.length) % photos.length;
+  const idx = cardPhotoIdx[id];
+  const img = document.getElementById('cimg-' + id);
+  if (img) {
+    img.classList.add('fade');
+    setTimeout(() => {
+      img.src = photos[idx];
+      img.onload = () => img.classList.remove('fade');
+      img.onerror = () => img.classList.remove('fade');
+    }, 80);
+  }
+  const dots = document.querySelectorAll(`#cdots-${id} .card-dot`);
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+// Touch-swipe på kortene
+let cardTouchId = null, cardTouchX = null;
+document.addEventListener('touchstart', e => {
+  const wrap = e.target.closest('[id^="cpw-"]');
+  if (!wrap) return;
+  cardTouchId = wrap.id.replace('cpw-', '');
+  cardTouchX  = e.touches[0].clientX;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!cardTouchX || !cardTouchId) return;
+  const dx = e.changedTouches[0].clientX - cardTouchX;
+  if (Math.abs(dx) > 35) cardNav(cardTouchId, dx < 0 ? 1 : -1);
+  cardTouchId = null; cardTouchX = null;
+}, { passive: true });
+
+let galTouchX = null;
+function initGalSwipe() {
+  const gal = document.getElementById('lm-gallery');
+  gal.ontouchstart = e => { galTouchX = e.touches[0].clientX; };
+  gal.ontouchend   = e => {
+    if (galTouchX === null) return;
+    const dx = e.changedTouches[0].clientX - galTouchX;
+    if (Math.abs(dx) > 40) galMove(dx < 0 ? 1 : -1);
+    galTouchX = null;
+  };
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('listing-modal-bg').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') galMove(1);
+  if (e.key === 'ArrowLeft')  galMove(-1);
+  if (e.key === 'Escape')     closeListing();
+});
 
 function renderGal(l) {
   const placeholder = document.getElementById('lm-gallery-placeholder');
@@ -2495,7 +2740,12 @@ function renderGal(l) {
   } else {
     placeholder.style.display = 'none';
     img.style.display = 'block';
-    img.src = galPhotos[galIdx];
+    img.classList.add('fade');
+    setTimeout(() => {
+      img.src = galPhotos[galIdx];
+      img.onload = () => img.classList.remove('fade');
+      img.onerror = () => img.classList.remove('fade');
+    }, 80);
     prev.style.display = galPhotos.length > 1 ? 'flex' : 'none';
     next.style.display = galPhotos.length > 1 ? 'flex' : 'none';
     dots.innerHTML = galPhotos.length > 1
