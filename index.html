@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BoligDirekte — Sælg selv, betal kun ved salg</title>
+  <title>BoligDirekte — Sælg din bolig selv, gratis at starte</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -230,6 +230,57 @@
       transition: color 0.4s;
     }
     .logo span { color: var(--amber); }
+    .logo { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-beta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.58rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      background: rgba(232,146,10,0.12);
+      border: 1px solid rgba(232,146,10,0.28);
+      color: var(--amber);
+      padding: 0.15rem 0.42rem;
+      border-radius: 4px;
+      position: relative; top: -3px;
+      transition: background 0.3s;
+    }
+    [data-theme="dark"] .logo-beta { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.30); }
+    .rejse-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.1rem 2rem;
+      background: rgba(232,146,10,0.06);
+      border-top: 1px solid rgba(232,146,10,0.18);
+      border-bottom: 1px solid rgba(232,146,10,0.18);
+      text-decoration: none;
+      color: var(--text-main);
+      transition: background 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    [data-theme="dark"] .rejse-banner { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.18); }
+    .rejse-banner:hover { background: rgba(232,146,10,0.10); }
+    .rejse-banner-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .rejse-banner-tag { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--amber); background: rgba(232,146,10,0.12); border: 1px solid rgba(232,146,10,0.25); padding: 0.2rem 0.55rem; border-radius: 100px; white-space: nowrap; }
+    .rejse-banner-text { font-size: 0.9rem; color: var(--text-muted); }
+    .rejse-banner-text strong { color: var(--text-main); font-weight: 600; }
+    .rejse-banner-phases { display: flex; align-items: center; gap: 0.5rem; }
+    .rejse-phase-pill { font-size: 0.75rem; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 100px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
+    .rejse-phase-pill.live { background: rgba(22,163,74,0.09); border-color: rgba(22,163,74,0.22); color: #16A34A; }
+    [data-theme="dark"] .rejse-phase-pill.live { color: #4ade80; }
+    .rejse-banner-arrow { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 500; color: var(--amber); white-space: nowrap; flex-shrink: 0; }
+    .rejse-banner-arrow svg { transition: transform 0.2s; }
+    .rejse-banner:hover .rejse-banner-arrow svg { transform: translateX(3px); }
+    @media (max-width: 640px) {
+      .rejse-banner { padding: 1rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+      .rejse-banner-phases { display: none; }
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-rejse { font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); text-decoration: none; white-space: nowrap; padding: 0.3rem 0.75rem; border-radius: 100px; border: 1px solid var(--nav-border); background: var(--input-bg); transition: border-color 0.2s, color 0.2s; }
+    .nav-rejse:hover { border-color: var(--amber); color: var(--text-main); }
+    .nav-rejse.active { color: var(--amber); border-color: rgba(232,146,10,0.35); }
 
     .nav-right { display: flex; align-items: center; gap: 0.75rem; }
     nav { display: flex; align-items: center; justify-content: space-between; }
@@ -1559,6 +1610,7 @@
       /* Skjul tunge GPU-elementer — forhindrer blank skærm ved scroll */
       .blob-amber, .blob-blue, .beam { display: none !important; }
       .page-grid { display: none !important; }
+      .nav-rejse { display: none !important; }
 
 
       /* Nav — solid baggrund på mobil, ingen backdrop-filter (forstyrrer Android rendering) */
@@ -1640,7 +1692,10 @@
 
   <!-- NAV -->
   <nav id="nav">
-    <div class="logo">Bolig<span>Direkte</span></div>
+    <div class="nav-left">
+      <div class="logo">Bolig<span>Direkte</span><span class="logo-beta">beta</span></div>
+      <a href="opstart.html" class="nav-rejse">Vores Rejse</a>
+    </div>
     <div class="nav-center" id="nav-center" style="display:none;">
       <div class="nav-mode-btns" id="nav-mode-btns"></div>
     </div>
@@ -1874,7 +1929,7 @@
         <button class="mode-btn" data-mode="leje" onclick="switchMode('leje')">🔑 Leje &amp; Udleje</button>
       </div>
       <h1>Sælg din bolig.<br><em>Betal kun når<br>den er solgt.</em></h1>
-      <p>BoligDirekte giver dig fuld kontrol over dit boligsalg — uden månedlige abonnementer og uden mæglersalær. Du betaler kun 0,5% når handlen er i hus.</p>
+      <p>BoligDirekte giver dig fuld kontrol over dit boligsalg — gratis at starte, ingen binding. Opgradér til Boligsiden eller fuld mægler-service når du er klar.</p>
       <div class="search-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>&nbsp; Find bolig nu — søg her &nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
       <div class="search-wrap">
         <div class="hero-form">
@@ -1904,7 +1959,7 @@
         </div>
       </div>
       <div class="hero-trust">
-        <span>Gratis at oprette</span> &nbsp;·&nbsp; <span>Kun 0,5% ved salg</span> &nbsp;·&nbsp; <span>MitID verificeret</span>
+        <span>Gratis at starte</span> &nbsp;·&nbsp; <span>Ingen binding</span> &nbsp;·&nbsp; <span>MitID verificeret</span>
       </div>
     </div>
 
@@ -1926,8 +1981,8 @@
         <div class="stat-label">Bolighandler om året</div>
       </div>
       <div class="stat">
-        <div class="stat-number">0,5<span>%</span></div>
-        <div class="stat-label">Vores fee — kun ved salg</div>
+        <div class="stat-number">1<span>%</span></div>
+        <div class="stat-label">Med mægler — kun ved salg</div>
       </div>
       <div class="stat">
         <div class="stat-number">3 <span>mio.</span></div>
@@ -1935,6 +1990,23 @@
       </div>
     </div>
   </div>
+
+  <!-- VORES REJSE BANNER -->
+  <a href="opstart.html" class="rejse-banner">
+    <div class="rejse-banner-left">
+      <span class="rejse-banner-tag">Vores Rejse</span>
+      <span class="rejse-banner-text"><strong>Følg med på rejsen</strong> — se hvad der er live nu og hvad der kommer</span>
+      <div class="rejse-banner-phases">
+        <span class="rejse-phase-pill live">● Fase 1 — Live</span>
+        <span class="rejse-phase-pill">Fase 2 — Roomie</span>
+        <span class="rejse-phase-pill">Fase 3 — Mægler-app</span>
+      </div>
+    </div>
+    <div class="rejse-banner-arrow">
+      Se mere
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </a>
 
   <!-- LISTINGS -->
   <div class="listings-section" id="listings-section">
@@ -2108,14 +2180,53 @@
           <div class="step-num">Trin 03</div>
           <div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           <h3>Betal kun ved salg</h3>
-          <p>Når boligen er tinglyst til ny ejer verificerer vi salget automatisk via de offentlige registre. Derefter sendes en faktura på 0,5% af salgsprisen.</p>
+          <p>Vælg fuld service med en lokal mægler — de håndterer alt fra fotos til underskrift. Du betaler kun 1% af salgsprisen når handlen er i hus.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="calculator">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Besparelsesberegner</div>
+        <h2 class="section-title">Hvad sparer du?</h2>
+        <p class="section-sub">Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.</p>
+      </div>
+      <div class="calc-box reveal">
+        <div class="calc-label">Din forventede salgspris</div>
+        <div class="calc-value" id="calc-display">3.000.000 kr.</div>
+        <input type="range" class="calc-slider" id="calc-slider"
+          min="500000" max="10000000" step="100000" value="3000000"
+          oninput="updateCalc(this.value)" />
+        <div class="calc-range-labels">
+          <span>500.000 kr.</span>
+          <span>10.000.000 kr.</span>
+        </div>
+        <div class="calc-results">
+          <div class="calc-result">
+            <div class="calc-result-label">Traditionel mægler (2%)</div>
+            <div class="calc-result-value" id="agent-cost">60.000 kr.</div>
+            <div class="calc-result-sub">Betales uanset resultat</div>
+          </div>
+          <div class="calc-result highlight">
+            <div class="calc-result-label" id="calc-bd-label">BoligDirekte med mægler (1%)</div>
+            <div class="calc-result-value" id="our-cost">30.000 kr.</div>
+            <div class="calc-result-sub" id="calc-bd-sub">Kun ved succesfuldt salg</div>
+          </div>
+        </div>
+        <div class="savings-badge">
+          <div class="savings-badge-text">
+            <span id="savings-msg-pre">Du sparer </span><strong id="savings-amount">30.000 kr.</strong><span id="savings-msg-post"> sammenlignet med en traditionel mægler på 2%</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- COMPARISON -->
-  <section class="comparison">
+  <section class="comparison" style="padding-top:0;">
     <div class="container">
       <div class="reveal">
         <div class="section-label">Prissammenligning</div>
@@ -2157,45 +2268,63 @@
     </div>
   </section>
 
-  <!-- CALCULATOR -->
-  <section class="calculator">
+  <!-- COMPARISON VS SELVSALG -->
+  <section class="comparison" style="padding-top:0;" data-salg-only>
     <div class="container">
       <div class="reveal">
-        <div class="section-label">Besparelsesberegner</div>
-        <h2 class="section-title">Hvad sparer du?</h2>
-        <p class="section-sub">Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.</p>
+        <div class="section-label">BoligDirekte vs. Selvsalg</div>
+        <h2 class="section-title">Billigere end selvsalg.dk</h2>
+        <p class="section-sub">Selvsalg.dk tager 995 kr. hver måned. BoligDirekte er billigere fra måned 3 — og du kan opgradere til fuld mægler-service når du vil.</p>
       </div>
-      <div class="calc-box reveal">
-        <div class="calc-label">Din forventede salgspris</div>
-        <div class="calc-value" id="calc-display">2.000.000 kr.</div>
-        <input type="range" class="calc-slider" id="calc-slider"
-          min="500000" max="10000000" step="100000" value="2000000"
-          oninput="updateCalc(this.value)" />
-        <div class="calc-range-labels">
-          <span>500.000 kr.</span>
-          <span>10.000.000 kr.</span>
+      <div class="comp-table reveal" id="selvsalg-table">
+        <div class="comp-row header">
+          <div class="comp-cell">Platform</div>
+          <div class="comp-cell">Selvsalg.dk</div>
+          <div class="comp-cell highlight">BoligDirekte</div>
         </div>
-        <div class="calc-results">
-          <div class="calc-result">
-            <div class="calc-result-label">Traditionel mægler (2%)</div>
-            <div class="calc-result-value" id="agent-cost">40.000 kr.</div>
-            <div class="calc-result-sub">Betales uanset resultat</div>
-          </div>
-          <div class="calc-result highlight">
-            <div class="calc-result-label">BoligDirekte (0,5%)</div>
-            <div class="calc-result-value" id="our-cost">15.000 kr.</div>
-            <div class="calc-result-sub">Kun ved succesfuldt salg</div>
-          </div>
+        <div class="comp-row">
+          <div class="comp-cell">Opstartsgebyr</div>
+          <div class="comp-cell">0 kr.</div>
+          <div class="comp-cell highlight">1.200 kr.</div>
         </div>
-        <div class="savings-badge">
-          <div class="savings-badge-text">
-            <span id="savings-msg-pre">Du sparer </span><strong id="savings-amount">35.000 kr.</strong><span id="savings-msg-post"> sammenlignet med en traditionel mægler på 2%</span>
-          </div>
+        <div class="comp-row">
+          <div class="comp-cell">Månedlig pris</div>
+          <div class="comp-cell bad">995 kr/md</div>
+          <div class="comp-cell highlight good">499 kr/md</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Pris over 3 måneder</div>
+          <div class="comp-cell bad">2.985 kr.</div>
+          <div class="comp-cell highlight good">2.198 kr. ✓</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Boligsiden.dk</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej — kun Boliga</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Ingen binding</div>
+          <div class="comp-cell good"><span class="check">✓</span> Ja</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row" style="background: rgba(232,146,10,0.06); border-top: 2px solid rgba(232,146,10,0.25);">
+          <div class="comp-cell" style="font-weight:600; color: var(--text-main);">🚀 Opgradér til mægler-salg</div>
+          <div class="comp-cell" style="color: var(--text-muted); font-size:0.85rem;">Ikke muligt</div>
+          <div class="comp-cell highlight" style="font-weight:600; color: var(--amber);"><span id="selvsalg-savings">Spar op til 30.000 kr. vs. traditionel mægler</span></div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Fuld mægler-service</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja — 1% ved salg</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Fotos, papirer & fremvisninger</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja — med mægler-pakke</div>
         </div>
       </div>
     </div>
   </section>
-
 
   <!-- PARTNERE -->
   <section class="advokat-section">
@@ -2330,10 +2459,27 @@
         document.getElementById('our-cost').textContent = '0 kr.';
         document.getElementById('savings-amount').textContent = fmt(portalYear) + '/år';
       } else {
-        document.getElementById('calc-display').textContent = fmt(val);
-        document.getElementById('agent-cost').textContent = fmt(val * 0.02);
-        document.getElementById('our-cost').textContent = fmt(val * 0.005);
-        document.getElementById('savings-amount').textContent = fmt(val * 0.02 - val * 0.005);
+        const saved = val * 0.02 - val * 0.01;
+        const dispEl    = document.getElementById('calc-display');
+        const agCostEl  = document.getElementById('agent-cost');
+        const ourEl     = document.getElementById('our-cost');
+        const savAmtEl  = document.getElementById('savings-amount');
+        if (dispEl)   dispEl.textContent   = fmt(val);
+        if (agCostEl) agCostEl.textContent = fmt(val * 0.02);
+        if (ourEl)    ourEl.textContent    = fmt(val * 0.01);
+        if (savAmtEl) savAmtEl.textContent = fmt(saved);
+
+        // Opdater prissammenligning vs traditionel mægler dynamisk
+        const labelEl = document.getElementById('comp-price-label');
+        const agentEl = document.getElementById('comp-agent-price');
+        const bdEl    = document.getElementById('comp-bd-price');
+        if (labelEl) labelEl.textContent = 'Pris ved ' + fmt(val) + ' bolig';
+        if (agentEl) agentEl.textContent = fmt(val * 0.02);
+        if (bdEl)    bdEl.textContent    = fmt(val * 0.01);
+
+        // Opdater selvsalg-sammenligning dynamisk
+        const savingsEl = document.getElementById('selvsalg-savings');
+        if (savingsEl) savingsEl.textContent = 'Spar ' + fmt(saved) + ' vs. traditionel mægler';
       }
     }
 
@@ -2350,39 +2496,38 @@
       salg: {
         badge: 'Danmarks nye boligplatform &nbsp;·&nbsp; Kom med fra start',
         h1: 'Sælg din bolig.<br><em>Betal kun når<br>den er solgt.</em>',
-        heroP: 'BoligDirekte giver dig fuld kontrol over dit boligsalg — uden månedlige abonnementer og uden mæglersalær. Du betaler kun 0,5% når handlen er i hus.',
-        trust: '<span>Gratis at oprette</span> &nbsp;·&nbsp; <span>Kun 0,5% ved salg</span> &nbsp;·&nbsp; <span>MitID verificeret</span>',
+        heroP: 'BoligDirekte giver dig fuld kontrol over dit boligsalg — gratis at starte, ingen binding. Opgradér til Boligsiden eller fuld mægler-service når du er klar.',
+        trust: '<span>Gratis at starte</span> &nbsp;·&nbsp; <span>Ingen binding</span> &nbsp;·&nbsp; <span>MitID verificeret</span>',
         stats: [
           { num: '307 <span>mia.</span>', label: 'Solgt for i Danmark i 2025' },
           { num: '100<span>k+</span>', label: 'Bolighandler om året' },
-          { num: '0,5<span>%</span>', label: 'Vores fee — kun ved salg' },
+          { num: '1<span>%</span>', label: 'Med mægler — kun ved salg' },
           { num: '3 <span>mio.</span>', label: 'Gennemsnitlig salgspris' }
         ],
         howLabel: 'Sådan virker det',
         howTitle: 'Tre trin til dit boligsalg',
-        howSub: 'Ingen binding, ingen skjulte gebyrer — du betaler først når boligen er solgt.',
+        howSub: 'Start gratis — ingen binding. Opgradér til Boligsiden eller fuld mægler-service når du vil.',
         steps: [
-          { icon: SVG.lock,  title: 'Opret din bolig', text: 'Log ind med MitID for at verificere din identitet og adresse. Opret dit boligopslag med billeder, beskrivelse og pris — helt gratis.' },
-          { icon: SVG.users, title: 'Mød dine købere', text: 'Din annonce er synlig for alle — ingen login kræves for at se opslag. Del den på sociale medier og lad interesserede kontakte dig direkte.' },
-          { icon: SVG.check, title: 'Betal kun ved salg', text: 'Når boligen er tinglyst til ny ejer verificerer vi salget automatisk via de offentlige registre. Derefter sendes en faktura på 0,5% af salgsprisen.' }
+          { icon: SVG.lock,  title: 'Opret din bolig gratis', text: 'Log ind med MitID og opret dit boligopslag med billeder, beskrivelse og pris. Helt gratis — din bolig er live på minutter.' },
+          { icon: SVG.users, title: 'Mød dine købere', text: 'Din annonce er synlig for alle. Vil du nå endnu flere? Tilføj Boligsiden for 1.200 kr. opstart + 499 kr/md.' },
+          { icon: SVG.check, title: 'Vælg din service', text: 'Klarer du det selv, eller vil du have en lokal mægler til at håndtere alt? Med fuld service betaler du kun 1% — og kun når boligen er solgt.' }
         ],
         compTitle: 'Hvad koster de andre?',
-        compSub: 'Se hvad du sparer sammenlignet med en traditionel mægler.',
+        compSub: 'Se hvad du sparer sammenlignet med traditionelle løsninger.',
         compHeaders: ['Platform', 'Traditionel mægler', 'BoligDirekte'],
         compRows: [
-          { cells: ['Gratis at oprette', '<span class="cross">✗</span> Nej', '<span class="check">✓</span> Ja'], cls: ['', 'bad', 'good'] },
-          { cells: ['Betalingsmodel', '1–3% salær', '0,5% ved salg'], cls: ['', '', 'best'] },
-          { cells: ['Pris på 2 mio. bolig', '20.000–60.000 kr', '15.000 kr'], cls: ['', 'bad', 'good'] },
-          { cells: ['Betal kun ved salg', '<span class="cross">✗</span> Nej', '<span class="check">✓</span> Ja'], cls: ['', 'bad', 'good'] },
+          { cells: ['Opstartsgebyr', '3.000–10.000 kr.', 'Ingen — betalt ved salg'], cls: ['', 'bad', 'good'] },
+          { cells: ['Betalingsmodel', '1,5–2% salær', '1% kun ved salg'], cls: ['', '', 'best'] },
+          { cells: ['<span id="comp-price-label">Pris på 3 mio. bolig</span>', '<span id="comp-agent-price">60.000 kr.</span>', '<span id="comp-bd-price">30.000 kr.</span>'], cls: ['', 'bad', 'good'] },
           { cells: ['MitID verificering', '<span class="check">✓</span> Ja', '<span class="check">✓</span> Ja'], cls: ['', 'good', 'good'] }
         ],
         calcLabel: 'Din forventede salgspris',
         calcTitle: 'Hvad sparer du?',
-        calcSub: 'Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.',
-        sliderMin: 500000, sliderMax: 10000000, sliderStep: 100000, sliderVal: 2000000,
+        calcSub: 'Flyt skyderen til din forventede salgspris og se hvad du sparer med BoligDirekte vs. traditionel mægler.',
+        sliderMin: 500000, sliderMax: 10000000, sliderStep: 100000, sliderVal: 3000000,
         sliderLeft: '500.000 kr.', sliderRight: '10.000.000 kr.',
         res1Label: 'Traditionel mægler (2%)', res1Sub: 'Betales uanset resultat',
-        res2Label: 'BoligDirekte (0,5%)', res2Sub: 'Kun ved succesfuldt salg',
+        res2Label: 'BoligDirekte med mægler (1%)', res2Sub: 'Kun ved succesfuldt salg',
         savingsPre: 'Du sparer', savingsPost: 'sammenlignet med en traditionel mægler på 2%',
         signupH3: 'Tilmeld dig ventelisten',
         signupP: 'Sælg din bolig på dine egne præmisser — vi giver dig besked når vi åbner.',
@@ -2516,6 +2661,10 @@
         document.querySelectorAll('[data-leje-only]').forEach(el => {
           el.style.display = mode === 'leje' ? '' : 'none';
           if (mode === 'salg') el.classList.remove('checked');
+        });
+        // Skjul salg-only sektioner i leje-mode
+        document.querySelectorAll('[data-salg-only]').forEach(el => {
+          el.style.display = mode === 'salg' ? '' : 'none';
         });
         // Opdater badge-tæller
         const count = document.querySelectorAll('#filter-dropdown .filter-dd-item.checked').length;

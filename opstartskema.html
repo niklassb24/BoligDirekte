@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="da" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoligDirekte — Opstartsstatus</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --amber:       #E8920A;
+      --page-bg:     #F9F8F5;
+      --nav-bg:      rgba(255,255,255,0.93);
+      --nav-border:  rgba(15,30,60,0.09);
+      --text-main:   #0F1E3D;
+      --text-muted:  #64748B;
+      --border:      rgba(15,30,60,0.09);
+      --card-bg:     #FFFFFF;
+      --card-shadow: 0 2px 16px rgba(15,30,60,0.07);
+      --navy:        #0F1E3D;
+      --btn-bg:      #0F1E3D;
+      --btn-color:   #FFFFFF;
+      --btn-hover:   #1a3160;
+      --done-bg:     rgba(22,163,74,0.08);
+      --done-border: rgba(22,163,74,0.22);
+      --done-color:  #16A34A;
+      --active-bg:   rgba(232,146,10,0.08);
+      --active-border: rgba(232,146,10,0.30);
+      --pending-bg:  rgba(15,30,60,0.04);
+      --pending-border: rgba(15,30,60,0.10);
+      --pending-color: rgba(15,30,60,0.35);
+      --divider:     rgba(15,30,60,0.07);
+      --logo-color:  #0F1E3D;
+    }
+
+    [data-theme="dark"] {
+      --page-bg:     #070f28;
+      --nav-bg:      rgba(7,15,40,0.95);
+      --nav-border:  rgba(255,255,255,0.06);
+      --text-main:   #F0EEE8;
+      --text-muted:  #94A3B8;
+      --border:      rgba(255,255,255,0.07);
+      --card-bg:     rgba(255,255,255,0.03);
+      --card-shadow: 0 2px 16px rgba(0,0,0,0.25);
+      --navy:        #F0EEE8;
+      --btn-bg:      #E8920A;
+      --btn-color:   #050a18;
+      --btn-hover:   #F5B93A;
+      --done-bg:     rgba(22,163,74,0.10);
+      --done-border: rgba(22,163,74,0.25);
+      --pending-bg:  rgba(255,255,255,0.03);
+      --pending-border: rgba(255,255,255,0.07);
+      --pending-color: rgba(255,255,255,0.25);
+      --divider:     rgba(255,255,255,0.06);
+      --logo-color:  #F0EEE8;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--page-bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: background 0.4s;
+    }
+    .logo { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: var(--logo-color); text-decoration: none; letter-spacing: -0.02em; }
+    .logo span { color: var(--amber); }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .theme-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .theme-btn:hover { border-color: var(--amber); color: var(--amber); }
+    .back-btn {
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border: none;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: var(--btn-hover); }
+
+    /* PAGE */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 7rem 1.5rem 4rem;
+    }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(232,146,10,0.10);
+      border: 1px solid rgba(232,146,10,0.25);
+      color: var(--amber);
+      padding: 0.3rem 0.85rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .page-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+    .page-title em { font-style: italic; color: var(--amber); }
+
+    .page-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 3rem;
+      max-width: 540px;
+    }
+
+    /* OVERALL PROGRESS BAR */
+    .progress-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 2.5rem;
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.9rem;
+    }
+    .progress-label { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .progress-pct { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700; color: var(--amber); }
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--divider);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--amber), #F5B93A);
+      border-radius: 100px;
+      width: 18%;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+    }
+    .progress-note {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .progress-note strong { color: var(--amber); }
+
+    /* FASE KORT */
+    .fase-kort {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .fase-kort:hover { box-shadow: 0 8px 32px rgba(15,30,60,0.10); }
+
+    .fase-header {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      padding: 1.4rem 1.75rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .fase-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .fase-num.done    { background: var(--done-bg); color: var(--done-color); border: 1px solid var(--done-border); }
+    .fase-num.active  { background: var(--active-bg); color: var(--amber); border: 1px solid var(--active-border); }
+    .fase-num.pending { background: var(--pending-bg); color: var(--pending-color); border: 1px solid var(--pending-border); }
+
+    .fase-meta { flex: 1; min-width: 0; }
+    .fase-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.2rem;
+    }
+    .fase-tag.done    { color: var(--done-color); }
+    .fase-tag.active  { color: var(--amber); }
+    .fase-tag.pending { color: var(--pending-color); }
+
+    .fase-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .fase-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .fase-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .fase-badge.done    { background: var(--done-bg); color: var(--done-color); border: 1px solid var(--done-border); }
+    .fase-badge.active  { background: var(--active-bg); color: var(--amber); border: 1px solid var(--active-border); }
+    .fase-badge.pending { background: var(--pending-bg); color: var(--pending-color); border: 1px solid var(--pending-border); }
+
+    .fase-chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: transform 0.25s;
+    }
+    .fase-kort.open .fase-chevron { transform: rotate(180deg); }
+
+    /* FASE BODY */
+    .fase-body {
+      display: none;
+      border-top: 1px solid var(--divider);
+      padding: 0 1.75rem 1.5rem;
+    }
+    .fase-kort.open .fase-body { display: block; }
+
+    .tasks-list {
+      list-style: none;
+      padding: 1.25rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .task-item:hover { background: rgba(232,146,10,0.04); }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.2s;
+      background: transparent;
+      cursor: pointer;
+    }
+    .task-item.checked .task-check {
+      background: var(--done-color);
+      border-color: var(--done-color);
+    }
+    .task-item.checked .task-check svg { opacity: 1; }
+    .task-check svg { width: 12px; height: 12px; color: #fff; opacity: 0; transition: opacity 0.15s; }
+
+    .task-text { flex: 1; min-width: 0; }
+    .task-title {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-main);
+      line-height: 1.4;
+      transition: color 0.2s;
+    }
+    .task-item.checked .task-title {
+      color: var(--text-muted);
+      text-decoration: line-through;
+      text-decoration-color: rgba(100,116,139,0.4);
+    }
+    .task-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      line-height: 1.5;
+    }
+
+    .task-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .tag-kritisk { background: rgba(220,38,38,0.08); color: #DC2626; border: 1px solid rgba(220,38,38,0.18); }
+    .tag-juridisk { background: rgba(59,130,246,0.08); color: #3B82F6; border: 1px solid rgba(59,130,246,0.18); }
+    .tag-tech { background: rgba(139,92,246,0.08); color: #8B5CF6; border: 1px solid rgba(139,92,246,0.18); }
+    .tag-marketing { background: rgba(232,146,10,0.08); color: var(--amber); border: 1px solid rgba(232,146,10,0.20); }
+    .tag-done { background: var(--done-bg); color: var(--done-color); border: 1px solid var(--done-border); }
+
+    /* PRIS-SEKTION */
+    .pris-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+    }
+    .pris-card {
+      background: var(--pending-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+    }
+    .pris-card.active { background: var(--active-bg); border-color: var(--active-border); }
+    .pris-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.3rem; }
+    .pris-value { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 700; color: var(--text-main); }
+    .pris-card.active .pris-value { color: var(--amber); }
+    .pris-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    /* DIVIDER */
+    .section-divider {
+      height: 1px;
+      background: var(--divider);
+      margin: 2rem 0;
+    }
+
+    /* INFO BOX */
+    .info-box {
+      background: rgba(232,146,10,0.06);
+      border: 1px solid rgba(232,146,10,0.20);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 1.25rem;
+    }
+    .info-box strong { color: var(--amber); }
+
+    /* STATS ROW */
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .stat-box {
+      flex: 1;
+      min-width: 130px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+      box-shadow: var(--card-shadow);
+    }
+    .stat-box-val { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; color: var(--amber); line-height: 1; margin-bottom: 0.3rem; }
+    .stat-box-lbl { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+
+    @media (max-width: 640px) {
+      nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(249,248,245,0.98); }
+      [data-theme="dark"] nav { background: rgba(7,15,40,0.98); }
+      .page { padding: 5.5rem 1.1rem 3rem; }
+      .fase-header { padding: 1.1rem 1.25rem; gap: 0.85rem; }
+      .fase-body { padding: 0 1.25rem 1.25rem; }
+      .fase-title { font-size: 1rem; }
+      .pris-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row { gap: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Bolig<span>Direkte</span></a>
+    <div class="nav-right">
+      <button class="theme-btn" onclick="toggleTheme()">🌙 Tema</button>
+      <a href="index.html" class="back-btn">← Forside</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <div class="page-badge">🚀 Opstartsstatus</div>
+    <h1 class="page-title">Vejen til <em>lanceringen</em></h1>
+    <p class="page-sub">Hold styr på hvad der er gjort, hvad der er i gang og hvad der mangler. Opdatér flueben efterhånden som tingene falder på plads.</p>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-box-val" id="stat-done">0</div>
+        <div class="stat-box-lbl">Opgaver fuldført</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-val" id="stat-total">0</div>
+        <div class="stat-box-lbl">Opgaver i alt</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-val" id="stat-fase">Fase 1</div>
+        <div class="stat-box-lbl">Aktiv fase</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-val" id="stat-opslag">0</div>
+        <div class="stat-box-lbl">Aktive opslag</div>
+      </div>
+    </div>
+
+    <!-- SAMLET FREMDRIFT -->
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <div class="progress-label">Samlet fremdrift</div>
+        <div class="progress-pct" id="pct-label">0%</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+      <div class="progress-note" id="progress-note">Du er godt i gang — <strong>fortsæt momentum</strong></div>
+    </div>
+
+    <!-- FASE 1 -->
+    <div class="fase-kort open" id="fase-1">
+      <div class="fase-header" onclick="toggleFase('fase-1')">
+        <div class="fase-num active">1</div>
+        <div class="fase-meta">
+          <div class="fase-tag active">Aktiv nu — 0 til 6 måneder</div>
+          <div class="fase-title">Grundlaget — kom i gang</div>
+          <div class="fase-subtitle">Gratis opslag · Juridisk setup · Første 20 boliger</div>
+        </div>
+        <div class="fase-badge active">I gang</div>
+        <svg class="fase-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fase-body">
+        <ul class="tasks-list">
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Registrer ApS</div>
+              <div class="task-note">Selskab skal oprettes inden ven kan registreres som ansvarlig mægler</div>
+            </div>
+            <span class="task-tag tag-juridisk">Juridisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Ven registreres som ansvarlig mægler</div>
+              <div class="task-note">Giver adgang til Boligsiden.dk + lovlig drift som mæglerfirma</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Aftale om løn og ejerandel med ven</div>
+              <div class="task-note">5–8k/md. grundløn + 1.500 kr. ved opstart + 2.100 kr. ved salg + 10–15% ejerandel</div>
+            </div>
+            <span class="task-tag tag-juridisk">Juridisk</span>
+          </li>
+
+          <li class="task-item checked" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Hjemmeside bygget (index, tilmeld, login, dashboard)</div>
+              <div class="task-note">Alle primære sider er klar og live på GitHub Pages</div>
+            </div>
+            <span class="task-tag tag-done">Færdig</span>
+          </li>
+
+          <li class="task-item checked" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Firebase login + Firestore database opsat</div>
+              <div class="task-note">Brugere kan oprette sig og logge ind. Data gemmes i Firestore.</div>
+            </div>
+            <span class="task-tag tag-done">Færdig</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Skaffe de første 20 opslag</div>
+              <div class="task-note">Familie, venner og netværk på Fyn — gratis at oprette i Fase 1</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Google Ads opsat (søgeord: "sælg bolig selv Fyn")</div>
+              <div class="task-note">Lokal synlighed fra dag 1 — budget ca. 2.000–5.000 kr./md.</div>
+            </div>
+            <span class="task-tag tag-marketing">Marketing</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Facebook/Instagram side oprettet</div>
+              <div class="task-note">BoligDirekte-side med lokalt fokus på Fyn</div>
+            </div>
+            <span class="task-tag tag-marketing">Marketing</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Adgang til Boligsiden.dk oprettet</div>
+              <div class="task-note">Kræver registreret mæglerfirma — låser den primære kanal op</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.85rem;">Prismodel i Fase 1</div>
+        <div class="pris-grid">
+          <div class="pris-card active">
+            <div class="pris-label">Sælger betaler</div>
+            <div class="pris-value">Gratis</div>
+            <div class="pris-sub">At oprette opslag</div>
+          </div>
+          <div class="pris-card active">
+            <div class="pris-label">Du tjener</div>
+            <div class="pris-value">0 kr.</div>
+            <div class="pris-sub">Fokus er opslag, ikke penge</div>
+          </div>
+        </div>
+        <div class="info-box">
+          <strong>Strategi:</strong> En tom platform sælger ingen. Mål er mindst 20 aktive boliger fra dag 1 — famile og venner på Fyn. Opslag er mere værd end omsætning i denne fase.
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 2 -->
+    <div class="fase-kort" id="fase-2">
+      <div class="fase-header" onclick="toggleFase('fase-2')">
+        <div class="fase-num pending">2</div>
+        <div class="fase-meta">
+          <div class="fase-tag pending">Kommende — 6 til 12 måneder</div>
+          <div class="fase-title">Vækst — betalende brugere</div>
+          <div class="fase-subtitle">499 kr./md. · Roomie-platform · Reel trafik</div>
+        </div>
+        <div class="fase-badge pending">Ikke startet</div>
+        <svg class="fase-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fase-body">
+        <ul class="tasks-list">
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Indfør betaling — 499 kr./md. pr. opslag</div>
+              <div class="task-note">Halvdelen af selvsalg.dk's pris. Inkl. BoligDirekte + Boligsiden.dk</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Stripe betalingsintegration</div>
+              <div class="task-note">Abonnementsbetaling direkte på platformen</div>
+            </div>
+            <span class="task-tag tag-tech">Tech</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Byg roomie-platformen</div>
+              <div class="task-note">Søg værelse / har ledigt værelse. Radius-søgning, billeder, intern besked</div>
+            </div>
+            <span class="task-tag tag-tech">Tech</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Udvid til hele Danmark</div>
+              <div class="task-note">Fra hyperlokal Fyn til nationalt marked</div>
+            </div>
+            <span class="task-tag tag-marketing">Marketing</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Overvej investering (500k–1M kr.)</div>
+              <div class="task-note">Når konceptet er bevist med betalende kunder</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.85rem;">Prismodel i Fase 2</div>
+        <div class="pris-grid">
+          <div class="pris-card">
+            <div class="pris-label">Basis opslag</div>
+            <div class="pris-value">499 kr./md.</div>
+            <div class="pris-sub">Pr. aktiv bolig</div>
+          </div>
+          <div class="pris-card">
+            <div class="pris-label">Inkluderer</div>
+            <div class="pris-value">2 portaler</div>
+            <div class="pris-sub">BoligDirekte + Boligsiden.dk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FASE 3 -->
+    <div class="fase-kort" id="fase-3">
+      <div class="fase-header" onclick="toggleFase('fase-3')">
+        <div class="fase-num pending">3</div>
+        <div class="fase-meta">
+          <div class="fase-tag pending">Fremtid — 12+ måneder / År 2–3</div>
+          <div class="fase-title">Skalering — fuld pakkemodel</div>
+          <div class="fase-subtitle">Fast pris ~10.000 kr. · Mægler-app · Wolt-modellen</div>
+        </div>
+        <div class="fase-badge pending">Ikke startet</div>
+        <svg class="fase-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="fase-body">
+        <ul class="tasks-list">
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Lancér fuld pakkemodel med fast mæglerpris</div>
+              <div class="task-note">Fast pris ~10.000 kr. inkl. ansvarlig mægler, dokumenter, forhandling</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Byg mægler-appen (Wolt-modellen)</div>
+              <div class="task-note">Selvstændige mæglere opretter profil, modtager opgaver, 50/50 split</div>
+            </div>
+            <span class="task-tag tag-tech">Tech</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Rekruttér netværk af selvstændige mæglere</div>
+              <div class="task-note">Ingen fast løn — betales kun ved gennemført salg</div>
+            </div>
+            <span class="task-tag tag-kritisk">Kritisk</span>
+          </li>
+
+          <li class="task-item" onclick="toggleTask(this)">
+            <div class="task-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 4.5 9 10.5 3"/></svg></div>
+            <div class="task-text">
+              <div class="task-title">Niklas færdig som ejendomsmægler</div>
+              <div class="task-note">~3 år fra nu — giver fuld juridisk selvstændighed</div>
+            </div>
+            <span class="task-tag tag-juridisk">Juridisk</span>
+          </li>
+
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.85rem;">Prismodel i Fase 3</div>
+        <div class="pris-grid">
+          <div class="pris-card">
+            <div class="pris-label">Basis</div>
+            <div class="pris-value">499 kr./md.</div>
+            <div class="pris-sub">Fremhævet + statistik</div>
+          </div>
+          <div class="pris-card">
+            <div class="pris-label">Komplet m. mægler</div>
+            <div class="pris-value">~10.000 kr.</div>
+            <div class="pris-sub">Fast pris ved salg</div>
+          </div>
+          <div class="pris-card">
+            <div class="pris-label">Mægler-split</div>
+            <div class="pris-value">50 / 50</div>
+            <div class="pris-sub">BoligDirekte / mægler</div>
+          </div>
+        </div>
+        <div class="info-box">
+          <strong>Wolt-modellen:</strong> Ingen fast lønudgift. Mæglere betales kun når de gennemfører et salg. Skalerer uden risiko — jo mere volumen, jo mere tjener alle.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // TEMA
+    (function() {
+      const saved = localStorage.getItem('bd-theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+    })();
+
+    function toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('bd-theme', next);
+    }
+
+    // FOLD UD/IND
+    function toggleFase(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    // FLUEBEN
+    const STORAGE_KEY = 'bd-opstart-tasks';
+
+    function getChecked() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+    }
+    function saveChecked(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function getTaskId(el) {
+      return el.querySelector('.task-title').textContent.trim().substring(0, 40);
+    }
+
+    function toggleTask(el) {
+      el.classList.toggle('checked');
+      const checked = getChecked();
+      const id = getTaskId(el);
+      const idx = checked.indexOf(id);
+      if (el.classList.contains('checked')) {
+        if (idx === -1) checked.push(id);
+      } else {
+        if (idx !== -1) checked.splice(idx, 1);
+      }
+      saveChecked(checked);
+      updateStats();
+    }
+
+    function updateStats() {
+      const all   = document.querySelectorAll('.task-item');
+      const done  = document.querySelectorAll('.task-item.checked');
+      const pct   = all.length ? Math.round((done.length / all.length) * 100) : 0;
+
+      document.getElementById('stat-done').textContent  = done.length;
+      document.getElementById('stat-total').textContent = all.length;
+      document.getElementById('pct-label').textContent  = pct + '%';
+      document.getElementById('progress-bar').style.width = pct + '%';
+
+      const noteEl = document.getElementById('progress-note');
+      if (pct === 0)        noteEl.innerHTML = 'Klar til at gå i gang — <strong>sæt det første flueben</strong>';
+      else if (pct < 30)    noteEl.innerHTML = 'God start — <strong>fortsæt momentum</strong>';
+      else if (pct < 60)    noteEl.innerHTML = 'Halvvejs der — <strong>du er på rette spor</strong>';
+      else if (pct < 100)   noteEl.innerHTML = 'Næsten i mål — <strong>pres på</strong>';
+      else                  noteEl.innerHTML = '<strong>Alle opgaver fuldført — klar til næste fase! 🎉</strong>';
+
+      // Aktiv fase
+      const f1Done = [...document.querySelectorAll('#fase-1 .task-item.checked')].length;
+      const f1Total = document.querySelectorAll('#fase-1 .task-item').length;
+      const faseEl = document.getElementById('stat-fase');
+      if (f1Done === f1Total && f1Total > 0) faseEl.textContent = 'Fase 2';
+      else faseEl.textContent = 'Fase 1';
+    }
+
+    // GENDAN GEMTE FLUEBEN
+    function restoreChecked() {
+      const checked = getChecked();
+      document.querySelectorAll('.task-item').forEach(el => {
+        if (checked.includes(getTaskId(el))) {
+          el.classList.add('checked');
+        }
+      });
+    }
+
+    restoreChecked();
+    updateStats();
+
+    // OPSLAG-TÆLLER (kan opdateres manuelt)
+    const opslag = localStorage.getItem('bd-opslag-count') || '0';
+    document.getElementById('stat-opslag').textContent = opslag;
+    document.getElementById('stat-opslag').parentElement.style.cursor = 'pointer';
+    document.getElementById('stat-opslag').parentElement.addEventListener('click', () => {
+      const n = prompt('Antal aktive opslag?', opslag);
+      if (n !== null && !isNaN(parseInt(n))) {
+        localStorage.setItem('bd-opslag-count', parseInt(n));
+        document.getElementById('stat-opslag').textContent = parseInt(n);
+      }
+    });
+  </script>
+
+</body>
+</html>

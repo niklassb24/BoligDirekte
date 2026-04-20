@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoligDirekte — Komplet Forretningsbibel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F9F8F5;
+      color: #0F1E3D;
+      line-height: 1.75;
+      padding: 3rem 1.5rem;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* HEADER */
+    .doc-header {
+      background: #0F1E3D;
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .doc-header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 250px; height: 250px;
+      border-radius: 50%;
+      background: rgba(232,146,10,0.12);
+    }
+
+    .doc-header h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.5rem;
+    }
+
+    .doc-header h1 span { color: #E8920A; }
+
+    .doc-header .subtitle {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .doc-header .tagline {
+      color: rgba(255,255,255,0.85);
+      font-size: 1.1rem;
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+    }
+
+    /* INDHOLDFORTEGNELSE */
+    .toc {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 16px rgba(15,30,60,0.07);
+    }
+
+    .toc h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: #0F1E3D;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid rgba(15,30,60,0.08);
+    }
+
+    .toc ol {
+      padding-left: 1.25rem;
+    }
+
+    .toc li {
+      margin-bottom: 0.35rem;
+      color: rgba(15,30,60,0.70);
+      font-size: 0.92rem;
+    }
+
+    .toc li a {
+      color: rgba(15,30,60,0.70);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .toc li a:hover { color: #E8920A; }
+
+    /* SEKTIONER */
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #E8920A;
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 0.9rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0F1E3D;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0F1E3D;
+      margin-top: 1.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #E8920A;
+      margin-top: 1.25rem;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p {
+      color: rgba(15,30,60,0.78);
+      margin-bottom: 0.9rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      color: rgba(15,30,60,0.78);
+      margin-bottom: 0.45rem;
+    }
+
+    li strong { color: #0F1E3D; }
+
+    hr {
+      border: none;
+      border-top: 1px solid rgba(15,30,60,0.09);
+      margin: 3.5rem 0;
+    }
+
+    /* KORT/BOKSE */
+    .card {
+      background: #FFFFFF;
+      border-radius: 14px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 14px rgba(15,30,60,0.06);
+    }
+
+    .card h3 { margin-top: 0; }
+
+    .card-amber {
+      border-left: 4px solid #E8920A;
+    }
+
+    .card-navy {
+      background: #0F1E3D;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .card-navy h3 { color: #FFFFFF; margin-top: 0; }
+    .card-navy p { color: rgba(255,255,255,0.80); margin-bottom: 0; }
+    .card-navy li { color: rgba(255,255,255,0.80); }
+    .card-navy strong { color: #FFFFFF; }
+
+    .card-warning {
+      background: rgba(220,38,38,0.05);
+      border: 1px solid rgba(220,38,38,0.20);
+    }
+
+    .card-warning h3 { color: #DC2626; margin-top: 0; }
+    .card-warning li { color: rgba(15,30,60,0.78); }
+
+    .card-success {
+      background: rgba(22,163,74,0.05);
+      border: 1px solid rgba(22,163,74,0.20);
+    }
+
+    .card-success h3 { color: #16A34A; margin-top: 0; }
+
+    .info-box {
+      background: rgba(232,146,10,0.07);
+      border: 1px solid rgba(232,146,10,0.22);
+      border-radius: 10px;
+      padding: 1.1rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .info-box strong { color: #E8920A; }
+    .info-box p { margin-bottom: 0; }
+
+    /* TABELLER */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background: #0F1E3D;
+      color: #FFFFFF;
+      padding: 0.8rem 1.1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    td {
+      padding: 0.75rem 1.1rem;
+      border-bottom: 1px solid rgba(15,30,60,0.07);
+      color: rgba(15,30,60,0.78);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: rgba(15,30,60,0.025); }
+    td strong { color: #0F1E3D; }
+
+    .row-highlight td {
+      background: rgba(232,146,10,0.07) !important;
+      font-weight: 600;
+      color: #0F1E3D;
+    }
+
+    .check { color: #16A34A; font-weight: 700; }
+    .cross { color: #DC2626; font-weight: 700; }
+
+    /* FLOW */
+    .flow {
+      background: #0F1E3D;
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      line-height: 2.2;
+      font-size: 0.93rem;
+      color: rgba(255,255,255,0.82);
+      margin: 1.5rem 0;
+    }
+
+    .flow .arrow { color: #E8920A; font-weight: 700; margin: 0 0.25rem; }
+    .flow .node { color: #FFFFFF; font-weight: 600; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 2.25rem; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px; top: 8px; bottom: 8px;
+      width: 2px;
+      background: rgba(15,30,60,0.10);
+    }
+
+    .tl-item { position: relative; margin-bottom: 2.25rem; }
+
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -1.73rem; top: 7px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: #E8920A;
+      box-shadow: 0 0 0 3px rgba(232,146,10,0.18);
+    }
+
+    .tl-time {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #E8920A;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-item h3 { margin-top: 0; }
+
+    /* NÆSTE SKRIDT */
+    .steps-box {
+      background: #0F1E3D;
+      border-radius: 16px;
+      padding: 2.25rem 2.5rem;
+    }
+
+    .steps-box h2 { color: #FFFFFF; margin-bottom: 1.75rem; }
+
+    .step-row {
+      display: flex;
+      gap: 1.1rem;
+      align-items: flex-start;
+      margin-bottom: 1.1rem;
+    }
+
+    .step-badge {
+      background: #E8920A;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.82rem;
+      min-width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-body { color: rgba(255,255,255,0.82); font-size: 0.95rem; }
+    .step-body strong { color: #FFFFFF; }
+
+    /* QUOTE */
+    .quote-box {
+      border-left: 4px solid #E8920A;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      background: rgba(232,146,10,0.04);
+      border-radius: 0 10px 10px 0;
+    }
+
+    .quote-box p {
+      font-style: italic;
+      font-size: 1.05rem;
+      color: #0F1E3D;
+      margin-bottom: 0;
+    }
+
+    /* NØGLETAL */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .stat-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(15,30,60,0.06);
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #E8920A;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: rgba(15,30,60,0.55);
+      margin-top: 0.2rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: rgba(15,30,60,0.30);
+      font-size: 0.82rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(15,30,60,0.08);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <h1>Bolig<span>Direkte</span></h1>
+    <p class="subtitle">Komplet forretningsbibel — Alle detaljer, alle beslutninger, alle næste skridt — April 2026</p>
+    <p class="tagline">"To platforme. Ét brand. Ét mål: eje det danske boligmarked digitalt."</p>
+  </div>
+
+  <!-- INDHOLDSFORTEGNELSE -->
+  <div class="toc">
+    <h3>Indhold</h3>
+    <ol>
+      <li><a href="#udgangspunkt">Udgangspunktet — hvad vi startede med</a></li>
+      <li><a href="#konkurrenter">Konkurrentanalyse — selvsalg.dk og de andre</a></li>
+      <li><a href="#portaler">Boligportaler — hvem ejer hvad og hvorfor det betyder noget</a></li>
+      <li><a href="#juridisk">Den juridiske løsning — din ven som ansvarlig mægler</a></li>
+      <li><a href="#prismodel">Prismodellen — hvad der virker og hvad der ikke gør</a></li>
+      <li><a href="#foerste-opslag">De første opslag — familie, venner og "fake it till you make it"</a></li>
+      <li><a href="#salgsplatform">Del 1: Salgsplatformen — sælg din bolig selv med hjælp</a></li>
+      <li><a href="#roomie">Del 2: Roomie-platformen — din hemmelige trafikmotor</a></li>
+      <li><a href="#maeglerapp">Del 3: Mægler-app'en — Wolt-modellen</a></li>
+      <li><a href="#snebold">Sneboldeffekten — hvordan det hele hænger sammen</a></li>
+      <li><a href="#marketing">Marketing — sådan får du trafik fra dag 1</a></li>
+      <li><a href="#investor">Investor-scenarie — hvad 500k og 1M ændrer</a></li>
+      <li><a href="#tidsplan">3-årsplanen — trin for trin</a></li>
+      <li><a href="#naeste">Næste skridt — gør dette nu</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. UDGANGSPUNKTET -->
+  <div class="section" id="udgangspunkt">
+    <div class="section-label">Kapitel 1</div>
+    <h2>Udgangspunktet</h2>
+
+    <p>
+      BoligDirekte startede som en idé om at lade folk sælge deres bolig selv og kun betale ved salg.
+      Den originale prismodel var <strong>0,5% af salgsprisen</strong> — altså en procentdel af hvad boligen sælges for.
+    </p>
+
+    <h3>Problemet med den originale model</h3>
+    <p>
+      0,5% lyder billigt — men det er det ikke i praksis. For en bolig til 3 millioner kroner
+      betaler sælgeren 15.000 kr. til BoligDirekte. Det er mere end dobbelt så dyrt som
+      konkurrenten selvsalg.dk, der koster ca. 6.000 kr. over seks måneder.
+    </p>
+
+    <table>
+      <tr>
+        <th>Boligpris</th>
+        <th>BoligDirekte (0,5%)</th>
+        <th>selvsalg.dk (~6 mdr.)</th>
+      </tr>
+      <tr>
+        <td>1,5 mio. kr.</td>
+        <td>7.500 kr.</td>
+        <td>~6.000 kr.</td>
+      </tr>
+      <tr>
+        <td>2,5 mio. kr.</td>
+        <td>12.500 kr.</td>
+        <td>~6.000 kr.</td>
+      </tr>
+      <tr>
+        <td>4 mio. kr.</td>
+        <td>20.000 kr.</td>
+        <td>~6.000 kr.</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <strong>Konklusion:</strong>
+      <p>Procentmodellen er konkurrencedygtig på billige boliger men meget dyrere på typiske boliger.
+      Den er svær at sælge til en sælger der har et billigere alternativ.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 2. KONKURRENTER -->
+  <div class="section" id="konkurrenter">
+    <div class="section-label">Kapitel 2</div>
+    <h2>Konkurrentanalyse</h2>
+
+    <h3>selvsalg.dk — den primære konkurrent</h3>
+
+    <div class="card card-amber">
+      <ul>
+        <li><strong>Ejet af:</strong> Boliga — Danmarks største boligportal</li>
+        <li><strong>Pris:</strong> 995 kr. per måned — ingen binding, ingen minimumperiode</li>
+        <li><strong>Inkluderer:</strong> Opslag på både selvsalg.dk og Boliga.dk — 1,5+ millioner potentielle købere</li>
+        <li><strong>Betaling:</strong> Betales hver måned uanset om boligen sælges eller ej</li>
+        <li><strong>Hjælp til sælger:</strong> Ingen — du er fuldstændig alene med processen</li>
+        <li><strong>Binding:</strong> Ingen — kan afmeldes når som helst fra din konto</li>
+      </ul>
+    </div>
+
+    <div class="info-box">
+      <strong>Vigtigt at forstå:</strong>
+      <p>6.000 kr. over 6 måneder er ikke en fast pakke — det er 6 × 995 kr. = 5.970 kr.
+      Sælges boligen på 2 måneder betaler sælgeren kun ~2.000 kr. Det gør selvsalg.dk
+      ekstra attraktivt for boliger der sælges hurtigt.</p>
+    </div>
+
+    <h3>Traditionelle mæglere (EDC, Nybolig, Home m.fl.)</h3>
+    <div class="card card-amber">
+      <ul>
+        <li><strong>Pris:</strong> 1-3% af salgspris — typisk 30.000-100.000 kr. på en normal bolig</li>
+        <li><strong>Inkluderer:</strong> Alt — juridisk hjælp, annoncering, forhandling, dokumenter</li>
+        <li><strong>Svaghed:</strong> Ekstremt dyre, gammeldags model, ingen digital nytænkning</li>
+        <li><strong>Adgang:</strong> Alle portaler inkl. Boligsiden.dk og Boliga.dk</li>
+      </ul>
+    </div>
+
+    <h3>Samlet overblik</h3>
+    <table>
+      <tr>
+        <th>Platform</th>
+        <th>Pris (2,5 mio. bolig)</th>
+        <th>Hjælp</th>
+        <th>Portaladgang</th>
+      </tr>
+      <tr>
+        <td>Traditionel mægler</td>
+        <td>25.000-75.000 kr.</td>
+        <td><span class="check">✓</span> Fuld hjælp</td>
+        <td><span class="check">✓</span> Alle portaler</td>
+      </tr>
+      <tr>
+        <td>selvsalg.dk</td>
+        <td>995 kr./md.</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Boliga.dk</td>
+      </tr>
+      <tr class="row-highlight">
+        <td>BoligDirekte</td>
+        <td>4.995 kr. kun ved salg</td>
+        <td><span class="check">✓</span> Hjælp hele vejen</td>
+        <td><span class="check">✓</span> Boligsiden.dk + egen portal</td>
+      </tr>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- 3. PORTALER -->
+  <div class="section" id="portaler">
+    <div class="section-label">Kapitel 3</div>
+    <h2>Boligportaler — hvem ejer hvad</h2>
+
+    <p>
+      For at sælge en bolig skal den annonceres der hvor køberne søger.
+      I Danmark er det primært store portaler. Her er hvad du skal vide om dem:
+    </p>
+
+    <table>
+      <tr>
+        <th>Portal</th>
+        <th>Ejer</th>
+        <th>Adgang for BoligDirekte?</th>
+        <th>Hvorfor/hvorfor ikke</th>
+      </tr>
+      <tr>
+        <td><strong>Boliga.dk</strong></td>
+        <td>Boliga (ejer selvsalg.dk)</td>
+        <td><span class="cross">✗ Umuligt</span></td>
+        <td>De ejer din direkte konkurrent. De har ingen interesse i at hjælpe dig.</td>
+      </tr>
+      <tr>
+        <td><strong>Boligsiden.dk</strong></td>
+        <td>Dansk Ejendomsmæglerforening</td>
+        <td><span class="check">✓ Muligt med licens</span></td>
+        <td>Kræver at du er registreret ejendomsmæglervirksomhed. Din ven åbner denne dør.</td>
+      </tr>
+      <tr>
+        <td><strong>Home.dk</strong></td>
+        <td>Stor mæglerkæde</td>
+        <td><span class="cross">✗ Kun interne</span></td>
+        <td>Bruger kun egne mæglere.</td>
+      </tr>
+      <tr>
+        <td><strong>Ejendomstorvet.dk</strong></td>
+        <td>Erhvervsmæglere</td>
+        <td><span class="cross">✗ Ikke relevant</span></td>
+        <td>Kun erhvervsejendomme — butikker, kontorer, lagre. Ingen private boliger overhovedet.</td>
+      </tr>
+      <tr>
+        <td><strong>DBA.dk</strong></td>
+        <td>Schibsted</td>
+        <td><span class="check">✓ Gratis</span></td>
+        <td>Alle kan oprette gratis. Lav troværdighed men bredt reach.</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook Marketplace</strong></td>
+        <td>Meta</td>
+        <td><span class="check">✓ Gratis</span></td>
+        <td>Stor trafik, men uorganiseret og ikke seriøst i boligverdenen.</td>
+      </tr>
+    </table>
+
+    <div class="card card-warning">
+      <h3>Vigtigt: Ejendomstorvet er IKKE til private boliger</h3>
+      <ul>
+        <li>Ejendomstorvet.dk er udelukkende for erhvervsejendomme</li>
+        <li>"Danmarks største udvalg af erhvervslokaler" — butikker, kontorer, lagre</li>
+        <li>Bruges af ~300 erhvervsmæglere — ingen relevans for private boligsalg</li>
+        <li>Enhver plan om at bruge Ejendomstorvet til private boliger er forgæves</li>
+      </ul>
+    </div>
+
+    <div class="card card-success">
+      <h3>Nøglen: Boligsiden.dk</h3>
+      <ul>
+        <li>Drives af Dansk Ejendomsmæglerforening</li>
+        <li>Kræver at virksomheden er registreret som ejendomsmæglervirksomhed</li>
+        <li>Din ven som ansvarlig mægler = du kan ansøge om optagelse</li>
+        <li>Når du er optaget: hvert opslag du lægger op viser dit firmanavn og link til din hjemmeside</li>
+        <li>Det er millioner af boligkøbere der ser BoligDirekte-brandet</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 4. JURIDISK -->
+  <div class="section" id="juridisk">
+    <div class="section-label">Kapitel 4</div>
+    <h2>Den juridiske løsning — din ven</h2>
+
+    <p>
+      For at drive en ejendomsmæglervirksomhed i Danmark er der ét lovkrav:
+      der skal være en <strong>ansvarlig ejendomsmægler</strong> tilknyttet firmaet.
+      Du er 25 og ikke uddannet mægler endnu — men det er din ven.
+    </p>
+
+    <div class="card card-navy">
+      <h3>Arbejdsfordelingen</h3>
+      <table style="margin: 1rem 0 0 0;">
+        <tr>
+          <th style="background: rgba(255,255,255,0.10);">Du (Niklas)</th>
+          <th style="background: rgba(255,255,255,0.10);">Din ven (ansvarlig mægler)</th>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Driver og ejer platformen</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Ansvarlig mægler på papir og i praksis</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Finder kunder og styrer marketing</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Håndterer juridiske dokumenter og rådgivning</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Bygger og udvikler teknologien</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Udformer og underskriver købsaftaler</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Styrer virksomhedens daglige drift</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Rådgiver sælgere lovligt om processen</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);"><strong style="color: #E8920A;">~70% af indtægten</strong></td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);"><strong style="color: #E8920A;">~30% af indtægten</strong></td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>Hvad det juridisk indebærer at sælge en bolig</h3>
+    <p>
+      Dette er dokumenterne der skal til ved et boligsalg — og hvorfor du IKKE må håndtere dem uden licens:
+    </p>
+
+    <table>
+      <tr>
+        <th>Dokument</th>
+        <th>Hvem laver det</th>
+        <th>Typisk pris hos advokat</th>
+      </tr>
+      <tr>
+        <td>Købsaftale</td>
+        <td>Mægler eller advokat</td>
+        <td>3.000-8.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Tilstandsrapport</td>
+        <td>Bygningssagkyndig</td>
+        <td>3.000-6.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Ejerskifteforsikring</td>
+        <td>Forsikringsselskab</td>
+        <td>8.000-20.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Energimærke</td>
+        <td>Energikonsulent</td>
+        <td>2.000-4.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Skøde og tinglysning</td>
+        <td>Advokat</td>
+        <td>5.000-10.000 kr.</td>
+      </tr>
+    </table>
+
+    <div class="card card-warning">
+      <h3>Du må ikke yde juridisk rådgivning uden licens</h3>
+      <ul>
+        <li>Det er ulovligt at give juridisk rådgivning om boligsalg uden at være advokat eller ejendomsmægler</li>
+        <li>Du kan tilbyde skabeloner og guider — men ikke rådgivning</li>
+        <li>Din ven tager det juridiske ansvar — det er præcis derfor han er med</li>
+        <li>Om 3 år når du er færdiguddannet overtager du dette ansvar selv</li>
+      </ul>
+    </div>
+
+    <div class="card card-warning">
+      <h3>Din ven tager en personlig risiko — tag det seriøst</h3>
+      <ul>
+        <li>Som ansvarlig mægler hænger han juridisk på fejl og klager</li>
+        <li>Lav en <strong>klar skriftlig aftale</strong> — hvad han er ansvarlig for, hvad du er ansvarlig for</li>
+        <li>Opret et <strong>ApS</strong> — beskytter jer begge personligt</li>
+        <li>Tjek at han har <strong>lov fra sin arbejdsgiver</strong> til at samarbejde — arbejder han for EDC eller Nybolig, må han sandsynligvis ikke</li>
+        <li>Han skal føle sig tryg ved <strong>hver eneste handel</strong> — intet må gå galt</li>
+      </ul>
+    </div>
+
+    <h3>Hvad din ven åbner for dig</h3>
+    <ul>
+      <li>Registrering som <strong>ejendomsmæglervirksomhed</strong> med eget CVR</li>
+      <li>Adgang til at ansøge om optagelse på <strong>Boligsiden.dk</strong></li>
+      <li>Ret til at håndtere <strong>hele salgsprocessen</strong> lovligt</li>
+      <li>Du er ikke længere en konkurrent til selvsalg.dk — du er en konkurrent til <strong>alle mæglere i Danmark</strong></li>
+    </ul>
+
+    <h3>Din vens kompensation — det fulde billede</h3>
+    <p>Din ven løber en reel risiko som ansvarlig mægler. Han skal kompenseres ordentligt — ikke kun per salg.</p>
+
+    <table>
+      <tr>
+        <th>Del</th>
+        <th>Hvornår</th>
+        <th>Beløb til ham</th>
+        <th>Hvad det dækker</th>
+      </tr>
+      <tr>
+        <td>Fast grundløn (retainer)</td>
+        <td>Hver måned</td>
+        <td>5.000-8.000 kr.</td>
+        <td>At være tilgængelig, ansvarlig mægler, svare på spørgsmål</td>
+      </tr>
+      <tr>
+        <td>Opstartsgebyr (75% af 1.995 kr.)</td>
+        <td>Når sælger opretter sig</td>
+        <td>~1.500 kr.</td>
+        <td>Første møde, prisvurdering, forberedelse</td>
+      </tr>
+      <tr>
+        <td>Succeshonorar (30% af 6.995 kr.)</td>
+        <td>Kun ved salg</td>
+        <td>~2.100 kr.</td>
+        <td>Købsaftale, forhandling, juridisk afslutning</td>
+      </tr>
+      <tr>
+        <td>Ejerandel i selskabet</td>
+        <td>Fra start</td>
+        <td>10-15% af virksomheden</td>
+        <td>Han investerer sin licens og sit navn — det er ægte partnerværdi</td>
+      </tr>
+    </table>
+
+    <div class="card card-success">
+      <h3>Hans timeløn sammenlignet</h3>
+      <ul>
+        <li><strong>Hos traditionel mæglerkæde:</strong> 15-25 timers arbejde per salg (inkl. fremvisninger) for ~9.000-11.000 kr. = 400-700 kr./time</li>
+        <li><strong>Hos BoligDirekte:</strong> 4-6 timers arbejde per salg (kun juridisk — sælger gør fremvisninger selv) for ~3.600 kr. = 600-900 kr./time</li>
+        <li>Han tjener faktisk <strong>mere per time</strong> hos dig — men færre timer per salg</li>
+        <li>Med grundlønnen oveni er det attraktivt som supplement eller som fuldtid ved høj volumen</li>
+      </ul>
+    </div>
+
+    <h3>Om 3 år — Niklas er ejendomsmægler</h3>
+    <p>
+      Du er 25 år og har allerede karaktererne til at komme ind på uddannelsen.
+      Ejendomsmægleruddannelsen tager typisk 3,5 år. Mens du studerer vokser platformen.
+      Når du er færdig overtager du rollen som ansvarlig mægler — og din ven kan vælge
+      at forblive partner eller gå videre. Du har fuld kontrol.
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- 5. PRISMODEL -->
+  <div class="section" id="prismodel">
+    <div class="section-label">Kapitel 5</div>
+    <h2>Prismodellen</h2>
+
+    <h3>Hvad der ikke virker — og hvorfor</h3>
+
+    <div class="card card-amber">
+      <h3>0,5% af salgspris — fravalgt</h3>
+      <ul>
+        <li>For dyr på de fleste boliger sammenlignet med selvsalg.dk</li>
+        <li>Svær at forklare og sammenligne</li>
+        <li>Sælgere kan selv regne ud at de betaler mere</li>
+      </ul>
+    </div>
+
+    <div class="card card-amber">
+      <h3>Månedligt abonnement som annoncør på Ejendomstorvet — fravalgt</h3>
+      <ul>
+        <li>Ejendomstorvet er kun erhvervsejendomme — ikke relevant</li>
+        <li>Selv hvis det var relevant: manuelt arbejde for hvert opslag</li>
+        <li>"Manuelt" betyder: for hver sælger der opretter sig hos dig, skal du selv logge ind på en ekstern portal og taste alle oplysninger ind igen — adresse, pris, beskrivelse, billeder. Det skalerer ikke.</li>
+      </ul>
+    </div>
+
+    <h3>Prismodellen i 3 faser</h3>
+
+    <div class="card card-amber">
+      <div style="font-size: 0.78rem; font-weight: 700; color: #E8920A; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.5rem;">Fase 1 — Nu til 6 måneder</div>
+      <h3>Gratis at oprette opslag</h3>
+      <ul>
+        <li>Ingen betaling for hverken sælger eller dig selv</li>
+        <li>Du vil have opslag på platformen mere end du vil have penge</li>
+        <li>En tom portal overbeviser ingen — en portal med 20 boliger gør</li>
+        <li>Mål: mindst 20 aktive opslag fra start</li>
+      </ul>
+    </div>
+
+    <div class="card card-amber">
+      <div style="font-size: 0.78rem; font-weight: 700; color: #E8920A; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.5rem;">Fase 2 — 6 til 12 måneder</div>
+      <h3>499 kr./måned pr. opslag</h3>
+      <ul>
+        <li>Præcis halvdelen af selvsalg.dk's pris</li>
+        <li>Du har nu reel trafik at tilbyde sælgeren som begrundelse</li>
+        <li>Inkluderer opslag på BoligDirekte + Boligsiden.dk</li>
+      </ul>
+    </div>
+
+    <div class="card card-amber">
+      <div style="font-size: 0.78rem; font-weight: 700; color: #E8920A; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.5rem;">Fase 3 — 12+ måneder</div>
+      <h3>Fuld pakkemodel</h3>
+      <table style="margin-top: 1rem;">
+        <tr>
+          <th>Pakke</th>
+          <th>Pris</th>
+          <th>Hvad sælger får</th>
+        </tr>
+        <tr>
+          <td><strong>Basis</strong></td>
+          <td>Gratis</td>
+          <td>Opslag på BoligDirekte — synlighed på platformen</td>
+        </tr>
+        <tr>
+          <td><strong>Plus</strong></td>
+          <td>499 kr./md.</td>
+          <td>Fremhævet opslag, statistik over hvem der har set boligen, Boligsiden.dk</td>
+        </tr>
+        <tr>
+          <td><strong>Komplet</strong></td>
+          <td>1.995 kr. ved opstart + 6.995 kr. ved salg</td>
+          <td>Alt inkl. juridisk hjælp, forhandlingshjælp, alle dokumenter, køberscreening</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>Hvorfor to betalinger i Komplet-pakken?</strong>
+      <p>Din ven bruger 2-4 timer på det indledende arbejde uanset om boligen sælges — prisvurdering, første møde, forberedelse. Opstartsgebyret på 1.995 kr. sikrer at han altid får betaling for den tid. De 6.995 kr. betales kun hvis boligen faktisk sælges. Sælger betaler samlet 8.990 kr. ved et succesfuldt salg.</p>
+    </div>
+
+    <h3>Hvad koster det sælger sammenlignet med alternativer?</h3>
+    <p>De lovpligtige udgifter (tilstandsrapport, energimærke, ejerskifteforsikring) betales af sælger uanset hvilken løsning de vælger — de er ikke BoligDirektes udgift.</p>
+    <table>
+      <tr>
+        <th>Udgift</th>
+        <th>Traditionel mægler</th>
+        <th>selvsalg.dk</th>
+        <th>BoligDirekte</th>
+      </tr>
+      <tr>
+        <td>Platform/mæglersalær</td>
+        <td>30.000-75.000 kr.</td>
+        <td>~4.000 kr. (4 mdr.)</td>
+        <td>8.990 kr.</td>
+      </tr>
+      <tr>
+        <td>Tilstandsrapport</td>
+        <td>3.000-6.000 kr.</td>
+        <td>3.000-6.000 kr.</td>
+        <td>3.000-6.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Energimærke</td>
+        <td>2.000-4.000 kr.</td>
+        <td>2.000-4.000 kr.</td>
+        <td>2.000-4.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Ejerskifteforsikring</td>
+        <td>8.000-20.000 kr.</td>
+        <td>8.000-20.000 kr.</td>
+        <td>8.000-20.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Advokat til købsaftale</td>
+        <td>Inkluderet</td>
+        <td>+3.000-8.000 kr. ekstra</td>
+        <td>Inkluderet</td>
+      </tr>
+      <tr class="row-highlight">
+        <td><strong>Total</strong></td>
+        <td><strong>43.000-105.000 kr.</strong></td>
+        <td><strong>20.000-42.000 kr.</strong></td>
+        <td><strong>22.000-40.000 kr.</strong></td>
+      </tr>
+    </table>
+    <p>BoligDirekte er sammenlignelig i pris med selvsalg.dk — men inkluderer fuld professionel hjælp som selvsalg.dk ikke tilbyder.</p>
+  </div>
+
+  <hr>
+
+  <!-- 6. FØRSTE OPSLAG -->
+  <div class="section" id="foerste-opslag">
+    <div class="section-label">Kapitel 6</div>
+    <h2>De første opslag — "fake it till you make it"</h2>
+
+    <p>
+      Det største problem for en ny platform er at se levende ud. Ingen sælger vil
+      oprette sig som den eneste bolig på en tom hjemmeside. Ingen køber vil søge
+      på en portal der ikke har noget at vise.
+    </p>
+
+    <h3>Løsningen — brug dit netværk</h3>
+    <ul>
+      <li>Du har selv <strong>2 boliger</strong> — de kan ligge som opslag</li>
+      <li>Din familie har <strong>en del lejligheder</strong> — de kan bidrage med opslag</li>
+      <li>Venner og familie med boliger kan oprette <strong>testopslag</strong> til en lidt højere pris end markedsværdi — så de ikke faktisk sælges, men ser reelle ud</li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Vigtigt:</strong>
+      <p>Opslagene skal se reelle ud — rigtige adresser, rigtige billeder, realistiske priser.
+      Dine familie/venner skal vide at de muligvis får en henvendelse fra en køber og have et svar klar.</p>
+    </div>
+
+    <h3>Hvorfor dette er normalt og acceptabelt</h3>
+    <p>
+      Airbnb fotograferede selv de første boliger i New York for at få platformen til at se professionel ud.
+      Næsten alle to-sidede platforme (markedspladser) starter med at "fylde" den ene side kunstigt
+      for at tiltrække den anden side. Det er ikke snyd — det er forretningsstrategi.
+    </p>
+
+    <div class="card card-navy">
+      <h3>Hvad 20 opslag giver dig</h3>
+      <ul>
+        <li>En investor der ser 20 boliger tror på konceptet — en der ser 0 gør ikke</li>
+        <li>En sælger der ser 20 boliger tror på at deres bolig vil blive set — en der ser 0 gør ikke</li>
+        <li>En køber der ser 20 boliger søger videre — en der ser 0 forlader siden</li>
+        <li>Du går fra "jeg har en idé" til "jeg har en platform med aktive opslag"</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 7. SALGSPLATFORMEN -->
+  <div class="section" id="salgsplatform">
+    <div class="section-label">Kapitel 7 — Del 1 af platformen</div>
+    <h2>Salgsplatformen</h2>
+
+    <p>
+      Salgsplatformen er kernen i BoligDirekte. Det er her sælgere opretter deres bolig
+      og købers finder den. Din konkurrencefordel er ikke kun prisen — det er hjælpen.
+    </p>
+
+    <h3>Hvad sælgere typisk går i stå på — og hvad du hjælper med</h3>
+    <table>
+      <tr>
+        <th>Udfordring</th>
+        <th>selvsalg.dk</th>
+        <th>BoligDirekte</th>
+      </tr>
+      <tr>
+        <td>Hvad er min bolig værd?</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Prisvurdering inkluderet</td>
+      </tr>
+      <tr>
+        <td>Hvordan skriver jeg en god salgstekst?</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Hjælp til at skrive opslag</td>
+      </tr>
+      <tr>
+        <td>Hvad gør jeg når der kommer et bud?</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Guidning og forhandlingshjælp</td>
+      </tr>
+      <tr>
+        <td>Er denne køber seriøs og finansieret?</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Køberscreening</td>
+      </tr>
+      <tr>
+        <td>Hvad sker der efter accept af bud?</td>
+        <td><span class="cross">✗</span> Ingen hjælp</td>
+        <td><span class="check">✓</span> Fuld juridisk proces via din ven</td>
+      </tr>
+    </table>
+
+    <h3>Hvad der skal bygges teknisk (MVP)</h3>
+    <ul>
+      <li><strong>Opret opslag</strong> — formular med adresse, pris, beskrivelse, m², billeder, årstal</li>
+      <li><strong>Søg boliger</strong> — filtrering på by, pris, størrelse, boligtype</li>
+      <li><strong>Boligside</strong> — hver bolig får sin egen unikke side med alle detaljer</li>
+      <li><strong>Brugerkonti</strong> — sælger kan logge ind og redigere sit opslag</li>
+      <li><strong>Kontaktformular</strong> — interesserede købere kan henvende sig direkte</li>
+    </ul>
+
+    <div class="quote-box">
+      <p>"Selvsalg.dk giver dig et opslag og siger held og lykke. BoligDirekte giver dig en guide hele vejen igennem."</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 8. ROOMIE -->
+  <div class="section" id="roomie">
+    <div class="section-label">Kapitel 8 — Del 2 af platformen</div>
+    <h2>Roomie-platformen</h2>
+
+    <h3>Hvad er idéen?</h3>
+    <p>
+      En sektion på BoligDirekte hvor folk kan slå op at de <strong>søger en roomie</strong>
+      eller at de <strong>har et ledigt værelse</strong>. Ligesom Facebook Marketplace men
+      bedre organiseret, kun til boliger, med en rigtig søgefunktion og uden rodet oplevelse.
+    </p>
+
+    <h3>Sådan fungerer det for brugeren — et eksempel</h3>
+    <p>
+      En studerende på UCL i Odense skal finde et værelse. Hun trykker på
+      <strong>"Roomie nu"</strong>-knappen i navigationen på BoligDirekte. Der vises en
+      dedikeret side med alle opslag i Odense. Hun søger "tæt på UCL" og vælger en radius
+      på 2 km. Hvert opslag viser et billede af personen, en kort tekst om hvem de er,
+      hvad de leder efter, pris og hvornår de kan flytte ind. Hun finder et opslag hun kan
+      lide og skriver direkte via hjemmesidens eget beskedsystem — ingen ekstern app,
+      ingen mail, alt sker på BoligDirekte.
+    </p>
+
+    <h3>To typer opslag</h3>
+    <ul>
+      <li><strong>"Jeg søger et værelse"</strong> — personen har ikke et sted endnu og leder</li>
+      <li><strong>"Jeg har et ledigt værelse"</strong> — personen har en bolig og søger en at dele med</li>
+    </ul>
+
+    <h3>Konkurrenten: findroommate.dk</h3>
+    <p>Din eneste direkte konkurrent — og de er svage:</p>
+
+    <table>
+      <tr>
+        <th>findroommate.dk</th>
+        <th>BoligDirekte Roomie</th>
+      </tr>
+      <tr>
+        <td>Generisk og gammelt design</td>
+        <td>Moderne, dansk, stærkt brand</td>
+      </tr>
+      <tr>
+        <td>Ingen radius-søgning — kun by og bydel</td>
+        <td>"Tæt på UCL" — søg inden for 0-3 km præcist</td>
+      </tr>
+      <tr>
+        <td>Kernefunktioner bag paywall (99-299 kr.)</td>
+        <td>Gratis at oprette og søge opslag</td>
+      </tr>
+      <tr>
+        <td>Kun hjemmeside — ingen app</td>
+        <td>Hjemmeside nu — app på sigt</td>
+      </tr>
+      <tr>
+        <td>Lav aktivitet — ~18 opslag per dag i hele Danmark</td>
+        <td>Fokus på at bygge volumen hurtigt via marketing</td>
+      </tr>
+      <tr>
+        <td>Irriterende adblocker-advarsler og tracking</td>
+        <td>Rent, troværdigt og brugervenligt</td>
+      </tr>
+    </table>
+
+    <div class="card card-success">
+      <h3>Markedsmulighed</h3>
+      <ul>
+        <li>Der er ingen dominerende dansk roomie-platform for danske studerende</li>
+        <li>Hybel.dk er en "coming soon"-side uden indhold — ikke en konkurrent</li>
+        <li>Facebook-grupper er store men rodet og uorganiseret — folk vil have noget bedre</li>
+        <li>Markedet er åbent. Ingen ejer det endnu.</li>
+      </ul>
+    </div>
+
+    <h3>Hvad der skal bygges teknisk</h3>
+    <ul>
+      <li><strong>"Roomie nu"-knap</strong> i navigationen — fører til en separat dedikeret side</li>
+      <li><strong>Opret opslag</strong> — billede af dig selv, kort personlig tekst, by, adresse, pris per måned, ønsket indflytningsdato, rygning ja/nej, husdyr ja/nej, alder</li>
+      <li><strong>Søgefunktion</strong> — filtrer på by, uddannelsessted, radius i km (0-1, 0-3, 0-5 km)</li>
+      <li><strong>Intern beskedservice</strong> — skriv direkte til hinanden på hjemmesiden, ingen ekstern kanal</li>
+      <li><strong>To kategorier</strong> — "Søger værelse" og "Har ledigt værelse" — vises separat</li>
+    </ul>
+
+    <div class="info-box">
+      <strong>Tidspunkt for roomie-platformen:</strong>
+      <p>Dette er fase 2. Få salgsplatformen og din ven på plads først.
+      Roomie-sektionen tilføjes måneder 6-12 når grundlaget er etableret.
+      Du vil fortryde det hvis du forsøger at bygge begge dele på én gang.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 9. SNEBOLDEFFEKTEN -->
+  <div class="section" id="snebold">
+    <div class="section-label">Kapitel 9 — Del 3 af platformen</div>
+    <h2>Mægler-app'en — Wolt-modellen</h2>
+
+    <p>
+      Når platformen er etableret og du er tæt på at blive uddannet mægler selv,
+      er næste skridt at bygge en app der gør BoligDirekte til en ægte markedsplads
+      — ikke bare en hjemmeside.
+    </p>
+
+    <h3>Konceptet forklaret simpelt</h3>
+    <p>
+      Tænk på Wolt. Når du bestiller mad sender Wolt ordren til den nærmeste tilgængelige kurer.
+      Kureren accepterer og leverer maden. Wolt tager en del af betalingen — kureren tager resten.
+      <strong>Præcis den model — men med ejendomsmæglere.</strong>
+    </p>
+
+    <div class="flow">
+      <span class="node">Sælger opretter bolig på BoligDirekte</span>
+      <span class="arrow">→</span> <span class="node">App sender notifikation til 3 nærmeste mæglere</span>
+      <span class="arrow">→</span> <span class="node">Første der accepterer (eller bedst anmeldte) får opgaven</span>
+      <span class="arrow">→</span> <span class="node">Mægler kontakter sælger og håndterer salget</span>
+      <span class="arrow">→</span> <span class="node">Bolig sælges for 8.990 kr.</span>
+      <span class="arrow">→</span> <span class="node">Mægler får 50% = 4.495 kr. — BoligDirekte beholder 50%</span>
+    </div>
+
+    <h3>Hvorfor mæglere vil bruge det</h3>
+    <table>
+      <tr>
+        <th>Udfordring for selvstændige mæglere i dag</th>
+        <th>Hvad BoligDirekte løser</th>
+      </tr>
+      <tr>
+        <td>Bruger tid og penge på at skaffe kunder</td>
+        <td>Gratis opgaver direkte i app'en</td>
+      </tr>
+      <tr>
+        <td>Svær at konkurrere med store kæder</td>
+        <td>BoligDirekte's brand og trafik arbejder for dem</td>
+      </tr>
+      <tr>
+        <td>Geografisk begrænset af eget netværk</td>
+        <td>Opgaver fra hele platformen i deres område</td>
+      </tr>
+      <tr>
+        <td>Variabel indkomst og usikkerhed</td>
+        <td>Konstant strøm af opgaver ved høj volumen</td>
+      </tr>
+    </table>
+
+    <h3>Hvem er mæglerne i netværket?</h3>
+    <ul>
+      <li><strong>Nyuddannede mæglere</strong> der mangler kunder og vil bygge erfaring</li>
+      <li><strong>Selvstændige mæglere</strong> der vil have ekstra opgaver ved siden af egne</li>
+      <li><strong>Deltidsmæglere</strong> der arbejder fleksibelt</li>
+      <li>Mæglere ansat i store kæder kan typisk <strong>ikke</strong> deltage — de er kontraktbundet</li>
+    </ul>
+
+    <h3>Bundlinjen med Wolt-modellen</h3>
+    <table>
+      <tr>
+        <th></th>
+        <th>Beløb</th>
+      </tr>
+      <tr>
+        <td>Sælger betaler</td>
+        <td>8.990 kr.</td>
+      </tr>
+      <tr>
+        <td>Mægler får (50%)</td>
+        <td>4.495 kr.</td>
+      </tr>
+      <tr>
+        <td>BoligDirekte beholder (50%)</td>
+        <td>4.495 kr.</td>
+      </tr>
+      <tr>
+        <td>Marketing per salg</td>
+        <td>-1.500 kr.</td>
+      </tr>
+      <tr>
+        <td>Fast overhead per salg</td>
+        <td>-275 kr.</td>
+      </tr>
+      <tr class="row-highlight">
+        <td><strong>BoligDirektes fortjeneste per salg</strong></td>
+        <td><strong>~2.720 kr.</strong></td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <strong>Ingen fast lønudgift:</strong>
+      <p>Med Wolt-modellen betaler du kun mægleren når du tjener penge. Ingen grundløn, ingen risiko ved lav volumen. Jo flere salg, jo mere tjener både mægleren og du.</p>
+    </div>
+
+    <h3>Hvornår bygger du det?</h3>
+    <p>
+      Wolt-modellen er fase 3 — år 2-3. Først skal salgsplatformen bevises og din ven
+      håndtere de første salg manuelt. Når du har bevist konceptet og kender processen
+      indefra, bygger du app'en og åbner for netværket. Du ved da præcis hvad mæglerne
+      skal gøre fordi du har set det i praksis.
+    </p>
+
+    <hr style="margin: 2rem 0; border-color: rgba(15,30,60,0.07);">
+
+    <h3>Det vigtige spørgsmål: kan ansatte mæglere deltage?</h3>
+
+    <div class="card card-warning">
+      <h3>Kortsvaret: ikke mens de er ansat hos konkurrenten</h3>
+      <ul>
+        <li>Næsten alle mæglere ansat i EDC, Nybolig og Home har en <strong>loyalitetspligt</strong> der forhindrer dem i at udføre mæglerarbejde for andre mens de er ansat</li>
+        <li>Deres professionelle ansvarsforsikring dækker kun arbejde udført under arbejdsgiverens navn</li>
+        <li>Arbejdsgiveren vil betragte det som direkte konkurrence — det er det jo</li>
+      </ul>
+    </div>
+
+    <h3>Men konkurrenceklausuller i Danmark er begrænset ved lov</h3>
+    <p>Siden 2016 er konkurrenceklausuller reguleret stramt under dansk ret:</p>
+    <table>
+      <tr>
+        <th>Regel</th>
+        <th>Hvad det betyder i praksis</th>
+      </tr>
+      <tr>
+        <td>Max varighed: <strong>12 måneder</strong> efter ansættelsesophør</td>
+        <td>Mægleren er fri igen 12 måneder efter de har sagt op</td>
+      </tr>
+      <tr>
+        <td>Arbejdsgiver skal betale <strong>min. 40% af løn</strong> i perioden</td>
+        <td>Mange kæder undlader at betale — klausulen er da ugyldig</td>
+      </tr>
+      <tr>
+        <td>Betales der ikke: <strong>klausulen bortfalder</strong></td>
+        <td>En stor del af mæglere er reelt frie langt tidligere end de tror</td>
+      </tr>
+    </table>
+
+    <div class="info-box">
+      <strong>Konklusion:</strong>
+      <p>De fleste mæglere kan <em>ikke</em> deltage mens de er ansat. Men de er langt friere efter ansættelsen end de tror — og det er dem du skal rekruttere.</p>
+    </div>
+
+    <h3>Beskikkelsen er personlig — ikke arbejdsgiverens</h3>
+    <p>
+      En ejendomsmæglers beskikkelse (autorisation fra Erhvervsstyrelsen) <strong>tilhører personen</strong> — ikke firmaet de arbejder for.
+      Når de forlader EDC tager de beskikkelsen med. Det er fundamentalt anderledes end fx en lægges ydernummer der er knyttet til klinikken.
+      Det betyder at en mægler der siger op i morgen allerede i overmorgen kan operere under dit brand.
+    </p>
+
+    <h3>Den egentlige mulighed: frustrerede mæglere</h3>
+    <p>Branchen har et strukturelt problem du kan udnytte:</p>
+
+    <div class="card card-navy">
+      <h3>Hvad en mægler reelt tjener hos en stor kæde</h3>
+      <table style="margin: 1rem 0 0;">
+        <tr>
+          <th style="background: rgba(255,255,255,0.10);">Hos EDC/Nybolig/Home</th>
+          <th style="background: rgba(255,255,255,0.10);">Hos BoligDirekte</th>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Honorar på salg: ~60.000 kr.</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Honorar på salg: 8.990 kr.</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Mægler beholder: ~20.000 kr. (kæden tager resten)</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Mægler beholder: ~4.495 kr. (50%)</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Arbejdstid: 15-25 timer (fremvisninger, admin, møder)</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Arbejdstid: 4-6 timer (kun juridisk — sælger gør fremvisninger selv)</td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Timeløn: ~400-700 kr.</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);"><strong style="color: #E8920A;">Timeløn: ~600-900 kr. — mere per time</strong></td>
+        </tr>
+        <tr>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Fysisk kontor — mødetider, dress code</td>
+          <td style="background: transparent; border-color: rgba(255,255,255,0.08); color: rgba(255,255,255,0.80);">Arbejd hjemmefra — fleksible timer</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>
+      Mange mæglere drømmer om at gå selvstændig men tør ikke starte fra nul uden kunder.
+      <strong>BoligDirekte kan være den platform der gør det muligt</strong> — du leverer kunder, de leverer det juridiske.
+    </p>
+
+    <h3>Den rette model: ikke Wolt, men Compass</h3>
+    <p>
+      Wolt er gig-arbejde. Det passer til budryttere — ikke så godt til mæglere i Danmark, hvor markedet er organiseret anderledes.
+      En bedre reference er <strong>Compass</strong> — den store amerikanske proptech der revolutionerede markedet ved at tilbyde:
+    </p>
+    <ul>
+      <li>Mæglere opererer <strong>under BoligDirektes brand</strong> — ikke som anonyme freelancere</li>
+      <li>BoligDirekte leverer: CRM-system, opslag på Boligsiden, marketing, sælgerkontakter, skabeloner</li>
+      <li>Mægleren leverer: det juridiske og kundekontakten</li>
+      <li>Split: 50/50 eller 60/40 til mægleren — langt bedre end hvad kæderne tilbyder</li>
+      <li>Ingen grundløn til BoligDirekte — du betaler kun ved salg</li>
+    </ul>
+
+    <h3>Rekrutteringsstrategien — start dette nu, ikke år 2</h3>
+    <p>Du behøver ikke vente. Du kan begynde at bygge netværket fra dag 1:</p>
+    <ul>
+      <li><strong>LinkedIn</strong> — "Ønsker du at arbejde selvstændigt som mægler? BoligDirekte søger partnere på Fyn."</li>
+      <li><strong>Mæglere der netop har sagt op</strong> — der er altid et flow af folk der forlader kæderne. Følg med og kontakt dem.</li>
+      <li><strong>Nyuddannede mæglere</strong> — ingen klausul, sultne efter kunder, åbne for en ny model</li>
+      <li><strong>Din ven introducerer dig</strong> — mæglerverdenen er lille. Hans netværk er dit netværk.</li>
+    </ul>
+
+    <div class="card card-success">
+      <h3>Hvem du reelt kan rekruttere</h3>
+      <ul>
+        <li><strong>Selvstændige mæglere</strong> — driver eget lille bureau, vil have ekstra kunder</li>
+        <li><strong>Nyuddannede</strong> — ingen klausul, mangler kunder, åbne for fleksibelt samarbejde</li>
+        <li><strong>Mæglere der for nylig er stoppet</strong> — frihed fra klausulen, klar til noget nyt</li>
+        <li><strong>Pensionerede mæglere</strong> med aktiv beskikkelse — vil gerne tage et par sager</li>
+        <li><strong>Deltidsmæglere</strong> uden eksklusivitetsklausul</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <!-- 9B. SNEBOLD -->
+  <div class="section" id="snebold">
+    <div class="section-label">Kapitel 10</div>
+    <h2>Sneboldeffekten — hvordan det hele hænger sammen</h2>
+
+    <h3>Salgsplatformens snebold</h3>
+    <div class="flow">
+      <span class="node">Køber søger bolig på Boligsiden.dk</span>
+      <span class="arrow">→</span> <span class="node">Ser opslag fra BoligDirekte</span>
+      <span class="arrow">→</span> <span class="node">Klikker ind på boligdirekte.dk</span>
+      <span class="arrow">→</span> <span class="node">Læser om jer og bliver imponeret</span>
+      <span class="arrow">→</span> <span class="node">Fortæller sin nabo der skal sælge</span>
+      <span class="arrow">→</span> <span class="node">Nabo kontakter BoligDirekte</span>
+      <span class="arrow">→</span> <span class="node">Endnu et opslag — endnu mere synlighed</span>
+    </div>
+
+    <h3>Roomie-platformens langsigtet snebold</h3>
+    <div class="flow">
+      <span class="node">Studerende finder roomie via BoligDirekte</span>
+      <span class="arrow">→</span> <span class="node">Kender og stoler på brandet</span>
+      <span class="arrow">→</span> <span class="node">Fortæller venner — mere trafik</span>
+      <span class="arrow">→</span> <span class="node">Mere trafik = bedre Google-placering</span>
+      <span class="arrow">→</span> <span class="node">5-10 år senere skal de købe bolig</span>
+      <span class="arrow">→</span> <span class="node">De vælger BoligDirekte — de kender det allerede</span>
+    </div>
+
+    <h3>Boligsiden giver dig SEO-boost</h3>
+    <p>
+      Boligsiden.dk er en af Danmarks største hjemmesider. Når de linker til dit
+      opslag og dit firmanavn vises der, sender Google et signal om at BoligDirekte er troværdigt.
+      Det fremskynder din organiske Google-placering markant sammenlignet med at starte uden portaladgang.
+    </p>
+
+    <div class="info-box">
+      <strong>Om SEO og tidslinje:</strong>
+      <p>Organisk SEO (at Google sender dig gratis trafik) tager 6-12 måneder for en ny boligportal.
+      Det skyldes at du konkurrerer med etablerede sider som Boliga og Boligsiden der har
+      millioner af links og år med data. For en lokal service som et rengøringsfirma kan det gå
+      hurtigere — men en boligportal er en anden kategori af konkurrence. Brug betalte annoncer
+      de første måneder mens SEO opbygges.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 10. MARKETING -->
+  <div class="section" id="marketing">
+    <div class="section-label">Kapitel 10</div>
+    <h2>Marketing — trafik fra dag 1</h2>
+
+    <h3>Start hyperlokal — Fyn</h3>
+    <p>
+      Vær den bedste boligplatform på Fyn. Ikke hele Danmark fra dag 1.
+      Du har allerede netværk og kendskab til området. En stærk lokal position
+      er nemmere at vinde og giver dig troværdighed at bygge videre på.
+    </p>
+
+    <table>
+      <tr>
+        <th>Kanal</th>
+        <th>Budget/md.</th>
+        <th>Hvad det giver</th>
+        <th>Virker fra</th>
+      </tr>
+      <tr>
+        <td><strong>Google Ads</strong></td>
+        <td>15.000 kr.</td>
+        <td>Øjeblikkelig synlighed når folk søger "sælg bolig selv Fyn"</td>
+        <td>Dag 1</td>
+      </tr>
+      <tr>
+        <td><strong>Facebook/Instagram</strong></td>
+        <td>10.000 kr.</td>
+        <td>Målret boligkøbere og sælgere geografisk</td>
+        <td>Dag 1</td>
+      </tr>
+      <tr>
+        <td><strong>Lokale Facebook-grupper</strong></td>
+        <td>Gratis</td>
+        <td>Direkte henvendelser fra lokalsamfundet</td>
+        <td>Dag 1</td>
+      </tr>
+      <tr>
+        <td><strong>PR — TV2 Fyn, Fyens.dk</strong></td>
+        <td>5.000 kr.</td>
+        <td>Troværdighed + backlinks = dobbelt gevinst</td>
+        <td>Uge 1-4</td>
+      </tr>
+      <tr>
+        <td><strong>Boligsiden.dk-opslag</strong></td>
+        <td>Inkluderet</td>
+        <td>Millioner af boligkøbere ser BoligDirekte-brandet</td>
+        <td>Fra første opslag</td>
+      </tr>
+      <tr>
+        <td><strong>SEO (organisk Google)</strong></td>
+        <td>0 kr. ekstra</td>
+        <td>Stabil gratis trafik på lang sigt</td>
+        <td>6-12 måneder</td>
+      </tr>
+    </table>
+
+    <h3>Roomie-platformens marketing</h3>
+    <ul>
+      <li>Facebook og Instagram — målret studerende i Odense, Aarhus, København</li>
+      <li>Samarbejd med uddannelsesinstitutioner — opslaget på UCL's opslagstavle</li>
+      <li>TikTok — studerende er der, og en enkel video om "find din roomie" kan gå viralt</li>
+      <li>Lokale Facebook-grupper for studerende — poster opslag manuelt de første måneder</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 11. INVESTOR -->
+  <div class="section" id="investor">
+    <div class="section-label">Kapitel 11</div>
+    <h2>Investor-scenarie</h2>
+
+    <p>
+      Med de rigtige penge i ryggen ændres tempoet dramatisk.
+      Her er hvad forskelligt kapitalniveau betyder i praksis:
+    </p>
+
+    <table>
+      <tr>
+        <th></th>
+        <th>Uden investor</th>
+        <th>Med 500.000 kr.</th>
+        <th>Med 1.000.000 kr.</th>
+      </tr>
+      <tr>
+        <td>Opslag fra dag 1</td>
+        <td>Familie/venner (20)</td>
+        <td>Familie/venner (20+)</td>
+        <td>Familie/venner + betalt (50+)</td>
+      </tr>
+      <tr>
+        <td>Marketingbudget/md.</td>
+        <td>Næsten 0 kr.</td>
+        <td>30.000 kr.</td>
+        <td>60.000 kr.</td>
+      </tr>
+      <tr>
+        <td>Måneder med budget</td>
+        <td>—</td>
+        <td>~16 måneder</td>
+        <td>~16 måneder</td>
+      </tr>
+      <tr>
+        <td>Teknisk udvikling</td>
+        <td>Du selv</td>
+        <td>Du + evt. freelancer</td>
+        <td>Du + lille team</td>
+      </tr>
+      <tr>
+        <td>Tid til etablering</td>
+        <td>3-5 år</td>
+        <td>12-18 måneder</td>
+        <td>Kan true selvsalg.dk aktivt</td>
+      </tr>
+    </table>
+
+    <h3>Hvad du siger til en investor</h3>
+    <div class="quote-box">
+      <p>
+        "Jeg har bygget en ejendomsmæglervirksomhed med adgang til Boligsiden.dk og 20+ aktive opslag.
+        Platformen tilbyder fuld mæglerpakke til 4.995 kr. — mod markedets 30.000-100.000 kr.
+        Jeg er 25 og uddanner mig selv til ejendomsmægler. Om 3 år er jeg den ansvarlige mægler i eget firma.
+        Jeg har desuden identificeret et åbent marked i Danmark for en moderne roomie-platform —
+        min eneste konkurrent er svag og ingen dominerer markedet."
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num">25</span>
+        <div class="stat-label">Niklas' alder — tid til at bygge stort</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">3 år</span>
+        <div class="stat-label">Til Niklas er uddannet ejendomsmægler</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">0</span>
+        <div class="stat-label">Stærke konkurrenter i roomie-markedet</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">4.995</span>
+        <div class="stat-label">Kr. mod 30-100.000 kr. hos mægler</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 12. TIDSPLAN -->
+  <div class="section" id="tidsplan">
+    <div class="section-label">Kapitel 12</div>
+    <h2>3-årsplanen — trin for trin</h2>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-time">Nu — Måned 1-3</div>
+        <h3>Grundlaget lægges</h3>
+        <ul>
+          <li>Tal med din ven — er han interesseret og har han lov fra sin arbejdsgiver?</li>
+          <li>Opret ApS sammen — beskytter jer begge personligt</li>
+          <li>Lav en skriftlig aftale om ansvar og indtægtsfordeling (70/30)</li>
+          <li>Ansøg om optagelse på Boligsiden.dk som ejendomsmæglervirksomhed</li>
+          <li>Byg MVP af salgsplatformen — opret opslag, søg boliger, boligside, kontaktformular</li>
+          <li>Få de første 20 opslag op via familie og venner — gratis</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">Måned 3-6</div>
+        <h3>Første rigtige kunder på Fyn</h3>
+        <ul>
+          <li>Launch på Fyn med betalt marketing (Facebook, Google Ads, lokale grupper)</li>
+          <li>Søg omtale i TV2 Fyn og Fyens.dk — "ny platform udfordrer de store mæglere"</li>
+          <li>Gennemfør de første rigtige salg med din vens juridiske hjælp</li>
+          <li>Indsaml anmeldelser og cases fra tilfredse sælgere</li>
+          <li>Optimer platformen baseret på hvad sælgere og købere mangler</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">Måned 6-12</div>
+        <h3>Bevis konceptet + byg roomie-platformen</h3>
+        <ul>
+          <li>50+ aktive salgsopslag på platformen</li>
+          <li>Stabil månedlig omsætning fra Komplet-pakken (4.995 kr. ved salg)</li>
+          <li>Udvid til resten af Danmark — ikke kun Fyn</li>
+          <li>Søg investor hvis nødvendigt — du har nu data og beviser</li>
+          <li>Byg roomie-sektionen: "Roomie nu"-knap, opslag med billede og tekst, radius-søgning, intern besked</li>
+          <li>Launch roomie-platformen og markedsfør til studerende</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">År 1-3</div>
+        <h3>Niklas studerer til ejendomsmægler — platformene vokser</h3>
+        <ul>
+          <li>Din ven håndterer det juridiske — fast grundløn + salgsbonus + ejerandel</li>
+          <li>Du fokuserer på teknologi, marketing og vækst</li>
+          <li>SEO begynder at virke ordentligt — Google sender gratis trafik</li>
+          <li>Roomie-brugere begynder at kende og stole på BoligDirekte-brandet</li>
+          <li>Potentielt: søg større investering til at skalere nationalt</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">År 2-3</div>
+        <h3>Byg mægler-app'en — Wolt-modellen</h3>
+        <ul>
+          <li>Selvstændige mæglere opretter profil og modtager opgaver via app</li>
+          <li>Sælger opretter bolig → nærmeste mæglere får notifikation → første accepterer</li>
+          <li>Mægler håndterer salget og får 50% af honoraret</li>
+          <li>BoligDirekte beholder 50% uden fast personale</li>
+          <li>Skalerer over hele Danmark automatisk</li>
+          <li>Ingen grundløn til mæglere — du betaler kun når du tjener</li>
+        </ul>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">År 3 — Slutmålet</div>
+        <h3>Niklas er uddannet ejendomsmægler</h3>
+        <ul>
+          <li>Du overtager som ansvarlig mægler — din ven kan vælge at blive partner eller gå videre</li>
+          <li>Fuld kontrol over virksomheden og alle beslutninger</li>
+          <li>Platform med 3 års historik, trafik og tusindvis af brugere</li>
+          <li>Mægler-netværk dækker hele Danmark via app</li>
+          <li>Roomie-brugere fra år 1 begynder at købe deres første bolig — via BoligDirekte</li>
+          <li>Danmarks mest komplette digitale boligplatform — bygget fra bunden af én person</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 13. NÆSTE SKRIDT -->
+  <div class="steps-box" id="naeste">
+    <h2>Næste skridt — gør dette nu</h2>
+
+    <div class="step-row">
+      <div class="step-badge">1</div>
+      <div class="step-body">
+        <strong>Ring til din ven i dag</strong> — Fortæl ham planerne. Er han interesseret?
+        Hvad er hans situation — selvstændig eller ansat? Har han lov til at samarbejde?
+        Alt andet afhænger af svaret på det spørgsmål.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">2</div>
+      <div class="step-body">
+        <strong>Opret ApS sammen</strong> — Beskytter jer begge personligt.
+        Kan gøres på virk.dk. Tal med en revisor om den rigtige struktur.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">3</div>
+      <div class="step-body">
+        <strong>Lav en skriftlig aftale</strong> — Hvad er han ansvarlig for?
+        Hvad er du ansvarlig for? Hvad er fordelingen af indtægt? Hvad sker der
+        hvis han stopper? Få det på papir inden I starter.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">4</div>
+      <div class="step-body">
+        <strong>Ansøg Boligsiden.dk</strong> — Kontakt dem og ansøg om optagelse
+        som ejendomsmæglervirksomhed. Det kræver din vens mæglerlicens og jeres CVR-nummer.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">5</div>
+      <div class="step-body">
+        <strong>Byg salgsplatformen (MVP)</strong> — Sælger skal kunne oprette opslag.
+        Køber skal kunne søge og filtrere. Boligen skal have sin egen side.
+        Kontaktformular så køber kan henvende sig. Det er alt hvad du behøver til at starte.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">6</div>
+      <div class="step-body">
+        <strong>Få de 20 første opslag</strong> — Dine 2 boliger, familiens lejligheder,
+        venner med boliger. Opslag til en lidt højere pris end markedsværdi så de ikke
+        faktisk sælges. Portalen skal se levende ud.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">7</div>
+      <div class="step-body">
+        <strong>Launch på Fyn</strong> — Facebook-grupper, Google Ads, Instagram, TV2 Fyn.
+        Start lokalt og bevis konceptet. Udvid til resten af Danmark når du har data.
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-badge">8</div>
+      <div class="step-body">
+        <strong>Byg roomie-platformen (fase 2)</strong> — Når salgsplatformen er oppe og kørende:
+        tilføj "Roomie nu"-sektionen. Radius-søgning, billeder, intern besked.
+        Markedsfør til studerende. Tag markedet inden nogen andre gør det.
+      </div>
+    </div>
+
+  </div>
+
+  <p class="footer-note">
+    BoligDirekte — Komplet forretningsbibel udarbejdet april 2026<br>
+    To platforme. Ét brand. Ét mål.
+  </p>
+
+</div>
+</body>
+</html>

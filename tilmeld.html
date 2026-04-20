@@ -154,8 +154,13 @@
       transition: box-shadow 0.3s, background 0.4s, border-color 0.4s;
     }
     nav.scrolled { box-shadow: 0 2px 28px var(--nav-shadow); }
-    .logo { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; color: var(--logo-color); letter-spacing: -0.02em; text-decoration: none; transition: color 0.4s; }
+    .logo { font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 700; color: var(--logo-color); letter-spacing: -0.02em; text-decoration: none; transition: color 0.4s; display: flex; align-items: center; gap: 0.5rem; }
     .logo span { color: var(--amber); }
+    .logo-beta { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: rgba(232,146,10,0.12); border: 1px solid rgba(232,146,10,0.28); color: var(--amber); padding: 0.15rem 0.42rem; border-radius: 4px; position: relative; top: -2px; }
+    [data-theme="dark"] .logo-beta { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.30); }
+    .nav-left { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-rejse { font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); text-decoration: none; white-space: nowrap; padding: 0.3rem 0.75rem; border-radius: 100px; border: 1px solid var(--nav-border); background: var(--input-bg); transition: border-color 0.2s, color 0.2s; }
+    .nav-rejse:hover { border-color: var(--amber); color: var(--text-main); }
     .nav-right { display: flex; align-items: center; gap: 0.75rem; }
     .theme-toggle { display: flex; align-items: center; gap: 0.4rem; background: var(--input-bg); border: 1px solid var(--nav-border); border-radius: 100px; padding: 0.3rem 0.75rem; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); transition: all 0.3s; white-space: nowrap; }
     .theme-toggle:hover { border-color: var(--amber); color: var(--text-main); }
@@ -368,6 +373,7 @@
     .role-sub { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
 
     @media (max-width: 540px) {
+      .nav-rejse { display: none !important; }
       .form-row { grid-template-columns: 1fr; }
       .signup-card { padding: 1.75rem 1.25rem; }
       .trust-row { gap: 1rem; }
@@ -391,7 +397,10 @@
   </div>
 
   <nav id="nav">
-    <a class="logo" href="index.html">Bolig<span>Direkte</span></a>
+    <div class="nav-left">
+      <a class="logo" href="index.html">Bolig<span>Direkte</span><span class="logo-beta">beta</span></a>
+      <a href="opstart.html" class="nav-rejse">Vores Rejse</a>
+    </div>
     <div class="nav-right">
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Skift tema">
         <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
