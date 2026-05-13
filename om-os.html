@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BoligDirekte — Sælg din bolig selv, gratis at starte</title>
+  <title>BoligDirekte — Om os</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1673,6 +1673,579 @@
       .signup-box { padding: 2.5rem 1.5rem; }
     }
   </style>
+  <style>
+  html { overflow-x: hidden; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--page-bg);
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: background 0.4s, color 0.4s;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: box-shadow 0.3s, background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled { box-shadow: 0 2px 28px var(--nav-shadow); }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--logo-color);
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      transition: color 0.4s;
+    }
+    .logo span { color: var(--amber); }
+    .logo { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-beta { font-family: 'DM Sans', sans-serif; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; background: rgba(232,146,10,0.12); border: 1px solid rgba(232,146,10,0.28); color: var(--amber); padding: 0.15rem 0.42rem; border-radius: 4px; position: relative; top: -2px; }
+    [data-theme="dark"] .logo-beta { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.30); }
+    .nav-left { display: flex; align-items: center; gap: 1.25rem; }
+    .nav-rejse { font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; color: var(--text-muted); text-decoration: none; white-space: nowrap; padding: 0.3rem 0.75rem; border-radius: 100px; border: 1px solid var(--nav-border); background: var(--input-bg); transition: border-color 0.2s, color 0.2s; }
+    .nav-rejse:hover { border-color: var(--amber); color: var(--text-main); }
+    .nav-rejse.active { color: var(--amber); border-color: rgba(232,146,10,0.35); font-weight: 600; }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+    .nav-btn {
+      background: var(--btn-bg); color: var(--btn-color);
+      border: none; padding: 0.6rem 1.4rem;
+      border-radius: 6px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .nav-btn:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .nav-btn-outline {
+      background: transparent; color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .nav-btn-outline:hover { background: var(--border); transform: translateY(-1px); }
+
+    .theme-toggle {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: var(--input-bg); border: 1px solid var(--nav-border);
+      border-radius: 100px; padding: 0.3rem 0.75rem;
+      cursor: pointer; font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500; color: var(--text-muted);
+      transition: all 0.3s; white-space: nowrap;
+    }
+    .theme-toggle:hover { border-color: var(--amber); color: var(--text-main); }
+    .theme-toggle svg { width: 14px; height: 14px; flex-shrink: 0; transition: transform 0.4s; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+
+    /* ── BAGGRUND ── */
+    .page-bg {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+      background: var(--page-bg); transition: background 0.4s;
+    }
+    .page-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 55px 55px;
+      mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+    }
+    .page-radial {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 55% 45% at 12% 22%, var(--radial-1) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 50% at 88% 78%, var(--radial-2) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 35% at 55% 50%, var(--radial-3) 0%, transparent 55%);
+    }
+    .blob-amber {
+      position: absolute; top: -8%; left: 2%;
+      width: 600px; height: 480px;
+      background: var(--blob-a);
+      border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%;
+      filter: blur(100px);
+      animation: morph-a 14s ease-in-out infinite;
+    }
+    .blob-blue {
+      position: absolute; bottom: 0%; right: -8%;
+      width: 620px; height: 500px;
+      background: var(--blob-b);
+      border-radius: 38% 62% 46% 54% / 58% 44% 56% 42%;
+      filter: blur(120px);
+      animation: morph-b 18s ease-in-out infinite;
+    }
+    @keyframes morph-a {
+      0%,100% { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; }
+      50%      { border-radius: 38% 62% 46% 54% / 58% 44% 56% 42%; }
+    }
+    @keyframes morph-b {
+      0%,100% { border-radius: 38% 62% 46% 54% / 58% 44% 56% 42%; }
+      50%      { border-radius: 62% 38% 54% 46% / 44% 58% 42% 56%; }
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      position: relative; z-index: 1;
+      padding-top: 6rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(22,163,74,0.10);
+      border: 1px solid rgba(22,163,74,0.25);
+      color: #16A34A;
+      font-size: 0.75rem; font-weight: 600;
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    [data-theme="dark"] .live-badge { color: #4ade80; background: rgba(74,222,128,0.10); border-color: rgba(74,222,128,0.22); }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #16A34A;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    [data-theme="dark"] .live-dot { background: #4ade80; }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.4rem, 5.5vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--amber);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .journey-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 3rem;
+    }
+    .jp-step {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .jp-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2px solid var(--border);
+      background: transparent;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .jp-dot.done {
+      background: var(--amber); border-color: var(--amber);
+    }
+    .jp-dot.active {
+      background: var(--amber); border-color: var(--amber);
+      box-shadow: 0 0 0 4px rgba(232,146,10,0.20);
+    }
+    .jp-dot.active::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid rgba(232,146,10,0.35);
+      animation: ring-pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes ring-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0; transform: scale(1.6); }
+    }
+    .jp-label {
+      font-size: 0.7rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.04em; white-space: nowrap;
+    }
+    .jp-dot.active + .jp-label,
+    .jp-step:has(.active) .jp-label { color: var(--amber); }
+    .jp-line {
+      flex: 1; height: 2px;
+      background: var(--border);
+      max-width: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .jp-line.done::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--amber);
+    }
+    .jp-line.active::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--amber) 60%, transparent);
+    }
+
+    /* ── ROADMAP ── */
+    .roadmap {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .phase-card {
+      position: relative;
+      border-radius: 20px;
+      padding: 2.5rem 2.5rem 2.5rem 2rem;
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      box-shadow: var(--card-shadow);
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0 2rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+    }
+
+    /* Active phase glows */
+    .phase-card.phase-active {
+      border-color: rgba(232,146,10,0.30);
+      box-shadow: 0 4px 40px rgba(232,146,10,0.09), var(--card-shadow);
+    }
+    .phase-card.phase-active::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--amber), var(--amber-light), var(--amber));
+    }
+
+    /* Upcoming phases */
+    .phase-card.phase-upcoming {
+      opacity: 0.82;
+    }
+    .phase-card.phase-future {
+      opacity: 0.55;
+    }
+    .phase-card:hover { opacity: 1; }
+
+    /* Left column: number */
+    .phase-num-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.25rem;
+    }
+    .phase-num {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+    .phase-active .phase-num {
+      background: var(--amber);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(232,146,10,0.35);
+    }
+    .phase-upcoming .phase-num {
+      background: rgba(15,30,60,0.07);
+      color: var(--text-muted);
+    }
+    [data-theme="dark"] .phase-upcoming .phase-num {
+      background: rgba(255,255,255,0.08);
+    }
+    .phase-future .phase-num {
+      background: rgba(15,30,60,0.05);
+      color: rgba(15,30,60,0.25);
+    }
+    [data-theme="dark"] .phase-future .phase-num {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.22);
+    }
+    .phase-connector {
+      flex: 1;
+      width: 2px;
+      margin-top: 0.75rem;
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    /* Right column: content */
+    .phase-body {}
+
+    .phase-status {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      padding: 0.28rem 0.75rem;
+      border-radius: 100px;
+      margin-bottom: 0.9rem;
+    }
+    .status-live {
+      background: rgba(22,163,74,0.10);
+      border: 1px solid rgba(22,163,74,0.22);
+      color: #16A34A;
+    }
+    [data-theme="dark"] .status-live { color: #4ade80; background: rgba(74,222,128,0.10); border-color: rgba(74,222,128,0.22); }
+    .status-live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #16A34A;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    [data-theme="dark"] .status-live-dot { background: #4ade80; }
+    .status-soon {
+      background: rgba(232,146,10,0.09);
+      border: 1px solid rgba(232,146,10,0.22);
+      color: var(--amber);
+    }
+    .status-vision {
+      background: rgba(15,30,60,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    [data-theme="dark"] .status-vision { background: rgba(255,255,255,0.05); }
+
+    .phase-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .phase-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      background: rgba(15,30,60,0.03);
+      border: 1px solid var(--border);
+    }
+    [data-theme="dark"] .feature-item { background: rgba(255,255,255,0.03); }
+    .phase-active .feature-item {
+      background: rgba(232,146,10,0.04);
+      border-color: rgba(232,146,10,0.12);
+    }
+
+    .feature-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .feature-text {}
+    .feature-text strong {
+      display: block;
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.15rem;
+    }
+    .feature-text span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Phase footer */
+    .phase-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .phase-timing {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .phase-timing svg { opacity: 0.5; }
+
+    .phase-cta {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--btn-bg); color: var(--btn-color);
+      border: none; padding: 0.6rem 1.3rem;
+      border-radius: 8px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 500; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .phase-cta:hover { background: var(--btn-hover); transform: translateY(-1px); }
+    .phase-cta-outline {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .phase-cta-outline:hover { border-color: var(--amber); color: var(--text-main); background: transparent; transform: translateY(-1px); }
+
+    /* Price tag */
+    .price-tag {
+      display: inline-flex; align-items: baseline; gap: 0.3rem;
+      background: rgba(232,146,10,0.10);
+      border: 1px solid rgba(232,146,10,0.22);
+      border-radius: 8px;
+      padding: 0.35rem 0.8rem;
+      margin-bottom: 1.25rem;
+    }
+    .price-tag .amount {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--amber);
+    }
+    .price-tag .desc {
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+
+    /* Vision quote */
+    .vision-quote {
+      margin: 1.25rem 0;
+      padding: 1.25rem 1.5rem;
+      border-left: 3px solid rgba(15,30,60,0.12);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      font-style: italic;
+    }
+    [data-theme="dark"] .vision-quote { border-left-color: rgba(255,255,255,0.10); }
+
+    /* ── BOTTOM CTA SECTION ── */
+    .bottom-cta {
+      text-align: center;
+      padding: 4rem 2rem 8rem;
+      max-width: 660px;
+      margin: 0 auto;
+    }
+    .bottom-cta h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      margin-bottom: 0.9rem;
+    }
+    .bottom-cta p {
+      font-size: 1rem; color: var(--text-muted);
+      margin-bottom: 2rem; line-height: 1.65;
+    }
+    .cta-group {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.75rem; flex-wrap: wrap;
+    }
+    .cta-btn-primary {
+      background: var(--btn-bg); color: var(--btn-color);
+      border: none; padding: 0.85rem 2rem;
+      border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.12s;
+      box-shadow: 0 4px 20px rgba(15,30,60,0.15);
+    }
+    .cta-btn-primary:hover { background: var(--btn-hover); transform: translateY(-2px); }
+    [data-theme="dark"] .cta-btn-primary { box-shadow: 0 4px 20px rgba(245,158,11,0.20); }
+    .cta-btn-secondary {
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border); padding: 0.85rem 2rem;
+      border-radius: 10px; font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 500; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: all 0.2s;
+    }
+    .cta-btn-secondary:hover { border-color: var(--amber); color: var(--text-main); transform: translateY(-2px); }
+
+    /* ── SECTION DIVIDER ── */
+    .section-label {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.6;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .blob-amber, .blob-blue { display: none !important; }
+      .nav-rejse { display: none !important; }
+      nav { padding: 1rem 1.25rem; backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(249,248,245,0.98); }
+      [data-theme="dark"] nav { background: rgba(7,15,40,0.98); }
+      .hero { padding: 3.5rem 1.25rem 2rem; }
+      .hero h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+      .hero p { font-size: 0.95rem; }
+      .roadmap { padding: 0 1.25rem 4rem; }
+      .phase-card {
+        grid-template-columns: 40px 1fr;
+        gap: 0 1.25rem;
+        padding: 1.75rem 1.25rem;
+      }
+      .phase-num { width: 36px; height: 36px; font-size: 1.1rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .phase-footer { flex-direction: column; align-items: flex-start; }
+      .phase-cta, .phase-cta-outline { width: 100%; justify-content: center; padding: 0.75rem 1rem; font-size: 0.9rem; }
+      .jp-line { max-width: 40px; }
+      .bottom-cta { padding: 2rem 1.25rem 5rem; }
+      .cta-group { flex-direction: column; }
+      .cta-btn-primary, .cta-btn-secondary { width: 100%; text-align: center; }
+    }
+  
+  </style>
 </head>
 <body>
 
@@ -1693,8 +2266,9 @@
   <!-- NAV -->
   <nav id="nav">
     <div class="nav-left">
-      <div class="logo">Bolig<span>Direkte</span><span class="logo-beta">beta</span></div>
-      <a href="om-os.html" class="nav-rejse">Om os</a>
+      <a href="index.html" style="text-decoration:none;"><div class="logo">Bolig<span>Direkte</span><span class="logo-beta">beta</span></div></a>
+      <a href="opstart.html" class="nav-rejse">Vores Rejse</a>
+      <a href="om-os.html" class="nav-rejse active">Om os</a>
     </div>
     <div class="nav-center" id="nav-center" style="display:none;">
       <div class="nav-mode-btns" id="nav-mode-btns"></div>
@@ -1713,435 +2287,628 @@
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-
-    <div class="hero-cards">
-
-      <!-- ── SALG set ── -->
-      <div class="hero-cards-set active" id="cards-salg">
-        <div class="side-cards side-left">
-          <div class="card-row">
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">3.250.000 kr.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag">Til salg</div>
-                <div class="prop-card-addr">Lindevej 8, Odense</div>
-                <div class="prop-card-meta"><span>🏠 Villa</span><span>148 m²</span><span>5 vær.</span></div>
-              </div>
-            </div>
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">3.900.000 kr.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag">Til salg</div>
-                <div class="prop-card-addr">Havnevej 2, Randers</div>
-                <div class="prop-card-meta"><span>🏠 Villa</span><span>162 m²</span><span>5 vær.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">2.100.000 kr.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag">Til salg</div>
-              <div class="prop-card-addr">Kornmarksvej 3, Vejle</div>
-              <div class="prop-card-meta"><span>🏘 Rækkehus</span><span>108 m²</span><span>4 vær.</span></div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">4.800.000 kr.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag">Til salg</div>
-              <div class="prop-card-addr">Strandvejen 55, Hellerup</div>
-              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>95 m²</span><span>3 vær.</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="side-cards side-right">
-          <div class="card-row">
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">2.450.000 kr.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag">Til salg</div>
-                <div class="prop-card-addr">Birkevej 9, Horsens</div>
-                <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>78 m²</span><span>3 vær.</span></div>
-              </div>
-            </div>
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">1.895.000 kr.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag">Til salg</div>
-                <div class="prop-card-addr">Vesterbrogade 44, Kbh</div>
-                <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>82 m²</span><span>3 vær.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">7.200.000 kr.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag">Til salg</div>
-              <div class="prop-card-addr">Skovvej 12, Frederiksberg</div>
-              <div class="prop-card-meta"><span>🏠 Villa</span><span>185 m²</span><span>6 vær.</span></div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">2.650.000 kr.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag">Til salg</div>
-              <div class="prop-card-addr">Rosendalsvej 21, Aarhus</div>
-              <div class="prop-card-meta"><span>🏘 Rækkehus</span><span>112 m²</span><span>4 vær.</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── LEJE set ── -->
-      <div class="hero-cards-set" id="cards-leje">
-        <div class="side-cards side-left">
-          <div class="card-row">
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">9.500 kr./md.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag leje-tag">Til leje</div>
-                <div class="prop-card-addr">Nørrebrogade 78, Kbh</div>
-                <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>65 m²</span><span>2 vær.</span></div>
-              </div>
-            </div>
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">6.800 kr./md.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag leje-tag">Til leje</div>
-                <div class="prop-card-addr">Griffenfeldsgade 4, Kbh</div>
-                <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>55 m²</span><span>2 vær.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">5.200 kr./md.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag leje-tag">Til leje</div>
-              <div class="prop-card-addr">Studiestræde 12, Kbh</div>
-              <div class="prop-card-meta"><span>🛏 Værelse</span><span>18 m²</span><span>1 vær.</span></div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">8.200 kr./md.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag leje-tag">Til leje</div>
-              <div class="prop-card-addr">Åboulevard 30, Aarhus</div>
-              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>72 m²</span><span>3 vær.</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="side-cards side-right">
-          <div class="card-row">
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">8.900 kr./md.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag leje-tag">Til leje</div>
-                <div class="prop-card-addr">Valdemarsgade 11, Kbh V</div>
-                <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>70 m²</span><span>3 vær.</span></div>
-              </div>
-            </div>
-            <div class="prop-card">
-              <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1554995207-c18c203602cb?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-                <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-                <div class="prop-price-badge">7.800 kr./md.</div>
-              </div>
-              <div class="prop-card-body">
-                <div class="prop-tag leje-tag">Til leje</div>
-                <div class="prop-card-addr">Istedgade 15, Kbh V</div>
-                <div class="prop-card-meta"><span>🏠 Studio</span><span>32 m²</span><span>1 vær.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">7.500 kr./md.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag leje-tag">Til leje</div>
-              <div class="prop-card-addr">Allehelgensgade 5, Roskilde</div>
-              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>78 m²</span><span>3 vær.</span></div>
-            </div>
-          </div>
-          <div class="prop-card">
-            <div class="prop-card-img" style="background-image:url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=260&fit=crop&auto=format');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">6.900 kr./md.</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag leje-tag">Til leje</div>
-              <div class="prop-card-addr">Frederiksgade 20, Odense</div>
-              <div class="prop-card-meta"><span>🏢 Lejlighed</span><span>68 m²</span><span>2 vær.</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="hero-content">
-      <div class="hero-badge">Danmarks nye boligplatform &nbsp;·&nbsp; Kom med fra start</div>
-      <div class="mode-switch">
-        <button class="mode-btn active" data-mode="salg" onclick="switchMode('salg')">🏠 Køb &amp; Salg</button>
-        <button class="mode-btn" data-mode="leje" onclick="switchMode('leje')">🔑 Leje &amp; Udleje</button>
-      </div>
-      <h1>Sælg din bolig.<br><em>Betal kun når<br>den er solgt.</em></h1>
-      <p>BoligDirekte giver dig fuld kontrol over dit boligsalg — gratis at starte, ingen binding. Opgradér til Boligsiden eller fuld mægler-service når du er klar.</p>
-      <div class="search-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>&nbsp; Find bolig nu — søg her &nbsp;<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:middle;display:inline-block"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div>
-      <div class="search-wrap">
-        <div class="hero-form">
-          <div class="hero-search-wrap">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="hero-search" placeholder="Søg by, postnummer eller adresse…" autocomplete="off" />
-          </div>
-          <button class="hero-filter-btn" id="filter-btn" onclick="toggleFilter(event)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-            Filter <span id="filter-count" style="display:none;background:var(--amber);color:#fff;border-radius:100px;padding:0.05rem 0.45rem;font-size:0.72rem;font-weight:700;margin-left:2px;"></span>
-          </button>
-          <button class="hero-search-btn" onclick="openListings(true)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Søg
-          </button>
-        </div>
-        <div class="search-dropdown" id="search-dropdown"></div>
-        <div class="filter-dropdown" id="filter-dropdown">
-          <div class="filter-dd-label">Boligtype</div>
-          <div class="filter-dd-grid">
-            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Huse</label>
-            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Lejligheder</label>
-            <label class="filter-dd-item" data-leje-only onclick="toggleFilter_item(this)">Værelser</label>
-            <label class="filter-dd-item" data-leje-only onclick="toggleFilter_item(this)">Studieboliger</label>
-            <label class="filter-dd-item" onclick="toggleFilter_item(this)">Rækkehuse</label>
-          </div>
-        </div>
-      </div>
-      <div class="hero-trust">
-        <span>Gratis at starte</span> &nbsp;·&nbsp; <span>Ingen binding</span> &nbsp;·&nbsp; <span>MitID verificeret</span>
-      </div>
-    </div>
-
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      scroll
-    </div>
+  <!-- PAGE HERO -->
+  <section style="padding:8rem 2rem 3rem;text-align:center;position:relative;z-index:2;">
+    <div style="display:inline-block;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);background:rgba(232,146,10,0.10);border:1px solid rgba(232,146,10,0.25);padding:0.3rem 0.85rem;border-radius:20px;margin-bottom:1rem;">Om BoligDirekte</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--h1-color);line-height:1.15;margin-bottom:1rem;">Vi gør boligsalg fair — og billigt</h1>
+    <p style="font-size:1.05rem;color:var(--text-muted);max-width:560px;margin:0 auto;line-height:1.7;">BoligDirekte er bygget til dig der vil sælge din bolig på egne præmisser. Ingen skjulte gebyrer, ingen binding — og du betaler kun ved salg.</p>
   </section>
 
-  <!-- NYE BOLIGER -->
-  <section style="padding:5rem 0;background:var(--page-bg);">
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-number">307 <span>mia.</span></div>
+        <div class="stat-label">Solgt for i Danmark i 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100<span>k+</span></div>
+        <div class="stat-label">Bolighandler om året</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1<span>%</span></div>
+        <div class="stat-label">Med mægler — kun ved salg</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">3 <span>mio.</span></div>
+        <div class="stat-label">Gennemsnitlig salgspris</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VORES REJSE BANNER -->
+  <a href="opstart.html" class="rejse-banner">
+    <div class="rejse-banner-left">
+      <span class="rejse-banner-tag">Vores Rejse</span>
+      <span class="rejse-banner-text"><strong>Følg med på rejsen</strong> — se hvad der er live nu og hvad der kommer</span>
+      <div class="rejse-banner-phases">
+        <span class="rejse-phase-pill live">● Fase 1 — Live</span>
+        <span class="rejse-phase-pill">Fase 2 — Roomie</span>
+        <span class="rejse-phase-pill">Fase 3 — Mægler-app</span>
+      </div>
+    </div>
+    <div class="rejse-banner-arrow">
+      Se mere
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+  </a>
+
+  <!-- LISTINGS -->
+  <div class="listings-section" id="listings-section">
+    <div class="listings-header">
+      <div class="listings-title" id="listings-title">Boliger til salg</div>
+      <button class="listings-back" onclick="closeListings()">← Tilbage</button>
+    </div>
+    <div class="listings-grid" id="listings-grid">
+
+      <!-- SALG -->
+      <div class="listing-card" data-mode="salg" data-id="1">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">3.250.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Lindevej 8, Odense</div>
+          <div class="listing-meta"><span>🏠 Villa</span><span>148 m²</span><span>5 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg" data-id="2">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">2.100.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Kornmarksvej 3, Vejle</div>
+          <div class="listing-meta"><span>🏘 Rækkehus</span><span>108 m²</span><span>4 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg" data-id="3">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">4.800.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Strandvejen 55, Hellerup</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>95 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg" data-id="4">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">1.895.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Vesterbrogade 44, København</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>82 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg" data-id="5">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.200.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Skovvej 12, Frederiksberg</div>
+          <div class="listing-meta"><span>🏠 Villa</span><span>185 m²</span><span>6 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="salg" data-id="6">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">2.650.000 kr.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag">Til salg</div>
+          <div class="listing-addr">Rosendalsvej 21, Aarhus</div>
+          <div class="listing-meta"><span>🏘 Rækkehus</span><span>112 m²</span><span>4 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+
+      <!-- LEJE -->
+      <div class="listing-card" data-mode="leje" data-id="7" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">9.500 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Nørrebrogade 78, København</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>65 m²</span><span>2 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" data-id="8" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">5.200 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Studiestræde 12, København</div>
+          <div class="listing-meta"><span>🛏 Værelse</span><span>18 m²</span><span>1 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" data-id="9" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">8.200 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Åboulevard 30, Aarhus</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>72 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" data-id="10" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1554995207-c18c203602cb?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.800 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Istedgade 15, København V</div>
+          <div class="listing-meta"><span>🏠 Studio</span><span>32 m²</span><span>1 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" data-id="11" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">7.500 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Allehelgensgade 5, Roskilde</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>78 m²</span><span>3 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+      <div class="listing-card" data-mode="leje" data-id="12" style="display:none">
+        <div class="listing-card-img" style="background-image:url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&h=340&fit=crop&auto=format');background-size:cover;background-position:center">
+          <div class="prop-img-overlay"></div><div class="listing-price">6.900 kr./md.</div>
+        </div>
+        <div class="listing-card-body">
+          <div class="listing-tag leje">Til leje</div>
+          <div class="listing-addr">Frederiksgade 20, Odense</div>
+          <div class="listing-meta"><span>🏢 Lejlighed</span><span>68 m²</span><span>2 vær.</span></div>
+          <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
     <div class="container">
-      <div class="reveal" style="text-align:center;margin-bottom:3rem;">
-        <div class="section-label" style="display:inline-block;">Boliger til salg</div>
-        <h2 class="section-title" style="margin-top:0.75rem;">Nye boliger på markedet</h2>
-        <p class="section-sub" style="max-width:520px;margin:0 auto;">Se de seneste boliger sat til salg via BoligDirekte — uden mægler, uden skjulte gebyrer.</p>
+      <div class="reveal">
+        <div class="section-label">Sådan virker det</div>
+        <h2 class="section-title">Tre trin til dit boligsalg</h2>
+        <p class="section-sub">Ingen binding, ingen skjulte gebyrer — du betaler først når boligen er solgt.</p>
       </div>
-
-      <!-- Søgefilter -->
-      <div class="reveal" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:2.5rem;">
-        <select id="filter-type" onchange="filterListings()" style="padding:0.55rem 1rem;border-radius:10px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-main);font-size:0.88rem;font-family:inherit;cursor:pointer;">
-          <option value="">Alle boligtyper</option>
-          <option value="Villa">Villa</option>
-          <option value="Lejlighed">Lejlighed</option>
-          <option value="Raekkebus">Rækkehus</option>
-        </select>
-        <select id="filter-city" onchange="filterListings()" style="padding:0.55rem 1rem;border-radius:10px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-main);font-size:0.88rem;font-family:inherit;cursor:pointer;">
-          <option value="">Alle byer</option>
-          <option value="København">København</option>
-          <option value="Aarhus">Aarhus</option>
-          <option value="Odense">Odense</option>
-          <option value="Aalborg">Aalborg</option>
-        </select>
-        <select id="filter-price" onchange="filterListings()" style="padding:0.55rem 1rem;border-radius:10px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-main);font-size:0.88rem;font-family:inherit;cursor:pointer;">
-          <option value="">Alle priser</option>
-          <option value="3">Under 3 mio.</option>
-          <option value="5">Under 5 mio.</option>
-          <option value="10">Under 10 mio.</option>
-        </select>
-      </div>
-
-      <!-- Boligkort -->
-      <div id="listings-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;" class="reveal"></div>
-
-      <div style="text-align:center;margin-top:2.5rem;" class="reveal">
-        <a href="#" style="display:inline-block;padding:0.75rem 2rem;border-radius:12px;background:var(--btn-bg);color:var(--btn-color);font-weight:600;font-size:0.95rem;text-decoration:none;">Se alle boliger</a>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-num">Trin 01</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>Opret din bolig</h3>
+          <p>Log ind med MitID for at verificere din identitet og adresse. Opret dit boligopslag med billeder, beskrivelse og pris — helt gratis.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">Trin 02</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3>Mød dine købere</h3>
+          <p>Din annonce er synlig for alle — ingen login kræves for at se opslag. Del den på sociale medier og lad interesserede kontakte dig direkte.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">Trin 03</div>
+          <div class="step-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>Betal kun ved salg</h3>
+          <p>Vælg fuld service med en lokal mægler — de håndterer alt fra fotos til underskrift. Du betaler kun 1% af salgsprisen når handlen er i hus.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <style>
-    .listing-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: box-shadow 0.25s, transform 0.25s;
-      cursor: pointer;
-    }
-    .listing-card:hover {
-      box-shadow: var(--card-hover-shadow);
-      transform: translateY(-3px);
-    }
-    .listing-img {
-      width: 100%;
-      aspect-ratio: 16/10;
-      object-fit: cover;
-      display: block;
-    }
-    .listing-badge {
-      position: absolute;
-      top: 0.75rem;
-      left: 0.75rem;
-      background: var(--amber);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.25rem 0.65rem;
-      border-radius: 20px;
-      letter-spacing: 0.03em;
-    }
-    .listing-body {
-      padding: 1.25rem 1.25rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      flex: 1;
-    }
-    .listing-price {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    .listing-address {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-    }
-    .listing-meta {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-    .listing-meta span {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-  </style>
-
-  <script>
-    const listings = [
-      { type: "Villa", city: "København", address: "Strandvejen 42, 2900 Hellerup", price: 6800000, rooms: 5, m2: 178, days: 2,
-        img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80" },
-      { type: "Lejlighed", city: "Aarhus", address: "Frederiks Allé 18, 8000 Aarhus C", price: 2950000, rooms: 3, m2: 89, days: 5,
-        img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80" },
-      { type: "Raekkebus", city: "Odense", address: "Rosenvænget 7, 5000 Odense C", price: 3450000, rooms: 4, m2: 124, days: 1,
-        img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80" },
-      { type: "Villa", city: "Aalborg", address: "Hasserisvej 92, 9000 Aalborg", price: 4200000, rooms: 6, m2: 210, days: 8,
-        img: "https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=600&q=80" },
-      { type: "Lejlighed", city: "København", address: "Istedgade 55, 1650 København V", price: 3800000, rooms: 3, m2: 95, days: 3,
-        img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" },
-      { type: "Villa", city: "Aarhus", address: "Høegh-Guldbergs Gade 22, 8000 Aarhus", price: 5100000, rooms: 5, m2: 162, days: 6,
-        img: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80" },
-    ];
-
-    function fmtPrice(n) {
-      return (n / 1000000).toLocaleString("da-DK", { maximumFractionDigits: 2 }) + " mio. kr.";
-    }
-
-    function filterListings() {
-      const type  = document.getElementById("filter-type").value;
-      const city  = document.getElementById("filter-city").value;
-      const price = document.getElementById("filter-price").value;
-
-      const filtered = listings.filter(l => {
-        if (type && l.type !== type) return false;
-        if (city && l.city !== city) return false;
-        if (price && l.price >= parseInt(price) * 1000000) return false;
-        return true;
-      });
-
-      const grid = document.getElementById("listings-grid");
-      if (filtered.length === 0) {
-        grid.innerHTML = "<p style=\"grid-column:1/-1;text-align:center;color:var(--text-muted);padding:2rem 0;\">Ingen boliger matcher dit filter.</p>";
-        return;
-      }
-
-      grid.innerHTML = filtered.map(l => `
-        <div class="listing-card">
-          <div style="position:relative;">
-            <img class="listing-img" src="${l.img}" alt="${l.address}" loading="lazy" />
-            <div class="listing-badge">Ny — ${l.days} dag${l.days === 1 ? "" : "e"} siden</div>
+  <!-- CALCULATOR -->
+  <section class="calculator">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Besparelsesberegner</div>
+        <h2 class="section-title">Hvad sparer du?</h2>
+        <p class="section-sub">Flyt skyderen til din forventede salgspris og se hvad du sparer sammenlignet med en traditionel mægler.</p>
+      </div>
+      <div class="calc-box reveal">
+        <div class="calc-label">Din forventede salgspris</div>
+        <div class="calc-value" id="calc-display">3.000.000 kr.</div>
+        <input type="range" class="calc-slider" id="calc-slider"
+          min="500000" max="10000000" step="100000" value="3000000"
+          oninput="updateCalc(this.value)" />
+        <div class="calc-range-labels">
+          <span>500.000 kr.</span>
+          <span>10.000.000 kr.</span>
+        </div>
+        <div class="calc-results">
+          <div class="calc-result">
+            <div class="calc-result-label">Traditionel mægler (2%)</div>
+            <div class="calc-result-value" id="agent-cost">60.000 kr.</div>
+            <div class="calc-result-sub">Betales uanset resultat</div>
           </div>
-          <div class="listing-body">
-            <div class="listing-price">${fmtPrice(l.price)}</div>
-            <div class="listing-address">${l.address}</div>
-            <div class="listing-meta">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                ${l.rooms} vær.
-              </span>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                ${l.m2} m²
-              </span>
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                ${l.type === "Raekkebus" ? "Rækkehus" : l.type}
-              </span>
+          <div class="calc-result highlight">
+            <div class="calc-result-label" id="calc-bd-label">BoligDirekte med mægler (1%)</div>
+            <div class="calc-result-value" id="our-cost">30.000 kr.</div>
+            <div class="calc-result-sub" id="calc-bd-sub">Kun ved succesfuldt salg</div>
+          </div>
+        </div>
+        <div class="savings-badge">
+          <div class="savings-badge-text">
+            <span id="savings-msg-pre">Du sparer </span><strong id="savings-amount">30.000 kr.</strong><span id="savings-msg-post"> sammenlignet med en traditionel mægler på 2%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="comparison" style="padding-top:0;">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-label">Prissammenligning</div>
+        <h2 class="section-title">Hvad koster de andre?</h2>
+        <p class="section-sub">Se hvad du sparer sammenlignet med en traditionel mægler.</p>
+      </div>
+      <div class="comp-table reveal">
+        <div class="comp-row header">
+          <div class="comp-cell">Platform</div>
+          <div class="comp-cell">Traditionel mægler</div>
+          <div class="comp-cell highlight">BoligDirekte</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Gratis at oprette</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Betalingsmodel</div>
+          <div class="comp-cell">1–3% salær</div>
+          <div class="comp-cell highlight best">0,5% ved salg</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Pris på 2 mio. bolig</div>
+          <div class="comp-cell bad">20.000–60.000 kr</div>
+          <div class="comp-cell highlight good">15.000 kr</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">Betal kun ved salg</div>
+          <div class="comp-cell bad"><span class="cross">✗</span> Nej</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+        <div class="comp-row">
+          <div class="comp-cell">MitID verificering</div>
+          <div class="comp-cell good"><span class="check">✓</span> Ja</div>
+          <div class="comp-cell highlight good"><span class="check">✓</span> Ja</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERE -->
+  <section class="advokat-section">
+    <div class="container">
+      <div class="advokat-box reveal">
+        <div class="advokat-left">
+          <div class="section-label">Juridisk tryghed</div>
+          <h2 class="section-title" style="font-size:clamp(1.6rem,3vw,2.2rem);">Advokat inkluderet i handlen</h2>
+          <p class="section-sub">Vi samarbejder med en godkendt advokat der specialiserer sig i bolighandler — og tilbyder fast pris til alle BoligDirekte-kunder. Du og køber får hver jeres uafhængige rådgivning til en fast, lav pris.</p>
+          <ul class="advokat-list">
+            <li><span class="check">✓</span> Gennemgang af købsaftale</li>
+            <li><span class="check">✓</span> Tjek for gæld og servitutter</li>
+            <li><span class="check">✓</span> Sikker tinglysning af skøde</li>
+            <li><span class="check">✓</span> Fast pris — ingen overraskelser</li>
+          </ul>
+        </div>
+        <div class="advokat-right">
+          <div class="advokat-badge">
+            <div class="advokat-badge-label">Fast pris via BoligDirekte</div>
+            <div class="advokat-badge-price">Aftales ved oprettelse</div>
+            <div class="advokat-badge-sub">Gælder for både køber og sælger — hver for sig</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+
+  <!-- VORES REJSE SEKTION -->
+<!-- ROADMAP -->
+  <div class="roadmap">
+
+    <p class="section-label">Vores roadmap</p>
+
+    <!-- ── FASE 1 ── -->
+    <div class="phase-card phase-active">
+      <div class="phase-num-col">
+        <div class="phase-num">1</div>
+        <div class="phase-connector"></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-status status-live">
+          <span class="status-live-dot"></span>
+          Live nu
+        </div>
+
+        <h2 class="phase-title">Annoncér din bolig — helt gratis</h2>
+        <p class="phase-subtitle">Opret din bolig på BoligDirekte uden at betale en krone. Du sætter selv prisen, skriver teksten og håndterer henvendelser. Vi bygger brugerbase og omdømme.</p>
+
+        <div class="price-tag">
+          <span class="amount">Gratis</span>
+          <span class="desc">ingen binding · ingen skjulte gebyrer</span>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🏡</div>
+            <div class="feature-text">
+              <strong>Opslag på BoligDirekte</strong>
+              <span>Din bolig synlig for alle besøgende</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📸</div>
+            <div class="feature-text">
+              <strong>Upload egne billeder</strong>
+              <span>Præsentér din bolig med dine egne fotos</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💬</div>
+            <div class="feature-text">
+              <strong>Direkte henvendelser</strong>
+              <span>Interesserede køber kontakter dig direkte</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛡️</div>
+            <div class="feature-text">
+              <strong>MitID verificeret</strong>
+              <span>Trygt og sikkert for både køber og sælger</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📍</div>
+            <div class="feature-text">
+              <strong>Starter på Fyn</strong>
+              <span>Lokalt fokus — vi kender dit marked</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <strong>Live på få minutter</strong>
+              <span>Opret og udgiv dit opslag hurtigt og nemt</span>
             </div>
           </div>
         </div>
-      `).join("");
-    }
 
-    filterListings();
-  </script>
+        <div class="phase-footer">
+          <div class="phase-timing">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Nu tilgængeligt
+          </div>
+          <a href="tilmeld.html" class="phase-cta">
+            Sæt din bolig til salg
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
 
+    <!-- ── FASE 2 ── -->
+    <div class="phase-card phase-upcoming">
+      <div class="phase-num-col">
+        <div class="phase-num">2</div>
+        <div class="phase-connector"></div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-status status-soon">
+          Kommer snart
+        </div>
+
+        <h2 class="phase-title">Annoncér på Boligsiden — nå alle boligkøbere</h2>
+        <p class="phase-subtitle">Vi tilføjer Boligsiden.dk til pakken — Danmarks største boligportal. Din bolig ses af endnu flere køber, og du klarer stadig salget selv.</p>
+
+        <div class="price-tag">
+          <span class="amount">1.200 kr.</span>
+          <span class="desc">opstart · derefter 499 kr/md</span>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">🏠</div>
+            <div class="feature-text">
+              <strong>Bolig på Boligsiden.dk</strong>
+              <span>Danmarks største boligportal med flest køber</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📍</div>
+            <div class="feature-text">
+              <strong>Stadig på BoligDirekte</strong>
+              <span>Synlig på begge platforme samtidig</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📊</div>
+            <div class="feature-text">
+              <strong>Statistik og visninger</strong>
+              <span>Se hvor mange der har set din bolig</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💰</div>
+            <div class="feature-text">
+              <strong>Ingen salgsgebyr</strong>
+              <span>Betal kun månedligt — intet ved salg</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛒</div>
+            <div class="feature-text">
+              <strong>Tilkøb skilt, foto & stylist</strong>
+              <span>Bestil professionel hjælp direkte ved oprettelse</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-footer">
+          <div class="phase-timing">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Planlagt til måned 6–12
+          </div>
+          <button class="phase-cta phase-cta-outline" onclick="showNotify()">
+            Bliv varslet
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FASE 3 ── -->
+    <div class="phase-card phase-future">
+      <div class="phase-num-col">
+        <div class="phase-num">3</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-status status-vision">
+          Fremtidsvisionen
+        </div>
+
+        <h2 class="phase-title">Fuld mægler-service — til halv pris</h2>
+        <p class="phase-subtitle">Opgradér til en lokal autoriseret mægler der håndterer alt — fotos, papirer, fremvisninger og forhandling. Du betaler kun 1% når din bolig er solgt.</p>
+
+        <div class="price-tag">
+          <span class="amount">1% ved salg</span>
+          <span class="desc">ingen opstartsgebyr · betales kun når boligen er solgt</span>
+        </div>
+
+        <div class="vision-quote">
+          "En lokal mægler håndterer alt. Kun 1% ved salg — ikke de 60.000 kr. en traditionel mægler tager på en 3 mio. bolig."
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">📸</div>
+            <div class="feature-text">
+              <strong>Professionelle fotos</strong>
+              <span>Fotograf og plantegning inkluderet</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">📄</div>
+            <div class="feature-text">
+              <strong>Alle papirer klaret</strong>
+              <span>Salgsopstilling, fremvisning og købsaftale</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🏠</div>
+            <div class="feature-text">
+              <strong>Boligsiden + BoligDirekte</strong>
+              <span>Maksimal eksponering til alle køber</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🗺️</div>
+            <div class="feature-text">
+              <strong>Landsækkende</strong>
+              <span>Lokale mæglere overalt i Danmark</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">💰</div>
+            <div class="feature-text">
+              <strong>Spar ~30.000 kr.</strong>
+              <span>vs. traditionel mægler på 3M bolig</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🤝</div>
+            <div class="feature-text">
+              <strong>Kun betalt ved salg</strong>
+              <span>Ingen risiko — vi tjener kun når du gør</span>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🛒</div>
+            <div class="feature-text">
+              <strong>Tilkøb skilt, foto & stylist</strong>
+              <span>Bestil professionel hjælp direkte ved oprettelse</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-footer">
+          <div class="phase-timing">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            År 2–3
+          </div>
+          <button class="phase-cta phase-cta-outline" onclick="showNotify()">
+            Følg med på rejsen
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <section class="bottom-cta">
+    <h2>Klar til at sætte din bolig til salg?</h2>
+    <p>Kom i gang i dag — ingen binding, ingen procentsats. Du betaler kun, når din bolig er solgt.</p>
+    <div class="cta-group">
+      <a href="tilmeld.html" class="cta-btn-primary">Opret gratis profil</a>
+      <a href="index.html" class="cta-btn-secondary">Se, hvad vi tilbyder</a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Theme
+  (function() {
+    const saved = localStorage.getItem('bd-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    updateToggleLabel(saved);
+  })();
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('bd-theme', next);
+    updateToggleLabel(next);
+  }
+
+  function updateToggleLabel(theme) {
+    const lbl = document.querySelector('.toggle-label');
+    if (lbl) lbl.textContent = theme === 'dark' ? 'Mørkt' : 'Lyst';
+  }
+
+  // Nav scroll shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  // Notify placeholder
+  function showNotify() {
+    alert('Vi notificerer dig, når denne fase er klar. ✉️\n\nOpret en profil for at holde dig opdateret.');
+  }
+</script>
 
   <!-- FOOTER -->
   <footer>
@@ -2149,6 +2916,7 @@
     <p>© 2025 BoligDirekte · Sælg din bolig — betal kun ved salg<br>
     Platform under udvikling · MitID verificeret</p>
   </footer>
+
 
   <script>
     // Theme toggle
@@ -2765,135 +3533,38 @@
     })();
   </script>
 
-  <script type="module">
-    import { initializeApp }                            from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut }     from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+<script>
+  // Theme
+  (function() {
+    const saved = localStorage.getItem('bd-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    updateToggleLabel(saved);
+  })();
 
-    const firebaseConfig = {
-      apiKey:            "AIzaSyAH0mxBKo3iFUyB5ZKnTvdYEneXPyuvu5I",
-      authDomain:        "boligside-3dbfa.firebaseapp.com",
-      projectId:         "boligside-3dbfa",
-      storageBucket:     "boligside-3dbfa.firebasestorage.app",
-      messagingSenderId: "938144668707",
-      appId:             "1:938144668707:web:df10e4a5116ff9939fa596"
-    };
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('bd-theme', next);
+    updateToggleLabel(next);
+  }
 
-    const app  = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db   = getFirestore(app);
+  function updateToggleLabel(theme) {
+    const lbl = document.querySelector('.toggle-label');
+    if (lbl) lbl.textContent = theme === 'dark' ? 'Mørkt' : 'Lyst';
+  }
 
-    // ── AUTH STATE: vis navn + nav-center knapper hvis logget ind ──
-    onAuthStateChanged(auth, user => {
-      window._currentUser = user;
-      const loginBtn   = document.getElementById('nav-login-btn');
-      const tilmeldBtn = document.getElementById('nav-tilmeld-btn');
-      const logoutBtn  = document.getElementById('nav-logout-btn');
-      if (user) {
-        const name = user.displayName || user.email.split('@')[0];
-        if (loginBtn)   { loginBtn.textContent = '👤 ' + name; loginBtn.onclick = () => window.location.href = 'dashboard.html'; }
-        if (tilmeldBtn) tilmeldBtn.style.display = 'none';
-        if (logoutBtn)  logoutBtn.style.display = '';
-      } else {
-        if (loginBtn)   { loginBtn.textContent = 'Log ind'; loginBtn.onclick = () => window.location.href = 'login.html'; }
-        if (tilmeldBtn) tilmeldBtn.style.display = '';
-        if (logoutBtn)  logoutBtn.style.display = 'none';
-      }
-      updateNavCenter(user, window._currentMode || 'salg');
-    });
+  // Nav scroll shadow
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
 
-    window.doLogout = async function() {
-      await signOut(auth);
-      window.location.reload();
-    };
+  // Notify placeholder
+  function showNotify() {
+    alert('Vi notificerer dig, når denne fase er klar. ✉️\n\nOpret en profil for at holde dig opdateret.');
+  }
+</script>
 
-    // ── LIVE LISTINGS FRA FIRESTORE ──
-    const typeImages = {
-      'Villa':      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&h=340&fit=crop&auto=format',
-      'Rækkehus':   'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=340&fit=crop&auto=format',
-      'Lejlighed':  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=340&fit=crop&auto=format',
-      'Fritidshus': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=340&fit=crop&auto=format',
-    };
-    const defaultImg = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=340&fit=crop&auto=format';
-    const typeEmoji  = { 'Villa':'🏠', 'Rækkehus':'🏘', 'Lejlighed':'🏢', 'Fritidshus':'🏡' };
-
-    try {
-      const snap = await getDocs(query(collection(db, 'saelgere'), orderBy('oprettet', 'desc')));
-      const grid = document.getElementById('listings-grid');
-      let liveCount = 0;
-
-      // Hero-kort: erstat hardkodede kort med betalte annoncer
-      const allHeroCards = [...document.querySelectorAll('#cards-salg .prop-card')];
-      let heroReplaceIdx = 0;
-
-      const heroImgs = {
-        'Villa':      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400&h=260&fit=crop&auto=format',
-        'Rækkehus':   'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=260&fit=crop&auto=format',
-        'Lejlighed':  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=260&fit=crop&auto=format',
-        'Fritidshus': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=260&fit=crop&auto=format',
-      };
-
-      snap.forEach(docSnap => {
-        const d = docSnap.data();
-        if (!d.adresse) return;
-        if (d.status === 'nede') return;
-
-        // Erstat næste hardkodede hero-kort med det betalte opslag
-        if (d.annoncering === true && heroReplaceIdx < allHeroCards.length) {
-          const target = allHeroCards[heroReplaceIdx++];
-          const hImg   = heroImgs[d.boligtype] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=260&fit=crop&auto=format';
-          const hPrice = d.salgspris ? d.salgspris + (d.salgspris.includes('kr') ? '' : ' kr.') : '—';
-          target.dataset.heroDocId = docSnap.id;
-          target.style.cursor = 'pointer';
-          target.innerHTML = `
-            <div class="prop-card-img" style="background-image:url('${hImg}');background-size:cover;background-position:center">
-              <div class="prop-img-overlay"></div><div class="prop-bd-badge">BD</div>
-              <div class="prop-price-badge">${hPrice}</div>
-            </div>
-            <div class="prop-card-body">
-              <div class="prop-tag">Til salg</div>
-              <div class="prop-card-addr">${d.adresse}</div>
-              <div class="prop-card-meta"><span>${d.boligtype || 'Bolig'}</span></div>
-            </div>`;
-          target.onclick = () => {
-            window.location.href = 'dashboard.html?opslag=' + docSnap.id;
-          };
-        }
-        liveCount++;
-
-        const id    = 'live-' + docSnap.id;
-        const img   = typeImages[d.boligtype] || defaultImg;
-        const emoji = typeEmoji[d.boligtype] || '🏠';
-        const type  = d.boligtype || 'Bolig';
-        const raw   = (d.salgspris || '').toString().replace(/[^\d]/g, '');
-        const price = raw
-          ? parseInt(raw).toLocaleString('da-DK') + ' kr.'
-          : d.salgspris || 'Kontakt for pris';
-
-        const card = document.createElement('div');
-        card.className = 'listing-card';
-        card.dataset.mode    = 'salg';
-        card.dataset.id      = id;
-        if (d.annoncering === true) card.dataset.premium = 'true';
-        const serial = d.serialNr ? `<div style="font-size:0.68rem;color:var(--text-muted);letter-spacing:0.05em;margin-bottom:0.3rem;">${d.serialNr}</div>` : '';
-        card.innerHTML = `
-          <div class="listing-card-img" style="background-image:url('${img}');background-size:cover;background-position:center">
-            <div class="prop-img-overlay"></div>
-            <div class="listing-price">${price}</div>
-            <span class="listing-live-badge">Aktiv</span>
-          </div>
-          <div class="listing-card-body">
-            <div class="listing-tag">Til salg</div>
-            <div class="listing-addr">${d.adresse}</div>
-            ${serial}
-            <div class="listing-meta"><span>${emoji} ${type}</span></div>
-            <button class="listing-btn" onclick="goToOpslag(this)">Se opslag</button>
-          </div>`;
-        grid.prepend(card); // Live opslag øverst
-      });
-    } catch (e) {
-      console.warn('Kunne ikke hente live opslag:', e);
-    }
-  </script>
 </body>
 </html>
